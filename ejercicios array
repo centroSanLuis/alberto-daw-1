@@ -1,0 +1,29 @@
+1. Encuentra el número máximo en un array
+Descripción: Crea un programa que lea 5 números enteros y los almacene en un array. Luego, encuentra y muestra el número más alto en el array.
+
+2. Calcula la media de los números en un array
+Descripción: Pide al usuario que ingrese 10 números y almacénalos en un array. Calcula y muestra el promedio de esos números.
+
+3. Cuenta los números pares e impares en un array
+Descripción: Solicita al usuario que introduzca 10 números y almacénalos en un array. Luego, cuenta cuántos de esos números son pares y cuántos son impares.
+
+4. Encuentra la posición de un elemento en un array
+Descripción: Crea un programa que solicite al usuario ingresar 8 números y almacenarlos en un array. Luego, pide al usuario un número adicional y busca en qué posición se encuentra ese número en el array. Si no existe, indica que no se encontró.
+
+5. Invertir el contenido de un array
+Descripción: Escribe un programa que tome un array de 6 elementos y lo invierta. Es decir, el primer elemento pasa a ser el último y viceversa.
+
+6. Ordena un array de forma ascendente
+Descripción: Pide al usuario que introduzca 10 números y los almacene en un array. Luego, ordena esos números de forma ascendente utilizando el algoritmo de burbuja o cualquier otro método que los alumnos conozcan.
+
+7. Matriz bidimensional: suma de filas y columnas
+Descripción: Crea una matriz bidimensional de 3x3 y pide al usuario que introduzca los valores. Luego, calcula la suma de cada fila y de cada columna.
+
+8. Busca el número más grande en una matriz
+Descripción: Escribe un programa que genere una matriz de 4x4 con números aleatorios entre 1 y 100. Encuentra y muestra el número más grande en la matriz.
+
+9. Rotación de un array
+Descripción: Crea un array de 10 elementos y pide al usuario que introduzca sus valores. Luego, realiza una rotación hacia la derecha de los elementos del array. Es decir, el último valor pasa a ser el primero, y los demás se desplazan una posición.
+
+10. Calcula la transpuesta de una matriz
+Descripción: Crea un programa que genere una matriz 3x3 y que intercambie las filas por las columnas, obteniendo así la matriz transpuesta.
