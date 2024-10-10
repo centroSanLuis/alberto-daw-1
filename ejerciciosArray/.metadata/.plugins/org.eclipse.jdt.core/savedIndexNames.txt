@@ -1,7 +1,0 @@
-INDEX VERSION 1.131+D:\Alberto\programacion\ejercicios array\.metadata\.plugins\org.eclipse.jdt.core
-3009025675.index
-3294438941.index
-710100785.index
-1513731006.index
-1565816743.index
-759071528.index
