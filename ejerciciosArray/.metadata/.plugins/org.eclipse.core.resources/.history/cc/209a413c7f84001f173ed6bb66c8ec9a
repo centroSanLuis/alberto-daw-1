@@ -1,0 +1,16 @@
+package ejercicio4;
+
+import java.util.Scanner;
+
+public class Main {
+	
+	public static void main (String[] args) {
+		Scanner entrada = new Scanner(System.in);
+		int[] numeros = new int[8];
+		
+		for(int i=0;i<numeros.length;i++) {
+			numeros[i] = (int) ((Math.random()*10)+1);
+		}
+	}
+
+}

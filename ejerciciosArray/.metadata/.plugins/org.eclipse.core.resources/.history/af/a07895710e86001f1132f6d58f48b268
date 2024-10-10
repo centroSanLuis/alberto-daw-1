@@ -1,0 +1,39 @@
+package ejercicio7;
+
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner entrada = new Scanner(System.in);
+		int[][] matriz = new int[3][5];
+		
+		
+		System.out.println("Introduce los numeros para la matriz");
+		
+		for(int fila=0;fila<matriz.length;fila++) {
+			for(int col=0;col<matriz[fila].length;col++) {
+				matriz[fila][col] = entrada.nextInt();
+			}
+		}
+		
+		System.out.println(matriz[0]);
+
+		/*for(int fila=0;fila<matriz.length;fila++) {
+			for(int col=0;col<matriz.length;col++) {
+				System.out.print(matriz[fila][col] + " ");
+			}
+			System.out.println();
+		}*/
+		
+		for(int fila=0;fila<matriz.length;fila++) {
+			int sumaFila = 0;
+			for(int col=1;col<matriz[fila].length;col++) {
+				sumaFila = sumaFila + matriz[fila][col];
+			}
+			System.out.println("La suma de la fila " + fila + " es " + sumaFila);
+		}
+		
+		
+	}
+}
