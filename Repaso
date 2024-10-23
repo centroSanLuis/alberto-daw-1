@@ -1,13 +1,14 @@
 Repaso 
 
-Ejercicio 1
+***Ejercicio 1***
 Crear un programa que pida al usuario de cuantas posiciones quiere crear un array (de enteros) e inicializarlo a 0.
 
 Consola ejemplo:
 De cuantas posiciones quieres crear tu array?
 5
 Se ha creado tu array [0,0,0,0,0]
-Ejercicio 2
+
+***Ejercicio 2***
 Modificar el programa anterior para preguntar después de insertar el número de posiciones pregunte si quiere inicializar el array a ceros (esta sería la funcionalidad anterior), con números aleatorios del 1 al 100 o insertar todos los números.
 
 Consola ejemplo:
@@ -41,7 +42,8 @@ Introduce el número para la posición 1:
 Introduce el número para la posición 2:
 20
 Valores del array [5,20]
-Ejercicio 3
+
+***Ejercicio 3***
 Modificar el programa anterior para que una vez inicializado el array te aparezca un menú donde se pida lo siguiente:
 Cambiar valores de todo el array
 Cambiar un valor del array
@@ -90,7 +92,7 @@ S
 El array se ha vaciado
 Valores del array [0,0]
 
-Ejercicio 4
+***Ejercicio 4***
 Modificar el ejercicio anterior para añadir más opciones al menú.
 
 Cambiar valores de todo el array
