@@ -1,0 +1,203 @@
+Repaso 
+
+Ejercicio 1
+Crear un programa que pida al usuario de cuantas posiciones quiere crear un array (de enteros) e inicializarlo a 0.
+
+Consola ejemplo:
+De cuantas posiciones quieres crear tu array?
+5
+Se ha creado tu array [0,0,0,0,0]
+Ejercicio 2
+Modificar el programa anterior para preguntar después de insertar el número de posiciones pregunte si quiere inicializar el array a ceros (esta sería la funcionalidad anterior), con números aleatorios del 1 al 100 o insertar todos los números.
+
+Consola ejemplo:
+De cuantas posiciones quieres crear tu array?
+2
+Como quieres inicializar tu array:
+1.- Con ceros
+2.- Con números aleatorios del 1 al 100
+3.- Insertando los números manualmente.
+1
+Valores del array [0,0]
+
+De cuantas posiciones quieres crear tu array?
+2
+Como quieres inicializar tu array:
+1.- Con ceros
+2.- Con números aleatorios del 1 al 100
+3.- Insertando los números manualmente.
+2
+Valores del array [25,58]
+
+De cuantas posiciones quieres crear tu array?
+2
+Como quieres inicializar tu array:
+1.- Con ceros
+2.- Con números aleatorios del 1 al 100
+3.- Insertando los números manualmente.
+3
+Introduce el número para la posición 1:
+5
+Introduce el número para la posición 2:
+20
+Valores del array [5,20]
+Ejercicio 3
+Modificar el programa anterior para que una vez inicializado el array te aparezca un menú donde se pida lo siguiente:
+Cambiar valores de todo el array
+Cambiar un valor del array
+Reiniciar el array
+Mostrar Array
+Salir
+El primero debe pedir números para todas las posiciones del array. El segundo pide una posición y un número y se modifica por el anterior. En el tercer caso se ponen todos los valores del array a 0, antes de reiniciar se te tiene que avisar al usuario que va a borrar todos los datos y si dice que no quiere borrar volver al menú. La cuarta opción muestra los valores del array. Después de cada una de estas opciones debe mostrarse el mismo menú otra vez. Por último para finalizar el programa tenemos la opción 5.
+
+Consola ejemplo:
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+0.- Salir
+1
+Introduce el número para la posición 1:
+5
+Introduce el número para la posición 2:
+20
+Valores del array [5,20]
+
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+0.- Salir
+2
+Introduce la posición que quieres cambiar:
+1
+Introduce el numero para la posición 1:
+10
+Valores del array [10,20]
+
+Consola ejemplo:
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+0.- Salir
+3
+¿Está seguro que quiere eliminar todos los números del array? (S/N)
+S
+El array se ha vaciado
+Valores del array [0,0]
+
+Ejercicio 4
+Modificar el ejercicio anterior para añadir más opciones al menú.
+
+Cambiar valores de todo el array
+Cambiar un valor del array
+Reiniciar el array
+Mostrar Array
+Suma
+Multiplicación
+Media
+Factorial de cada valor
+Ordenar de menor a mayor
+Ordenar de mayor a menor
+Salir
+
+Consola ejemplo (Suponiendo que en el array hay [1, 5, 4, 2]):
+
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+5.- Suma
+6.- Multiplicación
+7.- Media
+8.- Factorial de cada valor
+9.- Ordenar de menor a mayor
+10.- Ordenar de mayor a menor
+0.- Salir
+5
+La suma es: 12
+
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+5.- Suma
+6.- Multiplicación
+7.- Media
+8.- Factorial de cada valor
+9.- Ordenar de menor a mayor
+10.- Ordenar de mayor a menor
+0.- Salir
+6
+La multiplicación es: 40
+
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+5.- Suma
+6.- Multiplicación
+7.- Media
+8.- Factorial de cada valor
+9.- Ordenar de menor a mayor
+10.- Ordenar de mayor a menor
+0.- Salir
+7
+La media es: 5
+
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+5.- Suma
+6.- Multiplicación
+7.- Media
+8.- Factorial de cada valor
+9.- Ordenar de menor a mayor
+10.- Ordenar de mayor a menor
+0.- Salir
+8
+Factorial de 1: 1
+Factorial de 5: 120
+Factorial de 4: 24
+Factorial de 2: 2
+
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+5.- Suma
+6.- Multiplicación
+7.- Media
+8.- Factorial de cada valor
+9.- Ordenar de menor a mayor
+10.- Ordenar de mayor a menor
+0.- Salir
+9
+El array se ha ordenado de manera ascendente
+Valores del array [1,2,4,5]
+
+¿Qué quieres hacer con tu array?
+1.- Cambiar valores de todo el array
+2.- Cambiar un valor del array
+3.- Reiniciar el array
+4.- Mostrar Array
+5.- Suma
+6.- Multiplicación
+7.- Media
+8.- Factorial de cada valor
+9.- Ordenar de menor a mayor
+10.- Ordenar de mayor a menor
+0.- Salir
+10
+El array se ha ordenado de manera descendente
+Valores del array [5,4,2,1]
