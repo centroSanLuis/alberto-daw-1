@@ -31,6 +31,20 @@ public class Main {
 		
 		estudiantes.add(e);
 		
+		Estudiante e1 = new Estudiante();
+		
+		e1.setApellidos("1Garcia de Cortazar");
+		e1.setCurso("1DAW");
+		e1.setDni("100000001V");
+		e1.setEmail("1acortazar@centrosanluis.com");
+		e1.setFechaNacimiento(LocalDate.now());
+		e1.setGenero(0);
+		e1.setNecesidadesEspeciales("1muchas");
+		e1.setNombre("1Alberto");
+		e1.setTerminosAceptados(true);
+		
+		estudiantes.add(e1);
+		
 		//AltaEstudiante window = new AltaEstudiante(estudiantes);
 		
 		ListadoEstudiante window = new ListadoEstudiante(estudiantes);
