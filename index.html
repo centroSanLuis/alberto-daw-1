@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 80%;
+            margin: auto;
+        }
+
+        .box{
+            width: 30%;
+            float: left;
+            margin: 10px;
+        }
+
+        @media (max-width: 768px) and (min-width: 400px){
+            .box{
+                background-color: aqua;
+                width: 100%;
+            }
+
+            .container{
+                font-weight: bold;
+            }
+        }
+
+        .clear{
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates maxime atque nesciunt harum cum assumenda rerum qui temporibus, corrupti molestias dignissimos tenetur autem laborum deserunt eaque itaque voluptas esse ullam.</div>
+        <div class="box">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora, autem! Culpa repellendus eligendi quae illum iste earum incidunt odit, itaque fugit ex perspiciatis dicta in magni quia, illo similique consequatur.</div>
+        <div class="box">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit dignissimos ex doloribus minima nemo sunt, qui deserunt rerum dolores quisquam molestiae totam animi cupiditate provident ab, deleniti hic eveniet nobis.</div>
+        <div class="clear">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi accusantium minima rem architecto veniam illo distinctio autem voluptatum, quia quas placeat sint et quo non sapiente exercitationem odio? Voluptate, quos?</div>
+    </div>
+</body>
+</html>
