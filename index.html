@@ -10,13 +10,16 @@
             margin: auto;
         }
 
+        .destacados{
+            display: flex;
+        }
+
         .box{
             width: 30%;
-            float: left;
             margin: 10px;
         }
 
-        @media (max-width: 768px) and (min-width: 400px){
+        @media (max-width: 768px){
             .box{
                 background-color: aqua;
                 width: 100%;
@@ -27,17 +30,17 @@
             }
         }
 
-        .clear{
-            clear: both;
-        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="box">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates maxime atque nesciunt harum cum assumenda rerum qui temporibus, corrupti molestias dignissimos tenetur autem laborum deserunt eaque itaque voluptas esse ullam.</div>
-        <div class="box">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora, autem! Culpa repellendus eligendi quae illum iste earum incidunt odit, itaque fugit ex perspiciatis dicta in magni quia, illo similique consequatur.</div>
-        <div class="box">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit dignissimos ex doloribus minima nemo sunt, qui deserunt rerum dolores quisquam molestiae totam animi cupiditate provident ab, deleniti hic eveniet nobis.</div>
-        <div class="clear">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi accusantium minima rem architecto veniam illo distinctio autem voluptatum, quia quas placeat sint et quo non sapiente exercitationem odio? Voluptate, quos?</div>
+        <div class="destacados">
+            <div class="box">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates maxime atque nesciunt harum cum assumenda rerum qui temporibus, corrupti molestias dignissimos tenetur autem laborum deserunt eaque itaque voluptas esse ullam.</div>
+            <div class="box">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora, autem! Culpa repellendus eligendi quae illum iste earum incidunt odit, itaque fugit ex perspiciatis dicta in magni quia, illo similique consequatur.</div>
+            <div class="box">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit dignissimos ex doloribus minima nemo sunt, qui deserunt rerum dolores quisquam molestiae totam animi cupiditate provident ab, deleniti hic eveniet nobis.</div>
+        </div>
+        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi accusantium minima rem architecto veniam illo distinctio autem voluptatum, quia quas placeat sint et quo non sapiente exercitationem odio? Voluptate, quos?</div>
     </div>
 </body>
 </html>
