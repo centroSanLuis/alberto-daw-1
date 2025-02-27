@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Login</title>
+<link rel="stylesheet" href="styles/styles.css" />
 </head>
 <body>
 <div>
@@ -22,7 +23,8 @@
 		<p>
 			Usuario o contraseña incorrecto
 		</p>
-	<%} %>	
+	<%} %>
+	<a href="registro.jsp">Crear usuario</a>
 </div>
 </body>
 </html>
