@@ -15,6 +15,10 @@ public class UsuarioService {
 	}
 	
 	public Usuario login(Usuario usuario) {
+		String hashedPass = hashPassword(usuario.getContrasena());
+		
+		usuario.setContrasena(hashedPass);
+		
 		return usuarioBD.login(usuario);
 	}
 
