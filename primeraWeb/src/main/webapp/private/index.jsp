@@ -9,5 +9,6 @@
 <body>
 <% Usuario usuario = (Usuario)request.getSession().getAttribute("usuario"); %>
 <h1>HOLA, <%= usuario.getUsuario() %></h1>
+<a href="../listadoUsuarios">Listado Usuarios</a>
 </body>
 </html>

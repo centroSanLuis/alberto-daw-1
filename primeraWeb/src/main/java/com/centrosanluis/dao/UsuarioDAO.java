@@ -4,10 +4,47 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.centrosanluis.model.Usuario;
 
 public class UsuarioDAO {
+	
+	//crear un metodo para obetener todos los usuarios
+	public List<Usuario> getUsers(){
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		Connection con = AccesoBD.getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT usuario, nombre, apellidos, email, telefono FROM usuarios";
+		
+		try {
+			ps = con.prepareStatement(sql);
+			
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				Usuario u = new Usuario();
+				
+				u.setNombre(rs.getString("nombre"));
+				u.setApellidos(rs.getString("apellidos"));
+				u.setEmail(rs.getString("email"));
+				u.setTelefono(rs.getString("telefono"));
+				u.setUsuario(rs.getString("usuario"));
+				
+				usuarios.add(u);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			AccesoBD.closeConnection(null, ps, con);
+		}
+		
+		return usuarios;
+	}
 	
 	public Usuario login(Usuario usuario) {
 		Connection con = AccesoBD.getConnection();

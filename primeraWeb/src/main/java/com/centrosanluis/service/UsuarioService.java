@@ -2,6 +2,7 @@ package com.centrosanluis.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import com.centrosanluis.dao.UsuarioDAO;
 import com.centrosanluis.model.Usuario;
@@ -43,6 +44,10 @@ public class UsuarioService {
 			e.printStackTrace();
 			return "";
 		}
+	}
+
+	public List<Usuario> getUsers() {
+		return usuarioBD.getUsers();
 	}
 
 }
