@@ -24,7 +24,7 @@
 			Usuario o contraseña incorrecto
 		</p>
 	<%} %>
-	<a href="registro.jsp">Crear usuario</a>
+	<a href="iniciarRegistro">Crear usuario</a>
 </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.centrosanluis.model.Rol;
 import com.centrosanluis.model.Usuario;
 
 public class UsuarioDAO {
@@ -53,7 +54,7 @@ public class UsuarioDAO {
 		
 		Usuario u = new Usuario();
 		
-		String sql = "SELECT usuario, nombre, apellidos, email, telefono "
+		String sql = "SELECT usuario, nombre, apellidos, email, telefono, roles_id "
 				+ "FROM usuarios "
 				+ "WHERE usuario = ? AND contrasena = ?";
 
@@ -71,6 +72,12 @@ public class UsuarioDAO {
 				u.setEmail(rs.getString("email"));
 				u.setTelefono(rs.getString("telefono"));
 				u.setUsuario(rs.getString("usuario"));
+				
+				Rol rol = new Rol();
+				
+				rol.setId(rs.getInt("roles_id"));;
+				
+				u.setRol(rol);
 			}
 			
 		}catch(SQLException e) {
@@ -86,7 +93,7 @@ public class UsuarioDAO {
 		Connection con = AccesoBD.getConnection();
 		PreparedStatement ps = null;
 		
-		String sql = "INSERT INTO usuarios (nombre, apellidos, telefono, email, usuario, contrasena) VALUES (?,?,?,?,?,?)";
+		String sql = "INSERT INTO usuarios (nombre, apellidos, telefono, email, usuario, contrasena, roles_id) VALUES (?,?,?,?,?,?,?)";
 		
 		try {
 			ps = con.prepareStatement(sql);
@@ -97,6 +104,7 @@ public class UsuarioDAO {
 			ps.setString(4, nuevoUsuario.getEmail());
 			ps.setString(5, nuevoUsuario.getUsuario());
 			ps.setString(6, nuevoUsuario.getContrasena());
+			ps.setInt(7, nuevoUsuario.getRol().getId());
 			
 			if(ps.executeUpdate() > 0) {
 				return true;

@@ -3,13 +3,14 @@ package com.centrosanluis.model;
 public class Usuario {
 	
 	private String nombre, apellidos, email, telefono, usuario, contrasena;
+	private Rol rol;
 
 	public Usuario() {
 		super();
 	}
 	
 	public Usuario(String nombre, String apellidos, String email, String telefono, String usuario,
-			String contrasena) {
+			String contrasena, Rol rol) {
 		super();
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -17,6 +18,7 @@ public class Usuario {
 		this.telefono = telefono;
 		this.usuario = usuario;
 		this.contrasena = contrasena;
+		this.rol = rol;
 	}
 
 	public String getNombre() {
@@ -67,10 +69,18 @@ public class Usuario {
 		this.contrasena = contrasena;
 	}
 
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
 	@Override
 	public String toString() {
-		return "UsuarioDAO [nombre=" + nombre + ", apellidos=" + apellidos + ", email=" + email + ", telefono="
-				+ telefono + ", usuario=" + usuario + ", contrasena=" + contrasena + "]";
+		return "Usuario [nombre=" + nombre + ", apellidos=" + apellidos + ", email=" + email + ", telefono=" + telefono
+				+ ", usuario=" + usuario + ", contrasena=" + contrasena + ", rol=" + rol + "]";
 	}
 
 }
