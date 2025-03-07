@@ -8,7 +8,7 @@
 </head>
 <body>
 <% Usuario usuario = (Usuario)request.getSession().getAttribute("usuario"); %>
-<h1>HOLA, <%= usuario.getUsuario() %></h1>
+<h1>HOLA, <%= usuario.getUsuario() %> (<%= usuario.getRol().getNombre() %>)</h1>
 <p><a href="../listadoUsuarios">Listado Usuarios</a></p>
 <% if(usuario.getRol().getId() == 1){ %>
 	<p><a href="crearRol.jsp">Crear Rol</a></p>

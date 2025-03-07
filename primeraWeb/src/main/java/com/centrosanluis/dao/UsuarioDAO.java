@@ -54,9 +54,9 @@ public class UsuarioDAO {
 		
 		Usuario u = new Usuario();
 		
-		String sql = "SELECT usuario, nombre, apellidos, email, telefono, roles_id "
-				+ "FROM usuarios "
-				+ "WHERE usuario = ? AND contrasena = ?";
+		String sql = "SELECT u.usuario, u.nombre, u.apellidos, u.email, u.telefono, r.id, r.nombre "
+				+ "FROM usuarios u inner join roles r on u.roles_id = r.id "
+				+ "WHERE u.usuario = ? AND u.contrasena = ?";
 
 		try {
 			ps = con.prepareStatement(sql);
@@ -75,7 +75,8 @@ public class UsuarioDAO {
 				
 				Rol rol = new Rol();
 				
-				rol.setId(rs.getInt("roles_id"));;
+				rol.setId(rs.getInt("id"));
+				rol.setNombre(rs.getString(7));
 				
 				u.setRol(rol);
 			}

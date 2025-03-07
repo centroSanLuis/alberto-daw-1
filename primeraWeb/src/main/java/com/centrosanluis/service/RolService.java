@@ -18,7 +18,15 @@ public class RolService {
 	}
 
 	public boolean addRol(Rol rol) {
-		return rolDAO.addRol(rol);
+		return rolDAO.createOrUpdateRol(rol);
+	}
+	
+	public boolean updateRol(Rol rol) {
+		if(rol.getId()!=0){
+			return rolDAO.createOrUpdateRol(rol);
+		}else {
+			return false;
+		}
 	}
 
 }
