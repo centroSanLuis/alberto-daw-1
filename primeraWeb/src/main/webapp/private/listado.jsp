@@ -17,6 +17,8 @@
 			<th>Email</th>
 			<th>Telefono</th>
 			<th>Usuario</th>
+			<th>Rol</th>
+			<th></th>
 		</tr>
 		<%if(listadoUsuarios != null){ %>
 			<%for(Usuario u : listadoUsuarios){ %>
@@ -26,6 +28,13 @@
 					<td><%= u.getEmail() %></td>
 					<td><%= u.getTelefono() %></td>
 					<td><%= u.getUsuario() %></td>
+					<td><%= u.getRol().getNombre() %></td>
+					<td>
+						<form action="borrarUsuario" method="post">
+							<input type="hidden" value="<%= u.getUsuario() %>" name="usuario">
+							<button type="submit">Borrar</button>
+						</form>
+					</td>
 				</tr>
 			<%} %>
 		<%}else{ %>
@@ -34,5 +43,6 @@
 			</tr>
 		<%} %>
 	</table>
+	<a href="private/index.jsp">Volver a index</a>
 </body>
 </html>

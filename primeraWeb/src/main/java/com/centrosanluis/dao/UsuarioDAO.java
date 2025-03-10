@@ -19,7 +19,7 @@ public class UsuarioDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
-		String sql = "SELECT usuario, nombre, apellidos, email, telefono FROM usuarios";
+		String sql = "SELECT u.usuario, u.nombre, u.apellidos, u.email, u.telefono, r.id, r.nombre FROM usuarios u inner join roles r on u.roles_id = r.id";
 		
 		try {
 			ps = con.prepareStatement(sql);
@@ -34,6 +34,13 @@ public class UsuarioDAO {
 				u.setEmail(rs.getString("email"));
 				u.setTelefono(rs.getString("telefono"));
 				u.setUsuario(rs.getString("usuario"));
+				
+				Rol rol = new Rol();
+				
+				rol.setId(rs.getInt("id"));
+				rol.setNombre(rs.getString(7));
+				
+				u.setRol(rol);
 				
 				usuarios.add(u);
 			}
@@ -106,6 +113,31 @@ public class UsuarioDAO {
 			ps.setString(5, nuevoUsuario.getUsuario());
 			ps.setString(6, nuevoUsuario.getContrasena());
 			ps.setInt(7, nuevoUsuario.getRol().getId());
+			
+			if(ps.executeUpdate() > 0) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			AccesoBD.closeConnection(null, ps, con);
+		}
+		return false;
+	}
+	
+	public boolean borrarUsuario(Usuario usuario) {
+		Connection con = AccesoBD.getConnection();
+		PreparedStatement ps = null;
+		
+		String sql = "DELETE FROM usuarios WHERE usuario = ?";
+		
+		try {
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1, usuario.getUsuario());
 			
 			if(ps.executeUpdate() > 0) {
 				return true;

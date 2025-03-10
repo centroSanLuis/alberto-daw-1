@@ -50,4 +50,8 @@ public class UsuarioService {
 		return usuarioBD.getUsers();
 	}
 
+	public boolean borrarUsuario(Usuario usuario) {
+		return usuarioBD.borrarUsuario(usuario);
+	}
+
 }
