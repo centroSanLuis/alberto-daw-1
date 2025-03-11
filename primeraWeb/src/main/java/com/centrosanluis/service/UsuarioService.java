@@ -50,8 +50,16 @@ public class UsuarioService {
 		return usuarioBD.getUsers();
 	}
 
-	public boolean borrarUsuario(Usuario usuario) {
-		return usuarioBD.borrarUsuario(usuario);
+	public boolean deleteUser(Usuario usuario) {
+		return usuarioBD.deleteUser(usuario);
+	}
+	
+	public boolean updateUsuario(Usuario usuario) {
+		return usuarioBD.updateUser(usuario);
+	}
+
+	public Usuario getUserByUsuario(String usuario) {
+		return usuarioBD.getUserByUsuario(usuario);
 	}
 
 }

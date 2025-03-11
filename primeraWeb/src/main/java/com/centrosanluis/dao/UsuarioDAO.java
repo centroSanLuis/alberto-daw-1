@@ -96,6 +96,37 @@ public class UsuarioDAO {
 		
 		return u;
 	}
+	
+	public boolean updateUser(Usuario usuario) {
+		Connection con = AccesoBD.getConnection();
+		PreparedStatement ps = null;
+		
+		String sql = "UPDATE usuarios SET nombre = ?, apellidos = ?, email = ?, telefono = ?, roles_id = ? WHERE usuario = ?";
+		
+		try {
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1, usuario.getNombre());
+			ps.setString(2, usuario.getApellidos());
+			ps.setString(3, usuario.getEmail());
+			ps.setString(4, usuario.getTelefono());
+			ps.setInt(5, usuario.getRol().getId());
+			ps.setString(6, usuario.getUsuario());
+			
+			
+			if(ps.executeUpdate() > 0) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			AccesoBD.closeConnection(null, ps, con);
+		}
+		return false;
+	}
 
 	public boolean addUser(Usuario nuevoUsuario) {
 		Connection con = AccesoBD.getConnection();
@@ -128,7 +159,7 @@ public class UsuarioDAO {
 		return false;
 	}
 	
-	public boolean borrarUsuario(Usuario usuario) {
+	public boolean deleteUser(Usuario usuario) {
 		Connection con = AccesoBD.getConnection();
 		PreparedStatement ps = null;
 		
@@ -151,6 +182,48 @@ public class UsuarioDAO {
 			AccesoBD.closeConnection(null, ps, con);
 		}
 		return false;
+	}
+
+	public Usuario getUserByUsuario(String usuario) {
+		Connection con = AccesoBD.getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		Usuario u = new Usuario();
+		
+		String sql = "SELECT u.usuario, u.nombre, u.apellidos, u.email, u.telefono, r.id, r.nombre "
+				+ "FROM usuarios u inner join roles r on u.roles_id = r.id "
+				+ "WHERE u.usuario = ?";
+
+		try {
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1, usuario);
+			
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				u.setNombre(rs.getString("nombre"));
+				u.setApellidos(rs.getString("apellidos"));
+				u.setEmail(rs.getString("email"));
+				u.setTelefono(rs.getString("telefono"));
+				u.setUsuario(rs.getString("usuario"));
+				
+				Rol rol = new Rol();
+				
+				rol.setId(rs.getInt("id"));
+				rol.setNombre(rs.getString(7));
+				
+				u.setRol(rol);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			AccesoBD.closeConnection(null, ps, con);
+		}
+		
+		return u;
 	}
 
 }

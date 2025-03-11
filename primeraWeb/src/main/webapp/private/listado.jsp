@@ -30,6 +30,10 @@
 					<td><%= u.getUsuario() %></td>
 					<td><%= u.getRol().getNombre() %></td>
 					<td>
+						<form action="iniciarRegistro" method="get">
+							<input type="hidden" value="<%= u.getUsuario() %>" name="usuario">
+							<button type="submit">Editar</button>
+						</form>
 						<form action="borrarUsuario" method="post">
 							<input type="hidden" value="<%= u.getUsuario() %>" name="usuario">
 							<button type="submit">Borrar</button>

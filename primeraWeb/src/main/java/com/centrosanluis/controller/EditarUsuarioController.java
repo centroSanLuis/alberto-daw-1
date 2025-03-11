@@ -1,7 +1,6 @@
 package com.centrosanluis.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,12 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.centrosanluis.model.Rol;
 import com.centrosanluis.model.Usuario;
 import com.centrosanluis.service.UsuarioService;
 
-@WebServlet("/borrarUsuario")
-public class BorrarUsuarioController extends HttpServlet{
-
+@WebServlet("/editarUsuario")
+public class EditarUsuarioController extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	UsuarioService usuarioService;
 	
@@ -25,22 +24,23 @@ public class BorrarUsuarioController extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String usuario = request.getParameter("usuario");
+		String nombre = request.getParameter("nombre");
+		String apellidos = request.getParameter("apellidos");
+		String telefono = request.getParameter("telefono");
+		String email = request.getParameter("email");
+		String user = request.getParameter("usuario");
+		int idRol = Integer.valueOf(request.getParameter("rol"));
 		
-		Usuario u = new Usuario();
+		Rol rol = new Rol();
 		
-		u.setUsuario(usuario);
+		rol.setId(idRol);
+
+		Usuario usuario = new Usuario(nombre, apellidos, email, telefono, user, "", rol);
 		
-		if(usuarioService.deleteUser(u)) {
-			response.sendRedirect("listadoUsuarios");
+		if(usuarioService.updateUsuario(usuario)) {
+			response.sendRedirect("private/index.jsp");
 		}else {
-			List<Usuario> listadoUsuarios = usuarioService.getUsers();
-			
-			request.setAttribute("listadoUsuarios", listadoUsuarios);
-			request.setAttribute("error", "El usuario no ha podido darse de baja");
-			
-			request.getRequestDispatcher("private/listado.jsp").forward(request, response);
+			//devolver a la pantalla de editar
 		}
 	}
-
 }
