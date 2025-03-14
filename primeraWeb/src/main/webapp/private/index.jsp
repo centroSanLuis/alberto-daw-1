@@ -1,5 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.centrosanluis.model.Usuario"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,11 +9,22 @@
 <title>Insert title here</title>
 </head>
 <body>
-<% Usuario usuario = (Usuario)request.getSession().getAttribute("usuario"); %>
-<h1>HOLA, <%= usuario.getUsuario() %> (<%= usuario.getRol().getNombre() %>)</h1>
-<p><a href="../listadoUsuarios">Listado Usuarios</a></p>
-<% if(usuario.getRol().getId() == 1){ %>
-	<p><a href="crearRol.jsp">Crear Rol</a></p>
-<% } %>
+	<%
+	Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+	%>
+	<h1>
+		HOLA,
+		<%=usuario.getUsuario()%>
+		(<%=usuario.getRol().getNombre()%>)
+	</h1>
+	<p>
+		<a href="../listadoUsuarios">Listado Usuarios</a>
+	</p>
+	<c:if test="${usuario.rol.id == 1}">
+		<p>
+			<a href="crearRol.jsp">Crear Rol</a>
+		</p>
+	</c:if>
+
 </body>
 </html>

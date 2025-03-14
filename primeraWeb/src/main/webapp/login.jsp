@@ -16,6 +16,10 @@
 	<form action="login" method="post">
 		<input type="text" name="username" placeholder="Nombre de Usuario">
 		<input type="password" name="password" placeholder="Contraseña">
+		
+		<input type="checkbox" name="recuerdame" id="recuerdame"> 
+		<label for="recuerdame">Recuerdame</label> 
+		
 		<button type="submit">Entrar</button>
 		<button type="reset">Borrar</button>
 	</form>
