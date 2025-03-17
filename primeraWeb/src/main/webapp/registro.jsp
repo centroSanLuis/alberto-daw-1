@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.centrosanluis.model.Usuario"%>
 <%@page import="com.centrosanluis.model.Rol"%>
 <%@page import="java.util.ArrayList"%>
@@ -14,54 +15,63 @@
 <body>
 <div class="register-container">
 	<h2>
-		<%if(usuario != null){ %>
-			Editar usuario
-		<%}else{ %>
-			Alta de usuario
-		<%} %>
+		<c:choose>
+			<c:when test="${usuario != null}">
+				Editar usuario
+			</c:when>
+			<c:otherwise>
+				Alta de usuario
+			</c:otherwise>
+		</c:choose>
 	</h2>
-	<form action="<%=usuario!=null?"editarUsuario":"registro" %>" method="post">
-		<input type="text" name="nombre" value="<%= usuario!=null?usuario.getNombre():"" %>" placeholder="Nombre" required>
-		<input type="text" name="apellidos" value="<%= usuario!=null?usuario.getApellidos():"" %>" placeholder="Apellidos" required>
-		<input type="text" name="email" value="<%= usuario!=null?usuario.getEmail():"" %>" placeholder="Correo electronico" required>
-		<input type="text" name="telefono" value="<%= usuario!=null?usuario.getTelefono():"" %>" placeholder="Telefono" required>
+	<form action='${usuario!=null?"editarUsuario":"registro"}' method="post">
+		<input type="text" name="nombre2" value="${usuario!=null?usuario.getNombre():''}" placeholder="Nombre" required>
+		<input type="text" name="apellidos" value="${usuario!=null?usuario.getApellidos():''}" placeholder="Apellidos" required>
+		<input type="text" name="email" value="${usuario!=null?usuario.getEmail():''}" placeholder="Correo electronico" required>
+		<input type="text" name="telefono" value="${usuario!=null?usuario.getTelefono():''}" placeholder="Telefono" required>
 		<input type="text" 
 			name="usuario" 
-			value="<%= usuario!=null?usuario.getUsuario():"" %>" 
-			<%= usuario!=null?"readonly":"" %>
+			value="${usuario!=null?usuario.getUsuario():''}" 
+			${ usuario!=null?"readonly":'' }
 			placeholder="Usuario" 
 			required>
 		
-		<%if(usuario == null){ %>
+		<c:if test="${usuario == null}">
 			<input type="text" name="contrasena" placeholder="Contraseña" required>
-		<%} %>
+		</c:if>
 		
 		<select id="rol" name="rol">
-			<% for(Rol rol : roles){ %>
-				<option value="<%= rol.getId() %>"><%= rol.getNombre() %></option>
-			<%} %>
+			<c:forEach items="${roles}" var="rol">
+				<option value="${rol.id}">${rol.nombre}</option>
+			</c:forEach>
 		</select>
 		
 		<!-- input type="file" name="imagen" required -->
 		<button type="submit">
-			<%if(usuario != null){ %>
-				Editar Usuario
-			<%}else{ %>
-		 		Crear Usuario
-		 	<%} %>
+			<c:choose>
+				<c:when test="${usuario != null}">
+					Editar Usuario
+				</c:when>
+				<c:otherwise>
+					Crear Usuario
+				</c:otherwise>
+			</c:choose>
 		 </button>
 	</form>
-	<%if(usuario != null){ %>
-		<a href="private/index.jsp">Volver al index</a>
-	<%}else{ %>
-		<a href="login.jsp">Volver al login</a>
-	<%} %>
 	
+	<c:choose>
+		<c:when test="${usuario != null }">
+			<a href="private/index.jsp">Volver al index</a>
+		</c:when>
+		<c:otherwise>
+			<a href="login.jsp">Volver al login</a>
+		</c:otherwise>
+	</c:choose>
 </div>
 <script>
-	<%if(usuario != null){ %>
-		document.getElementById("rol").value=<%= usuario.getRol().getId() %>
-	<%}%>
+	<c:if test="${usuario != null }">
+		document.getElementById("rol").value=${usuario.rol.id}
+	</c:if>
 </script>
 </body>
 </html>
