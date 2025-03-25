@@ -18,14 +18,20 @@ public class CargarProductosController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        List<Producto> productos = ProductoService.productos;
+        //List<Producto> productos = ProductoService.productos;
 
         // Guardar la lista en el contexto de la aplicación
-        ServletContext context = getServletContext();
-        context.setAttribute("productos", productos);
+        //ServletContext context = getServletContext();
+        //context.setAttribute("productos", productos);
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("index.jsp");
+        List<Producto> productos = ProductoService.productos;
+
+        request.setAttribute("productos", productos);
+        
+        //response.sendRedirect("index.jsp");
+
+        request.getRequestDispatcher("index.jsp").forward(request,response);
     }
 }
