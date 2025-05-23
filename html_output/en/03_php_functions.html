@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Functions</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #343a40;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid #dee2e6; padding-bottom: 0.3em;}
+        h2 { font-size: 1.8em; border-bottom: 1px solid #e9ecef; padding-bottom: 0.2em;}
+        h3 { font-size: 1.5em; }
+        p {
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #282c34; /* Dark background for code blocks */
+            color: #abb2bf; /* Light text for contrast */
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit; /* Inherit color from pre */
+        }
+        strong {
+            font-weight: 600;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 0.75em;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PHP Functions</h1>
+
+        <p>Functions are a cornerstone of almost any programming language, and PHP is no exception. They allow you to organize your code into manageable, reusable pieces, making your scripts more efficient, readable, and easier to maintain.</p>
+
+        <h2>1. Understanding Functions</h2>
+
+        <h3>What is a Function?</h3>
+        <p>A <strong>function</strong> is a self-contained block of code that performs a specific task. Think of it as a mini-program within your main program. You define it once, and then you can "call" (execute) it multiple times from different parts of your script.</p>
+        <p>For example, instead of writing the same lines of code every time you want to greet a user, you can write a <code>greetUser()</code> function and simply call it whenever needed.</p>
+
+        <h3>Why Use Functions?</h3>
+        <p>Using functions offers several significant advantages:</p>
+        <ul>
+            <li><strong>Modularity:</strong> Functions break down complex problems into smaller, manageable parts. Each function handles a specific piece of logic.</li>
+            <li><strong>Reusability:</strong> Once a function is defined, it can be used many times throughout your application, or even in different applications. This "write once, use many times" approach saves time and effort.</li>
+            <li><strong>Readability:</strong> Functions make your code easier to read and understand. Well-named functions describe their purpose, making the overall program flow clearer. Instead of a long, complex script, you have a series of logical steps defined by function calls.</li>
+            <li><strong>Easier Debugging:</strong> When a problem occurs, functions help isolate the issue. If a function isn't working correctly, you know exactly which part of the code to examine. This is much easier than debugging a large, monolithic script.</li>
+            <li><strong>Maintainability:</strong> If you need to change how a specific task is performed, you only need to update the code within the relevant function. This change will then apply everywhere the function is called.</li>
+        </ul>
+
+        <h2>2. User-Defined Functions</h2>
+        <p>While PHP provides a vast library of built-in functions (which we'll touch upon later), you'll often need to create your own custom functions to suit the specific needs of your application. These are called user-defined functions.</p>
+
+        <h3>Defining a Function</h3>
+        <p><strong>Syntax:</strong></p>
+        <pre><code>&lt;?php
+function functionName($parameter1, $parameter2, /* ... */) {
+    // Code to be executed
+    // This block of code is the function's body
+    // It can perform actions, calculations, etc.
+
+    return $value; // Optional: returns a value back to the caller
+}
+?&gt;</code></pre>
+        <ul>
+            <li><code>function</code>: The keyword that tells PHP you are defining a function.</li>
+            <li><code>functionName</code>: The name you give to your function.
+                <ul>
+                    <li><strong>Naming Conventions:</strong>
+                        <ul>
+                            <li>Function names must start with a letter or underscore (<code>_</code>), followed by any number of letters, numbers, or underscores.</li>
+                            <li>Function names are <strong>case-insensitive</strong> in PHP, but it's good practice to be consistent.</li>
+                            <li>Common conventions include:
+                                <ul>
+                                    <li><code>camelCase</code>: <code>calculateTotalAmount</code>, <code>getUserDetails</code> (first word lowercase, subsequent words capitalized).</li>
+                                    <li><code>snake_case</code>: <code>calculate_total_amount</code>, <code>get_user_details</code> (all words lowercase, separated by underscores).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Choose one convention and stick to it</strong> throughout your project for consistency. Many PHP developers prefer camelCase for methods (functions within classes) and snake_case for standalone functions, but consistency within your own codebase is key.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><code>($parameter1, $parameter2, ...)</code>: An optional list of parameters (also called arguments). These are like placeholders for values that you will pass into the function when you call it. Parameters are separated by commas.</li>
+            <li><code>{ ... }</code>: The curly braces enclose the function's body – the actual code that performs the task.</li>
+            <li><code>return $value;</code>: An optional statement that sends a value back to the part of the script that called the function.</li>
+        </ul>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+// A simple function to greet a user
+function greetUser($name) {
+    echo "Hello, " . $name . "! Welcome to our website.&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h3>Calling a Function</h3>
+        <p>Once a function is defined, you can execute it by "calling" it. To call a function, you simply write its name followed by parentheses <code>()</code>. If the function expects parameters, you provide values (arguments) inside the parentheses.</p>
+        <p><strong>Syntax:</strong></p>
+        <p><code>functionName($argument1, $argument2, ...);</code></p>
+        <p><strong>Example (calling the <code>greetUser</code> function):</strong></p>
+        <pre><code>&lt;?php
+function greetUser($name) {
+    echo "Hello, " . $name . "! Welcome to our website.&lt;br&gt;";
+}
+
+// Calling the function
+greetUser("Alice");   // Outputs: Hello, Alice! Welcome to our website.
+greetUser("Bob");     // Outputs: Hello, Bob! Welcome to our website.
+
+$username = "Carol";
+greetUser($username); // Outputs: Hello, Carol! Welcome to our website.
+?&gt;</code></pre>
+
+        <h3>Parameters (Arguments)</h3>
+        <p>Parameters allow you to pass data into a function, making it more flexible and dynamic. The values passed to a function when it's called are called arguments.</p>
+        <ul>
+            <li><p><strong>Passing Arguments by Value (Default):</strong><br>
+            By default, PHP passes arguments to functions "by value." This means that a copy of the argument's value is passed to the function. Any changes made to the parameter inside the function do not affect the original variable outside the function.</p>
+            <pre><code>&lt;?php
+function addFive($number) {
+    $number += 5;
+    echo "Inside function: " . $number . "&lt;br&gt;"; // e.g., Inside function: 15
+}
+
+$originalNumber = 10;
+addFive($originalNumber);
+echo "Outside function: " . $originalNumber . "&lt;br&gt;"; // Outputs: Outside function: 10 (original is unchanged)
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Passing Arguments by Reference (using <code>&amp;</code>):</strong><br>
+            If you want a function to modify its arguments, you can pass them by reference. To do this, you prepend an ampersand (<code>&amp;</code>) to the parameter name in the function definition. This passes a reference to the original variable, so changes inside the function will affect the original variable.</p>
+            <pre><code>&lt;?php
+function addTen(&amp;$number) { // Note the &
+    $number += 10;
+    echo "Inside function: " . $number . "&lt;br&gt;"; // e.g., Inside function: 25
+}
+
+$originalValue = 15;
+addTen($originalValue);
+echo "Outside function: " . $originalValue . "&lt;br&gt;"; // Outputs: Outside function: 25 (original IS changed)
+?&gt;</code></pre>
+            <p><strong>When to use pass by reference:</strong> Use it when you specifically need the function to alter the original variable. This can be useful for functions that modify large arrays or objects directly to avoid the overhead of copying them, or when a function needs to "return" multiple values by modifying variables passed to it. However, use it judiciously as it can sometimes make code harder to follow if it's not clear that a function modifies its arguments.</p>
+            </li>
+            <li><p><strong>Default Parameter Values:</strong><br>
+            You can provide default values for parameters. If a function is called without passing an argument for a parameter with a default value, the default value will be used. Default parameters should always be listed after any non-default parameters.</p>
+            <pre><code>&lt;?php
+function sendMessage($message, $recipient = "User") {
+    echo "Sending message to " . $recipient . ": '" . $message . "'&lt;br&gt;";
+}
+
+sendMessage("Hello there!");                // Outputs: Sending message to User: 'Hello there!'
+sendMessage("Important update", "Admin"); // Outputs: Sending message to Admin: 'Important update'
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Variable-Length Argument Lists:</strong><br>
+            Sometimes you might need a function that can accept a variable number of arguments. PHP provides a few ways to handle this:</p>
+                <ol>
+                    <li><p><strong><code>func_num_args()</code> and <code>func_get_args()</code> (Older way):</strong></p>
+                        <ul>
+                            <li><code>func_num_args()</code>: Returns the number of arguments passed to the function.</li>
+                            <li><code>func_get_args()</code>: Returns an array containing all the arguments passed to the function.</li>
+                        </ul>
+                        <pre><code>&lt;?php
+function sumAll() {
+    $total = 0;
+    $numArgs = func_num_args();
+    echo "Number of arguments: " . $numArgs . "&lt;br&gt;";
+    $args = func_get_args();
+    foreach ($args as $arg) {
+        $total += $arg;
+    }
+    return $total;
+}
+
+echo sumAll(1, 2, 3) . "&lt;br&gt;";       // Number of arguments: 3, Outputs: 6
+echo sumAll(10, 20, 30, 40) . "&lt;br&gt;"; // Number of arguments: 4, Outputs: 100
+?&gt;</code></pre>
+                    </li>
+                    <li><p><strong>The <code>...</code> operator (Variadics - PHP 5.6+):</strong><br>
+                    This is the modern and preferred way. You can use the <code>...</code> (splat operator) before a parameter name to indicate that the function will accept a variable number of arguments for that parameter. These arguments will be collected into an array.</p>
+                        <pre><code>&lt;?php
+function multiply($multiplier, ...$numbers) { // $numbers will be an array
+    echo "Multiplier: " . $multiplier . "&lt;br&gt;";
+    print_r($numbers); // Shows the array of numbers
+    $product = 1;
+    foreach ($numbers as $n) {
+        $product *= $n;
+    }
+    return $product * $multiplier;
+}
+
+echo multiply(2, 3, 4, 5) . "&lt;br&gt;"; // Multiplier: 2, Array ( [0] =&gt; 3 [1] =&gt; 4 [2] =&gt; 5 ), Outputs: 120
+echo multiply(10, 1, 2) . "&lt;br&gt;";   // Multiplier: 10, Array ( [0] =&gt; 1 [1] =&gt; 2 ), Outputs: 20
+?&gt;</code></pre>
+                        <p>You can also use the <code>...</code> operator to unpack an array or Traversable object into arguments when calling a function: <code>myFunction(...$arrayOfArgs);</code></p>
+                    </li>
+                </ol>
+            </li>
+        </ul>
+
+        <h3>Return Values</h3>
+        <p>Functions can send data back to the calling code using the <code>return</code> statement.</p>
+        <ul>
+            <li><p><strong>Using the <code>return</code> Statement:</strong><br>
+            When a <code>return</code> statement is encountered, the function immediately stops executing, and the specified value is sent back.</p>
+            <pre><code>&lt;?php
+function add($num1, $num2) {
+    $sum = $num1 + $num2;
+    return $sum;
+    // echo "This line will not be executed."; // Code after return is unreachable
+}
+
+$result = add(5, 7); // $result will be 12
+echo "The sum is: " . $result . "&lt;br&gt;";
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Returning Single Values, Multiple Values:</strong></p>
+                <ul>
+                    <li><strong>Single Value:</strong> As seen above, a function can return any single value (string, integer, array, object, etc.).</li>
+                    <li><strong>Multiple Values:</strong> To return multiple values, you typically return them as an array or an object.
+                        <pre><code>&lt;?php
+function getUserDetails($id) {
+    // In a real app, you might fetch this from a database
+    $name = "Alice";
+    $age = 30;
+    return [$name, $age]; // Return as an indexed array
+}
+
+list($userName, $userAge) = getUserDetails(1); // Using list() to unpack the array
+// For PHP 7.1+ you can use shorter array destructuring: [$userName, $userAge] = getUserDetails(1);
+echo "Name: " . $userName . ", Age: " . $userAge . "&lt;br&gt;";
+
+function getProductInfo($id) {
+    return [
+        "name" => "Laptop",
+        "price" => 1200.00,
+        "currency" => "USD"
+    ]; // Return as an associative array
+}
+
+$product = getProductInfo(101);
+echo "Product: " . $product["name"] . ", Price: " . $product["price"] . " " . $product["currency"] . "&lt;br&gt;";
+?&gt;</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><p><strong>Functions That Don't Return a Value:</strong><br>
+            If a function doesn't have a <code>return</code> statement, or if it has a <code>return;</code> statement without a value, it implicitly returns <code>NULL</code>. Such functions are often used for actions, like printing output directly or modifying global variables.</p>
+            <pre><code>&lt;?php
+function printMessage($message) {
+    echo $message . "&lt;br&gt;";
+    // No explicit return, so it returns NULL
+}
+
+$returnValue = printMessage("Testing void function.");
+var_dump($returnValue); // Outputs: NULL
+?&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h3>Type Hinting (Parameter and Return Types)</h3>
+        <p>PHP 7 introduced type declarations for parameters and return values. This helps in writing more robust code by ensuring that functions receive and return the expected data types.</p>
+        <ul>
+            <li><strong>Scalar Type Hints (PHP 7+):</strong> <code>int</code>, <code>float</code>, <code>string</code>, <code>bool</code>.</li>
+            <li><strong>Class/Interface Type Hints:</strong> You can specify that a parameter must be an instance of a specific class or implement a specific interface.</li>
+            <li><strong>Array Type Hints:</strong> <code>array</code>.</li>
+            <li><strong>Callable Type Hints:</strong> <code>callable</code> (for functions or methods that can be called).</li>
+            <li><strong>Iterable Type Hints (PHP 7.1+):</strong> <code>iterable</code> (can be <code>array</code> or an object implementing <code>Traversable</code>).</li>
+            <li><strong>Object Type Hint (PHP 7.2+):</strong> <code>object</code>.</li>
+            <li><strong>Mixed Type Hint (PHP 8.0+):</strong> <code>mixed</code> (can be any type).</li>
+            <li><strong>Union Types (PHP 8.0+):</strong> <code>int|string|null</code> (can be one of several types).</li>
+        </ul>
+        <p><strong>Parameter Type Hinting Example:</strong></p>
+        <pre><code>&lt;?php
+// declare(strict_types=1); // See "Strict Typing" below
+
+function addNumbers(int $a, int $b) {
+    return $a + $b;
+}
+
+echo addNumbers(5, 10) . "&lt;br&gt;"; // 15
+// echo addNumbers(5.5, 10.2); // By default, PHP tries to coerce: 5.5 becomes 5, 10.2 becomes 10, result 15.
+                              // If strict_types=1, this would cause a TypeError.
+// echo addNumbers("5 apples", "10 oranges"); // By default, PHP tries to coerce "5 apples" to 5, etc.
+                                         // If strict_types=1, this would cause a TypeError.
+
+function greet(string $name, ?string $title = null) { // ?string means string or null (nullable type, PHP 7.1+)
+    if ($title) {
+        echo "Hello, $title $name!&lt;br&gt;";
+    } else {
+        echo "Hello, $name!&lt;br&gt;";
+    }
+}
+greet("Alice");
+greet("Bob", "Dr.");
+// greet(123); // TypeError if strict_types=1, or PHP might try to coerce 123 to "123"
+?&gt;</code></pre>
+        <p><strong>Return Type Declarations (PHP 7+):</strong><br>
+        You specify the return type after the closing parenthesis of the parameter list, preceded by a colon (<code>:</code>).</p>
+        <pre><code>&lt;?php
+// declare(strict_types=1);
+
+function calculateTotal(float $price, int $quantity): float {
+    return $price * $quantity;
+}
+
+$total = calculateTotal(10.5, 3);
+echo "Total: " . $total . "&lt;br&gt;"; // Total: 31.5
+
+function getGreeting(): string {
+    return "Hello there!";
+    // return 123; // Would cause a TypeError if strict_types=1, or PHP coerces 123 to "123"
+}
+echo getGreeting() . "&lt;br&gt;";
+
+// For functions that should not return a value, use `void` (PHP 7.1+)
+function logMessage(string $message): void {
+    error_log($message);
+    // return "done"; // This would cause a fatal error, as void functions cannot return a value.
+    // A bare `return;` is allowed.
+}
+logMessage("System critical error!");
+?&gt;</code></pre>
+        <ul>
+            <li><p><strong>Strict Typing (<code>declare(strict_types=1);</code>):</strong><br>
+            By default, PHP will try to <strong>coerce</strong> values of the wrong type into the expected scalar type if possible (e.g., passing the string <code>"5"</code> to a function expecting an <code>int</code>).
+            To enforce strict type checking, you can use the <code>declare(strict_types=1);</code> directive at the very beginning of your PHP file. This declaration must be the first statement in the file. When strict typing is enabled, PHP will throw a <code>TypeError</code> if the type of an argument or return value does not exactly match the declared type (no coercion for scalar types).</p>
+            <pre><code>&lt;?php
+declare(strict_types=1); // Strict typing enabled for this file
+
+function sumIntegers(int $a, int $b): int {
+    return $a + $b;
+}
+
+echo sumIntegers(2, 3) . "&lt;br&gt;"; // 5
+// echo sumIntegers(2.5, 3.5); // This would now cause a TypeError
+// echo sumIntegers("2", "3");   // This would also cause a TypeError
+?&gt;</code></pre>
+            <p>Type hinting makes code more predictable and helps catch errors early.</p>
+            </li>
+        </ul>
+
+        <h2>3. Variable Scope in Functions</h2>
+        <p>We touched on variable scope in "PHP Basics," but it's crucial to understand how it works with functions.</p>
+        <ul>
+            <li><p><strong>Local Scope:</strong><br>
+            Variables declared inside a function are <strong>local</strong> to that function. They only exist within that function and cannot be accessed or modified from outside. Once the function finishes executing, its local variables are usually destroyed.</p>
+            <pre><code>&lt;?php
+function myFunction() {
+    $localVar = "I am local.";
+    echo $localVar . "&lt;br&gt;";
+}
+myFunction(); // Outputs: I am local.
+// echo $localVar; // This would cause an Error: Undefined variable $localVar
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Global Scope:</strong><br>
+            Variables declared outside of any function have <strong>global scope</strong>. However, global variables are not automatically accessible inside functions.</p>
+                <ul>
+                    <li><p><strong>Using the <code>global</code> Keyword:</strong> To access a global variable from within a function, you must use the <code>global</code> keyword before the variable name inside the function.</p>
+                    <pre><code>&lt;?php
+$globalMessage = "Hello from global scope!";
+
+function accessGlobal() {
+    global $globalMessage; // Declare intent to use the global variable
+    echo $globalMessage . "&lt;br&gt;";
+    $globalMessage = "Global message modified."; // Modifies the global variable
+}
+
+accessGlobal(); // Outputs: Hello from global scope!
+echo $globalMessage . "&lt;br&gt;"; // Outputs: Global message modified.
+?&gt;</code></pre>
+                    </li>
+                    <li><p><strong>The <code>$GLOBALS</code> Array:</strong> PHP also provides a superglobal array called <code>$GLOBALS</code>. This is an associative array where the keys are the names of all global variables, and the values are references to those variables. You can use it to access global variables from anywhere, including inside functions, without needing the <code>global</code> keyword.</p>
+                    <pre><code>&lt;?php
+$appName = "My Awesome App";
+
+function displayAppName() {
+    echo $GLOBALS['appName'] . "&lt;br&gt;";
+    $GLOBALS['appName'] = "My Super Awesome App";
+}
+
+displayAppName(); // Outputs: My Awesome App
+echo $appName . "&lt;br&gt;"; // Outputs: My Super Awesome App
+?&gt;</code></pre>
+                    <p>While <code>$GLOBALS</code> works, the <code>global</code> keyword is often considered more explicit for declaring intent within a function. Over-reliance on global variables can make code harder to manage and debug, so use them sparingly.</p>
+                    </li>
+                </ul>
+            </li>
+            <li><p><strong>Static Variables within Functions:</strong><br>
+            A <code>static</code> variable inside a function retains its value between multiple calls to that function. Normally, when a function completes, its local variables are destroyed. Static variables are an exception.</p>
+            <pre><code>&lt;?php
+function visitCounter() {
+    static $count = 0; // Initialized only on the first call
+    $count++;
+    echo "This function has been called " . $count . " times.&lt;br&gt;";
+}
+
+visitCounter(); // This function has been called 1 times.
+visitCounter(); // This function has been called 2 times.
+visitCounter(); // This function has been called 3 times.
+?&gt;</code></pre>
+            <p>Static variables are useful for tasks like caching results within a function or tracking recursive function depth.</p>
+            </li>
+        </ul>
+
+        <h2>4. Built-in PHP Functions</h2>
+        <p>PHP comes with a vast library of hundreds of built-in functions that perform a wide array of tasks. You don't need to write code for these common operations yourself. It's highly recommended to familiarize yourself with them, as they are efficient and well-tested.</p>
+        <p>Here are a few examples from common categories:</p>
+
+        <h3>String Functions</h3>
+        <p>Manipulate strings (sequences of characters).</p>
+        <ul>
+            <li><code>strlen($string)</code>: Returns the length of a string.</li>
+            <li><code>strpos($haystack, $needle)</code>: Finds the position of the first occurrence of a substring in a string (case-sensitive).</li>
+            <li><code>stripos($haystack, $needle)</code>: Case-insensitive version of <code>strpos()</code>.</li>
+            <li><code>substr($string, $start, $length)</code>: Returns a part of a string.</li>
+            <li><code>str_replace($search, $replace, $subject)</code>: Replaces all occurrences of the search string with the replacement string.</li>
+            <li><code>strtolower($string)</code>: Converts a string to lowercase.</li>
+            <li><code>strtoupper($string)</code>: Converts a string to uppercase.</li>
+            <li><code>ucfirst($string)</code>: Converts the first character of a string to uppercase.</li>
+            <li><code>ucwords($string)</code>: Converts the first character of each word in a string to uppercase.</li>
+            <li><code>trim($string, $characters)</code>: Strips whitespace (or other specified characters) from the beginning and end of a string.</li>
+            <li><code>explode($delimiter, $string)</code>: Splits a string into an array by a specified delimiter.</li>
+            <li><code>implode($glue, $pieces)</code> (or <code>join()</code>): Joins array elements with a string.</li>
+            <li><code>htmlspecialchars($string)</code>: Converts special HTML characters to their entity equivalents (e.g., <code>&lt;</code> becomes <code>&amp;lt;</code>). Crucial for preventing Cross-Site Scripting (XSS) when displaying user input.</li>
+        </ul>
+        <pre><code>&lt;?php
+$myString = "  Hello, PHP World!  ";
+echo strlen($myString) . "&lt;br&gt;"; // 22 (includes leading/trailing spaces)
+echo strpos($myString, "PHP") . "&lt;br&gt;"; // 10 (position of 'P' in 'PHP')
+echo substr($myString, 8, 5) . "&lt;br&gt;"; // "PHP W" (starts at index 8, length 5)
+$newString = str_replace("World", "Universe", $myString);
+echo $newString . "&lt;br&gt;"; //   Hello, PHP Universe!
+echo strtolower($myString) . "&lt;br&gt;"; //   hello, php world!
+echo trim($myString) . "&lt;br&gt;"; // "Hello, PHP World!" (no leading/trailing spaces)
+
+$csvData = "apple,banana,orange";
+$fruitsArray = explode(",", $csvData);
+print_r($fruitsArray); // Array ( [0] =&gt; apple [1] =&gt; banana [2] =&gt; orange )
+
+$nameParts = ["John", "Doe"];
+$fullName = implode(" ", $nameParts);
+echo $fullName . "&lt;br&gt;"; // John Doe
+?&gt;</code></pre>
+
+        <h3>Array Functions</h3>
+        <p>Manipulate arrays.</p>
+        <ul>
+            <li><code>count($array)</code> (or <code>sizeof()</code>): Returns the number of elements in an array.</li>
+            <li><code>is_array($variable)</code>: Checks if a variable is an array.</li>
+            <li><code>array_push($array, $value1, ...)</code>: Pushes one or more elements onto the end of an array.</li>
+            <li><code>array_pop($array)</code>: Pops (removes and returns) the last element of an array.</li>
+            <li><code>array_shift($array)</code>: Shifts (removes and returns) the first element of an array.</li>
+            <li><code>array_unshift($array, $value1, ...)</code>: Prepends one or more elements to the beginning of an array.</li>
+            <li><code>array_merge($array1, $array2, ...)</code>: Merges one or more arrays.</li>
+            <li><code>array_keys($array)</code>: Returns all the keys or a subset of the keys of an array.</li>
+            <li><code>array_values($array)</code>: Returns all the values from an array.</li>
+            <li><code>in_array($needle, $haystack, $strict)</code>: Checks if a value exists in an array.</li>
+            <li><strong>Sorting functions:</strong>
+                <ul>
+                    <li><code>sort($array)</code>: Sorts an array in ascending order (values). Re-indexes.</li>
+                    <li><code>rsort($array)</code>: Sorts an array in descending order (values). Re-indexes.</li>
+                    <li><code>asort($array)</code>: Sorts an associative array by values in ascending order, preserving keys.</li>
+                    <li><code>arsort($array)</code>: Sorts an associative array by values in descending order, preserving keys.</li>
+                    <li><code>ksort($array)</code>: Sorts an associative array by keys in ascending order.</li>
+                    <li><code>krsort($array)</code>: Sorts an associative array by keys in descending order.</li>
+                </ul>
+            </li>
+            <li><code>array_map($callback, $array1, ...)</code>: Applies a callback function to the elements of the given arrays.</li>
+            <li><code>array_filter($array, $callback, $flag)</code>: Filters elements of an array using a callback function.</li>
+        </ul>
+        <pre><code>&lt;?php
+$numbers = [3, 1, 4, 1, 5, 9, 2, 6];
+echo count($numbers) . "&lt;br&gt;"; // 8
+
+array_push($numbers, 7); // $numbers is now [3, 1, 4, 1, 5, 9, 2, 6, 7]
+print_r($numbers); echo "&lt;br&gt;";
+
+sort($numbers); // Sorts in place
+print_r($numbers); echo "&lt;br&gt;"; // [1, 1, 2, 3, 4, 5, 6, 7, 9]
+
+$person = ["name" => "Alice", "age" => 30, "city" => "New York"];
+$keys = array_keys($person);
+print_r($keys); // Array ( [0] =&gt; name [1] =&gt; age [2] =&gt; city )
+echo "&lt;br&gt;";
+
+if (in_array(30, $person)) {
+    echo "30 is in the person array.&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h3>Math Functions</h3>
+        <p>Perform mathematical calculations.</p>
+        <ul>
+            <li><code>abs($number)</code>: Absolute value.</li>
+            <li><code>round($number, $precision, $mode)</code>: Rounds a float.</li>
+            <li><code>ceil($number)</code>: Rounds a number up to the nearest integer.</li>
+            <li><code>floor($number)</code>: Rounds a number down to the nearest integer.</li>
+            <li><code>rand($min, $max)</code> / <code>mt_rand($min, $max)</code>: Generate a random integer (<code>mt_rand</code> is generally preferred for better randomness).</li>
+            <li><code>min($values)</code> or <code>min($array)</code>: Finds the lowest value.</li>
+            <li><code>max($values)</code> or <code>max($array)</code>: Finds the highest value.</li>
+            <li><code>pow($base, $exponent)</code>: Exponential expression.</li>
+            <li><code>sqrt($number)</code>: Square root.</li>
+        </ul>
+        <pre><code>&lt;?php
+echo abs(-7.5) . "&lt;br&gt;";   // 7.5
+echo round(4.7) . "&lt;br&gt;"; // 5
+echo round(4.3) . "&lt;br&gt;"; // 4
+echo ceil(4.3) . "&lt;br&gt;";  // 5
+echo floor(4.8) . "&lt;br&gt;"; // 4
+echo mt_rand(1, 10) . "&lt;br&gt;"; // Random number between 1 and 10 (inclusive)
+echo min(5, 2, 8, 1) . "&lt;br&gt;"; // 1
+echo max([5, 2, 8, 1]) . "&lt;br&gt;"; // 8 (can take an array)
+echo pow(2, 8) . "&lt;br&gt;"; // 256 (2 to the power of 8)
+echo sqrt(64) . "&lt;br&gt;"; // 8
+?&gt;</code></pre>
+
+        <h3>Date and Time Functions</h3>
+        <p>Work with dates and times.</p>
+        <ul>
+            <li><code>date($format, $timestamp)</code>: Formats a local time/date.</li>
+            <li><code>time()</code>: Returns the current Unix timestamp (seconds since January 1 1970 00:00:00 GMT).</li>
+            <li><code>strtotime($time, $now)</code>: Parses an English textual datetime description into a Unix timestamp.</li>
+            <li><code>mktime($hour, $minute, $second, $month, $day, $year)</code>: Gets Unix timestamp for a date.</li>
+        </ul>
+        <pre><code>&lt;?php
+echo date("Y-m-d H:i:s") . "&lt;br&gt;"; // e.g., 2023-10-27 14:30:00
+echo time() . "&lt;br&gt;"; // Current Unix timestamp
+
+$nextWeekTimestamp = strtotime("+1 week");
+echo date("Y-m-d", $nextWeekTimestamp) . "&lt;br&gt;"; // Date one week from now
+
+$customTimestamp = mktime(10, 30, 0, 12, 25, 2024); // 10:30:00, Dec 25, 2024
+echo date("l, F j, Y", $customTimestamp) . "&lt;br&gt;"; // e.g., Wednesday, December 25, 2024
+?&gt;</code></pre>
+        <p><strong>Encourage looking up functions in the PHP manual:</strong><br>
+        This is just a tiny fraction of the available functions. The official PHP manual (<a href="https://www.php.net/manual/en/">https://www.php.net/manual/en/</a>) is an invaluable resource. Whenever you need to perform a common task, chances are there's a built-in function for it. Always check the manual first!</p>
+
+        <h2>5. Anonymous Functions (Closures)</h2>
+        <p>Anonymous functions, also known as <strong>closures</strong>, are functions without a specified name. They are defined on the fly and can be assigned to variables or passed as arguments to other functions.</p>
+        <p><strong>Syntax:</strong></p>
+        <pre><code>&lt;?php
+$variable = function($parameter1, $parameter2) use ($variableFromParentScope) {
+    // function body
+    return $value;
+}; // Note the semicolon at the end when assigning to a variable
+?&gt;</code></pre>
+        <ul>
+            <li><code>function($parameter1, ...) { ... }</code>: The definition of the anonymous function.</li>
+            <li><code>use ($variableFromParentScope)</code>: This is optional. The <code>use</code> keyword allows the anonymous function to "inherit" or "close over" variables from its parent scope (the scope in which it is defined). Without <code>use</code>, the anonymous function cannot access variables from the surrounding scope, even global ones, unless explicitly passed via <code>$GLOBALS</code> or as parameters.</li>
+        </ul>
+        <p><strong>Assigning anonymous functions to variables:</strong></p>
+        <pre><code>&lt;?php
+$sayHello = function($name) {
+    echo "Hello, " . $name . "!&lt;br&gt;";
+};
+
+$sayHello("Developer"); // Outputs: Hello, Developer!
+?&gt;</code></pre>
+        <p><strong>Using them as callback functions:</strong><br>
+        Anonymous functions are particularly useful as callback functions for functions like <code>array_map</code>, <code>array_filter</code>, <code>usort</code>, etc.</p>
+        <pre><code>&lt;?php
+$numbers = [1, 2, 3, 4, 5];
+
+// Using array_map with an anonymous function to square numbers
+$squaredNumbers = array_map(function($n) {
+    return $n * $n;
+}, $numbers);
+print_r($squaredNumbers); // Array ( [0] =&gt; 1 [1] =&gt; 4 [2] =&gt; 9 [3] =&gt; 16 [4] =&gt; 25 )
+echo "&lt;br&gt;";
+
+// Using array_filter with an anonymous function to get even numbers
+$evenNumbers = array_filter($numbers, function($n) {
+    return $n % 2 == 0;
+});
+print_r($evenNumbers); // Array ( [1] =&gt; 2 [3] =&gt; 4 )
+echo "&lt;br&gt;";
+?&gt;</code></pre>
+        <p><strong>Inheriting variables from the parent scope using <code>use</code>:</strong></p>
+        <pre><code>&lt;?php
+$messagePrefix = "System Log";
+
+$logger = function($message) use ($messagePrefix) {
+    echo $messagePrefix . ": " . $message . "&lt;br&gt;";
+    // $messagePrefix = "New Prefix"; // This would change the local copy inside the closure,
+                                    // not the original $messagePrefix unless passed by reference.
+};
+
+$logger("User logged in."); // Outputs: System Log: User logged in.
+
+// To modify the variable from parent scope, pass it by reference in `use`
+$counter = 0;
+$increment = function() use (&amp;$counter) {
+    $counter++;
+};
+$increment();
+$increment();
+echo "Counter: " . $counter . "&lt;br&gt;"; // Counter: 2
+?&gt;</code></pre>
+
+        <h2>6. Arrow Functions (PHP 7.4+)</h2>
+        <p>Arrow functions provide a more concise syntax for creating anonymous functions, especially when the function body consists of a single expression.</p>
+        <p><strong>Syntax:</strong></p>
+        <p><code>fn($parameter1, $parameter2) =&gt; expression;</code></p>
+        <ul>
+            <li><code>fn</code>: Keyword to define an arrow function.</li>
+            <li><code>($parameter1, ...)</code>: Parameter list.</li>
+            <li><code>=&gt;</code>: Separates parameters from the expression.</li>
+            <li><code>expression</code>: A single expression whose result is automatically returned. There's no need for the <code>return</code> keyword.</li>
+        </ul>
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li><strong>Automatic access to variables from the outer scope:</strong> Arrow functions automatically capture variables from the parent scope by value. You don't need the <code>use</code> keyword.</li>
+            <li><strong>Limitations:</strong>
+                <ul>
+                    <li>They can only contain one expression.</li>
+                    <li>This single expression is implicitly the return statement.</li>
+                    <li>You cannot have multiple statements or a block of code <code>{...}</code>.</li>
+                    <li>They cannot modify variables from the outer scope directly (they are captured by value).</li>
+                </ul>
+            </li>
+        </ul>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+$numbers = [1, 2, 3, 4, 5];
+$multiplier = 10;
+
+// Using array_map with an arrow function
+$multipliedNumbers = array_map(fn($n) =&gt; $n * $multiplier, $numbers);
+// $multiplier is automatically available from the outer scope
+
+print_r($multipliedNumbers); // Array ( [0] =&gt; 10 [1] =&gt; 20 [2] =&gt; 30 [3] =&gt; 40 [4] =&gt; 50 )
+echo "&lt;br&gt;";
+
+$adder = fn($x, $y) =&gt; $x + $y;
+echo $adder(5, 7) . "&lt;br&gt;"; // 12
+
+// Example of scope (by value)
+$message = "Hello";
+$greet = fn($name) =&gt; $message . ", " . $name; // $message is captured by value
+$message = "Goodbye"; // Changing $message here does not affect the one captured by the arrow function
+
+echo $greet("Alice") . "&lt;br&gt;"; // Outputs: Hello, Alice
+?&gt;</code></pre>
+        <p>Arrow functions are great for short, simple callback operations, making code more readable.</p>
+
+        <h2>7. Recursive Functions</h2>
+        <p>A recursive function is a function that calls itself, either directly or indirectly through another function. Recursion is a powerful problem-solving technique where a problem can be broken down into smaller, self-similar subproblems.</p>
+        <p><strong>Essential Components of a Recursive Function:</strong></p>
+        <ol>
+            <li><strong>Base Case(s):</strong> A condition that stops the recursion. Without a base case, the function would call itself indefinitely, leading to a "stack overflow" error (the function call stack runs out of memory).</li>
+            <li><strong>Recursive Step:</strong> The part of the function where it calls itself, usually with modified arguments that move it closer to the base case.</li>
+        </ol>
+        <p><strong>Example: Factorial</strong><br>
+        The factorial of a non-negative integer <code>n</code> (denoted as <code>n!</code>) is the product of all positive integers less than or equal to <code>n</code>.</p>
+        <ul>
+            <li><code>0! = 1</code> (base case)</li>
+            <li><code>n! = n * (n-1)!</code> (recursive step)</li>
+        </ul>
+        <pre><code>&lt;?php
+function factorial($n) {
+    // Base case:
+    if ($n &lt; 0) { // Factorial not defined for negative numbers
+        return null; // Or throw an exception
+    }
+    if ($n == 0) {
+        return 1;
+    } else {
+        // Recursive step:
+        return $n * factorial($n - 1);
+    }
+}
+
+echo "Factorial of 5 is: " . factorial(5) . "&lt;br&gt;"; // 5 * 4 * 3 * 2 * 1 = 120
+echo "Factorial of 0 is: " . factorial(0) . "&lt;br&gt;"; // 1
+echo "Factorial of 3 is: " . factorial(3) . "&lt;br&gt;"; // 3 * 2 * 1 = 6
+?&gt;</code></pre>
+        <p><strong>How <code>factorial(3)</code> works:</strong></p>
+        <ol>
+            <li><code>factorial(3)</code> calls <code>3 * factorial(2)</code></li>
+            <li><code>factorial(2)</code> calls <code>2 * factorial(1)</code></li>
+            <li><code>factorial(1)</code> calls <code>1 * factorial(0)</code></li>
+            <li><code>factorial(0)</code> hits the base case and returns <code>1</code>.</li>
+            <li><code>factorial(1)</code> returns <code>1 * 1 = 1</code>.</li>
+            <li><code>factorial(2)</code> returns <code>2 * 1 = 2</code>.</li>
+            <li><code>factorial(3)</code> returns <code>3 * 2 = 6</code>.</li>
+        </ol>
+        <p><strong>Potential Pitfalls of Recursion:</strong></p>
+        <ul>
+            <li><strong>Infinite Recursion:</strong> If the base case is missing or incorrect, the function may never stop calling itself, leading to a stack overflow error.</li>
+            <li><strong>Stack Overflow:</strong> Each function call uses memory on the call stack. Deep recursion (many nested calls) can exhaust this memory. For problems that require very deep recursion, an iterative solution (using loops) might be more efficient in PHP.</li>
+            <li><strong>Performance:</strong> Recursive calls can sometimes be less performant than iterative solutions due to the overhead of function calls. However, for some problems, recursion provides a much cleaner and more intuitive solution.</li>
+        </ul>
+        <p>Recursion is a powerful tool for certain types of problems, like traversing tree-like structures (e.g., file systems, nested comments) or some mathematical calculations. However, always ensure you have a clear base case.</p>
+        <p>This wraps up our exploration of PHP functions. Mastering functions is key to writing effective and maintainable PHP code!</p>
+    </div>
+</body>
+</html>
+[end of html_output/en/03_php_functions.html]

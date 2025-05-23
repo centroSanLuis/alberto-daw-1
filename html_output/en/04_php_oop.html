@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Object-Oriented Programming (OOP)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #343a40;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid #dee2e6; padding-bottom: 0.3em;}
+        h2 { font-size: 1.8em; border-bottom: 1px solid #e9ecef; padding-bottom: 0.2em;}
+        h3 { font-size: 1.5em; }
+        p {
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #282c34; /* Dark background for code blocks */
+            color: #abb2bf; /* Light text for contrast */
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit; /* Inherit color from pre */
+        }
+        strong {
+            font-weight: 600;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 0.75em;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PHP Object-Oriented Programming (OOP)</h1>
+
+        <p>Object-Oriented Programming (OOP) is a powerful programming paradigm that provides a way of structuring code to create more organized, reusable, and maintainable applications. PHP has robust support for OOP, and understanding its principles is crucial for building modern, scalable web applications.</p>
+
+        <h2>1. Introduction to OOP Concepts</h2>
+
+        <h3>What is OOP?</h3>
+        <p>OOP is a programming model based on the concept of "objects". An object is a self-contained unit that combines data (properties or attributes) and behavior (methods or functions that operate on that data). Instead of writing procedures or functions that operate on separate data, OOP encourages you to create objects that manage their own data and behavior.</p>
+        <p>Think of real-world objects: a car is an object. It has properties (color, model, speed) and methods (startEngine, accelerate, brake). OOP allows you to model such real-world entities in your code.</p>
+
+        <h3>Why Use OOP?</h3>
+        <ul>
+            <li><strong>Organized Code:</strong> OOP helps structure code in a way that mirrors real-world entities, making it more intuitive and easier to manage, especially for large projects.</li>
+            <li><strong>Reusability (DRY - Don't Repeat Yourself):</strong> Classes, the blueprints for objects, can be reused to create multiple objects of the same type. Inheritance allows creating new classes that reuse code from existing ones.</li>
+            <li><strong>Scalability:</strong> Well-structured OOP code is easier to extend and scale as project requirements grow. New features can often be added by creating new classes or extending existing ones without drastically changing the existing codebase.</li>
+            <li><strong>Maintainability:</strong> OOP promotes modularity. Changes to one part of the application (e.g., modifying a class) are less likely to break other parts, making the code easier to maintain and debug.</li>
+            <li><strong>Collaboration:</strong> Different developers can work on different classes simultaneously, often with less conflict.</li>
+        </ul>
+
+        <h3>Core OOP Principles</h3>
+        <p>There are four main principles that form the foundation of OOP:</p>
+        <ol>
+            <li><strong>Encapsulation:</strong>
+                <ul>
+                    <li><strong>Concept:</strong> Bundling the data (properties) and the methods that operate on that data within a single unit (an object). It also involves <strong>hiding the internal state</strong> of an object and restricting direct access to its data from outside.</li>
+                    <li><strong>Benefit:</strong> Protects an object's internal integrity and prevents unintended external modification. Access to the data is typically controlled through public methods (getters and setters).</li>
+                </ul>
+            </li>
+            <li><strong>Inheritance:</strong>
+                <ul>
+                    <li><strong>Concept:</strong> A mechanism where a new class (called a <strong>child class</strong> or <strong>subclass</strong>) derives properties and methods from an existing class (called a <strong>parent class</strong> or <strong>superclass</strong>). The child class inherits the characteristics of the parent class and can also add its own unique properties and methods or override inherited ones.</li>
+                    <li><strong>Benefit:</strong> Promotes code reuse and creates a hierarchical relationship between classes ("is-a" relationship, e.g., a <code>Dog</code> is an <code>Animal</code>).</li>
+                </ul>
+            </li>
+            <li><strong>Polymorphism:</strong>
+                <ul>
+                    <li><strong>Concept:</strong> Literally means "many forms." It allows objects of different classes to respond to the same method call in their own specific way. This is often achieved through interfaces or abstract classes, where different classes implement the same method signature but provide different implementations.</li>
+                    <li><strong>Benefit:</strong> Allows for flexible and decoupled code. You can work with objects of different types through a common interface without needing to know their specific class.</li>
+                </ul>
+            </li>
+            <li><strong>Abstraction:</strong>
+                <ul>
+                    <li><strong>Concept:</strong> Hiding complex implementation details and exposing only the essential features or functionalities of an object to the outside world. Users of an object interact with it through a simplified interface without needing to know the intricate details of how it works internally.</li>
+                    <li><strong>Benefit:</strong> Simplifies the use of complex systems by providing a high-level view and reducing complexity.</li>
+                </ul>
+            </li>
+        </ol>
+        <p>We will explore each of these principles in detail as we go through this section.</p>
+
+        <h2>2. Classes and Objects</h2>
+
+        <h3>Defining a Class</h3>
+        <p>A <strong>class</strong> is a blueprint or template for creating objects. It defines the properties and methods that all objects of that class will have.</p>
+        <p><strong>Syntax:</strong></p>
+        <pre><code>&lt;?php
+class ClassName {
+    // Properties (member variables)
+    // Methods (member functions)
+}
+?&gt;</code></pre>
+        <p><strong>Naming Conventions:</strong><br>
+        Class names in PHP typically follow the <strong>PascalCase</strong> (also known as StudlyCaps) convention, where the first letter of each word is capitalized (e.g., <code>Car</code>, <code>UserProfile</code>, <code>DatabaseConnection</code>).</p>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+class Dog {
+    // Properties will be defined here
+    // Methods will be defined here
+}
+?&gt;</code></pre>
+
+        <h3>Properties (Member Variables)</h3>
+        <p>Properties are variables defined within a class that hold data related to the object. They represent the state or attributes of an object.</p>
+        <p><strong>Declaring Properties:</strong><br>
+        You declare properties using keywords like <code>public</code>, <code>private</code>, or <code>protected</code> (access modifiers, discussed later), followed by the variable name.</p>
+        <pre><code>&lt;?php
+class Dog {
+    public $name; // All Dog objects will have a name
+    public $breed; // And a breed
+    public $age = 0; // Property with a default value
+}
+?&gt;</code></pre>
+        <ul>
+            <li><code>public $name;</code>: Declares a public property named <code>name</code>.</li>
+            <li><code>public $age = 0;</code>: Declares a public property <code>age</code> with a default value of <code>0</code>.</li>
+        </ul>
+
+        <h3>Methods (Member Functions)</h3>
+        <p>Methods are functions defined within a class. They define the behavior of an object – what an object can do.</p>
+        <p><strong>Defining Methods:</strong><br>
+        Methods are defined similarly to regular PHP functions but reside inside a class. They also use access modifiers.</p>
+        <pre><code>&lt;?php
+class Dog {
+    public $name;
+    public $breed;
+
+    // Method to set the dog's name
+    public function setName($dogName) {
+        $this-&gt;name = $dogName; // Use $this to refer to the current object's property
+    }
+
+    // Method to get the dog's name
+    public function getName() {
+        return $this-&gt;name;
+    }
+
+    // Method to make the dog bark
+    public function bark() {
+        return "Woof! My name is " . $this-&gt;name . ".&lt;br&gt;";
+    }
+}
+?&gt;</code></pre>
+        <p><strong>The <code>$this</code> Pseudo-Variable:</strong><br>
+        Inside a class method, the pseudo-variable <code>$this</code> refers to the <strong>current object instance</strong>. It's used to access the properties and other methods of that specific object.</p>
+        <ul>
+            <li><code>$this-&gt;name = $dogName;</code> assigns the value of <code>$dogName</code> to the <code>name</code> property of the <em>current</em> <code>Dog</code> object.</li>
+            <li><code>$this-&gt;name</code> in <code>bark()</code> accesses the <code>name</code> property of the <em>current</em> <code>Dog</code> object.</li>
+        </ul>
+
+        <h3>Creating Objects (Instantiation)</h3>
+        <p>Creating an object from a class is called <strong>instantiation</strong>. You use the <code>new</code> keyword to create an instance of a class.</p>
+        <p><strong>Syntax:</strong><br>
+        <code>$objectVariable = new ClassName();</code></p>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+class Dog {
+    public $name;
+    public $breed;
+
+    public function setName($dogName) {
+        $this-&gt;name = $dogName;
+    }
+
+    public function getName() {
+        return $this-&gt;name;
+    }
+
+    public function bark() {
+        return "Woof! My name is " . $this-&gt;name . ".&lt;br&gt;";
+    }
+}
+
+// Create (instantiate) Dog objects
+$dog1 = new Dog();
+$dog2 = new Dog();
+
+// Accessing properties and calling methods
+// For dog1
+$dog1-&gt;name = "Buddy"; // Directly setting public property (generally better to use methods like setName)
+$dog1-&gt;breed = "Golden Retriever";
+echo $dog1-&gt;bark(); // Output: Woof! My name is Buddy.
+
+// For dog2
+$dog2-&gt;setName("Lucy"); // Using a method to set the name
+$dog2-&gt;breed = "Poodle";
+echo "Dog 2's name is: " . $dog2-&gt;getName() . "&lt;br&gt;"; // Output: Dog 2's name is: Lucy
+echo $dog2-&gt;bark(); // Output: Woof! My name is Lucy.
+
+// Accessing properties
+echo $dog1-&gt;name . " is a " . $dog1-&gt;breed . ".&lt;br&gt;"; // Buddy is a Golden Retriever.
+?&gt;</code></pre>
+        <ul>
+            <li><code>$object-&gt;propertyName</code>: Accesses a property of the object.</li>
+            <li><code>$object-&gt;methodName();</code>: Calls a method of the object.</li>
+        </ul>
+
+        <h2>3. Constructors and Destructors</h2>
+
+        <h3>Constructor: <code>__construct()</code></h3>
+        <p>A constructor is a special method within a class that is automatically called when an object of that class is created using the <code>new</code> keyword. It's primarily used to initialize the object's properties or perform any setup tasks needed when the object is created.</p>
+        <p><strong>Syntax:</strong></p>
+        <pre><code>&lt;?php
+class ClassName {
+    public function __construct(/* parameters */) {
+        // Initialization code
+    }
+}
+?&gt;</code></pre>
+        <ul>
+            <li>The method name must be <code>__construct</code> (two underscores).</li>
+        </ul>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+class Car {
+    public $make;
+    public $model;
+    public $year;
+
+    // Constructor method
+    public function __construct($carMake, $carModel, $carYear) {
+        echo "Car object created for a " . $carMake . "!&lt;br&gt;";
+        $this-&gt;make = $carMake;
+        $this-&gt;model = $carModel;
+        $this-&gt;year = $carYear;
+    }
+
+    public function getDetails() {
+        return "Make: " . $this-&gt;make . ", Model: " . $this-&gt;model . ", Year: " . $this-&gt;year . "&lt;br&gt;";
+    }
+}
+
+// Creating objects with constructor arguments
+$car1 = new Car("Toyota", "Camry", 2021); // "Car object created for a Toyota!" will be printed
+$car2 = new Car("Honda", "Civic", 2022);  // "Car object created for a Honda!" will be printed
+
+echo $car1-&gt;getDetails(); // Make: Toyota, Model: Camry, Year: 2021
+echo $car2-&gt;getDetails(); // Make: Honda, Model: Civic, Year: 2022
+?&gt;</code></pre>
+        <p><strong>PHP 8 Constructor Property Promotion:</strong><br>
+        PHP 8 introduced a more concise syntax for constructors where you can declare and initialize properties directly from the constructor parameters.</p>
+        <pre><code>&lt;?php
+// PHP 8 Constructor Property Promotion
+class Book {
+    // Properties are declared and initialized directly in the constructor
+    public function __construct(
+        public string $title,
+        public string $author,
+        public int $yearPublished
+    ) {
+        echo "Book object for '" . $this-&gt;title . "' created.&lt;br&gt;";
+    }
+
+    public function getSummary() {
+        return "'" . $this-&gt;title . "' by " . $this-&gt;author . ", published in " . $this-&gt;yearPublished . ".&lt;br&gt;";
+    }
+}
+
+$book1 = new Book("The Great Gatsby", "F. Scott Fitzgerald", 1925);
+echo $book1-&gt;getSummary(); // 'The Great Gatsby' by F. Scott Fitzgerald, published in 1925.
+
+echo "Title: " . $book1-&gt;title . "&lt;br&gt;"; // Accessing the public promoted property
+?&gt;</code></pre>
+        <p>This syntax reduces boilerplate code by automatically creating the property and assigning the value passed to the constructor.</p>
+
+        <h3>Destructor: <code>__destruct()</code></h3>
+        <p>A destructor is a special method that is automatically called when an object is no longer referenced or when the script execution ends. It's used for cleanup tasks, such as closing database connections, releasing file handles, or performing other resource-freeing operations.</p>
+        <p><strong>Syntax:</strong></p>
+        <pre><code>&lt;?php
+class ClassName {
+    public function __destruct() {
+        // Cleanup code
+    }
+}
+?&gt;</code></pre>
+        <ul>
+            <li>The method name must be <code>__destruct</code> (two underscores).</li>
+            <li>Destructors cannot have parameters.</li>
+        </ul>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+class FileHandler {
+    private $fileHandle;
+    private $fileName;
+
+    public function __construct($filename, $mode = "r") {
+        $this-&gt;fileName = $filename;
+        // Create a dummy file if it doesn't exist for the example to run
+        if (!file_exists($this-&gt;fileName)) {
+            file_put_contents($this-&gt;fileName, "Initial content for " . $this-&gt;fileName);
+        }
+        $this-&gt;fileHandle = fopen($filename, $mode);
+        if ($this-&gt;fileHandle) {
+            echo "File '" . $this-&gt;fileName . "' opened successfully.&lt;br&gt;";
+        } else {
+            echo "Failed to open file '" . $this-&gt;fileName . "'.&lt;br&gt;";
+        }
+    }
+
+    public function readFile() {
+        if ($this-&gt;fileHandle &amp;&amp; filesize($this-&gt;fileName) &gt; 0) { // Check if filesize > 0 to avoid warning on empty file
+            return fread($this-&gt;fileHandle, filesize($this-&gt;fileName));
+        }
+        return false;
+    }
+
+    // Destructor method
+    public function __destruct() {
+        if ($this-&gt;fileHandle) {
+            fclose($this-&gt;fileHandle);
+            echo "File '" . $this-&gt;fileName . "' closed in destructor.&lt;br&gt;";
+        }
+        echo "FileHandler object for '" . $this-&gt;fileName . "' is being destroyed.&lt;br&gt;";
+    }
+}
+
+// Create a temporary file for testing (ensure this path is writable)
+// file_put_contents("testfile_oop.txt", "Hello from OOP!"); // Moved inside constructor for self-containment
+
+$file = new FileHandler("testfile_oop.txt");
+// if ($file) {
+    // echo "Content: " . $file-&gt;readFile() . "&lt;br&gt;";
+// }
+// When $file goes out of scope or script ends, __destruct() is called.
+?&gt;</code></pre>
+        <p>Destructors are called in the reverse order of their creation if multiple objects are destroyed at the end of the script.</p>
+
+        <h2>4. Access Modifiers (Visibility)</h2>
+        <p>Access modifiers control the visibility and accessibility of class properties and methods from different parts of your code. They are key to implementing encapsulation.</p>
+        <ul>
+            <li><strong><code>public</code></strong>:
+                <ul>
+                    <li>Properties and methods declared as <code>public</code> can be accessed from anywhere:
+                        <ul>
+                            <li>From within the class itself.</li>
+                            <li>From subclasses (derived classes).</li>
+                            <li>From outside the class (e.g., in your main script code).</li>
+                        </ul>
+                    </li>
+                    <li>This is the least restrictive access level. If no access modifier is specified, it defaults to <code>public</code> (though explicitly declaring it is good practice).</li>
+                </ul>
+            </li>
+            <li><strong><code>private</code></strong>:
+                <ul>
+                    <li>Properties and methods declared as <code>private</code> can <strong>only</strong> be accessed from within the class that defines them.</li>
+                    <li>They are not accessible from subclasses or from outside the class.</li>
+                    <li>This is the most restrictive access level, used to hide internal implementation details.</li>
+                </ul>
+            </li>
+            <li><strong><code>protected</code></strong>:
+                <ul>
+                    <li>Properties and methods declared as <code>protected</code> can be accessed:
+                        <ul>
+                            <li>From within the class itself.</li>
+                            <li>From subclasses (classes that inherit from this class).</li>
+                        </ul>
+                    </li>
+                    <li>They are not accessible from outside the class.</li>
+                    <li>This is useful when you want to allow child classes to use or modify certain parts of the parent class, but still keep those parts hidden from the outside world.</li>
+                </ul>
+            </li>
+        </ul>
+        <p><strong>Purpose:</strong><br>
+        Access modifiers help enforce encapsulation. By making properties <code>private</code> or <code>protected</code>, you prevent direct external modification and control access through <code>public</code> methods (getters and setters).</p>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+class BankAccount {
+    public $accountNumber;      // Accessible from anywhere
+    private $balance;           // Only accessible within BankAccount class
+    protected $accountHolder;   // Accessible within BankAccount and its subclasses
+
+    public function __construct($accNum, $holder, $initialBalance) {
+        $this-&gt;accountNumber = $accNum;
+        $this-&gt;accountHolder = $holder;
+        $this-&gt;setBalance($initialBalance); // Use a setter for initial balance
+    }
+
+    // Public method to deposit money
+    public function deposit($amount) {
+        if ($amount &gt; 0) {
+            $this-&gt;balance += $amount;
+            echo "Deposited: $" . number_format($amount, 2) . ". New balance: $" . number_format($this-&gt;balance, 2) . "&lt;br&gt;";
+        } else {
+            echo "Deposit amount must be positive.&lt;br&gt;";
+        }
+    }
+
+    // Public method to get the balance (Getter)
+    public function getBalance() {
+        // Could add logging or other checks here
+        return $this-&gt;balance;
+    }
+
+    // Private method to set balance (Setter) - internal use or controlled access
+    private function setBalance($amount) {
+        if ($amount &gt;= 0) {
+            $this-&gt;balance = $amount;
+        } else {
+            $this-&gt;balance = 0;
+            echo "Initial balance cannot be negative. Set to 0.&lt;br&gt;";
+        }
+    }
+
+    public function getAccountHolder() {
+        return $this-&gt;accountHolder;
+    }
+}
+
+class SavingsAccount extends BankAccount {
+    private $interestRate;
+
+    public function __construct($accNum, $holder, $initialBalance, $rate) {
+        parent::__construct($accNum, $holder, $initialBalance); // Call parent constructor
+        $this-&gt;interestRate = $rate;
+    }
+
+    public function applyInterest() {
+        $currentBalance = $this-&gt;getBalance(); // Accesses public getBalance() from parent
+        $interest = $currentBalance * $this-&gt;interestRate;
+        // $this-&gt;balance += $interest; // ERROR! Cannot access private $balance directly from subclass
+        $this-&gt;deposit($interest); // Correct way: use public deposit method from parent
+        echo "Interest of $" . number_format($interest, 2) . " applied. Account Holder: " . $this-&gt;accountHolder . "&lt;br&gt;"; // OK: $accountHolder is protected
+    }
+}
+
+$account1 = new BankAccount("12345", "John Doe", 100.00);
+echo "Account Number: " . $account1-&gt;accountNumber . "&lt;br&gt;"; // OK: public
+// echo "Balance: " . $account1-&gt;balance; // ERROR! Cannot access private property $balance
+echo "Balance: $" . number_format($account1-&gt;getBalance(), 2) . "&lt;br&gt;"; // OK: using public getter
+
+$account1-&gt;deposit(50.50);
+// $account1-&gt;setBalance(5000); // ERROR! Cannot call private method setBalance() from outside
+
+$savings1 = new SavingsAccount("67890", "Jane Smith", 500.00, 0.05);
+$savings1-&gt;deposit(100.00);
+$savings1-&gt;applyInterest();
+echo "Savings Balance: $" . number_format($savings1-&gt;getBalance(), 2) . "&lt;br&gt;";
+echo "Savings Holder: " . $savings1-&gt;getAccountHolder() . "&lt;br&gt;"; // Accessing protected property via public method
+?&gt;</code></pre>
+        <p><strong>Getter and Setter Methods:</strong><br>
+        When a property is <code>private</code> or <code>protected</code>, you often provide <code>public</code> methods to get its value (getter) and set its value (setter). This allows you to control how the property is accessed and modified, adding validation or other logic if needed.</p>
+        <ul>
+            <li><strong>Getter:</strong> <code>public function getPropertyName() { return $this-&gt;propertyName; }</code></li>
+            <li><strong>Setter:</strong> <code>public function setPropertyName($value) { /* validation */ $this-&gt;propertyName = $value; }</code></li>
+        </ul>
+
+        <h2>5. Inheritance</h2>
+        <p>Inheritance is a fundamental OOP principle that allows a class (child class or subclass) to inherit properties and methods from another class (parent class or superclass). This promotes code reuse and establishes an "is-a" relationship (e.g., a <code>Manager</code> is an <code>Employee</code>).</p>
+        <p><strong>Syntax:</strong><br>
+        <code>class ChildClass extends ParentClass { ... }</code></p>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+// Parent class (Superclass)
+class Animal {
+    public $name;
+    protected $sound; // Protected so child classes can access it
+
+    public function __construct($name, $sound = "Some generic sound") {
+        $this-&gt;name = $name;
+        $this-&gt;sound = $sound;
+        echo $this-&gt;name . " the Animal created.&lt;br&gt;";
+    }
+
+    public function eat() {
+        echo $this-&gt;name . " is eating.&lt;br&gt;";
+    }
+
+    public function makeSound() {
+        echo $this-&gt;name . " says " . $this-&gt;sound . ".&lt;br&gt;";
+    }
+}
+
+// Child class (Subclass) inheriting from Animal
+class Dog extends Animal {
+    public $breed;
+
+    // Dog's own constructor
+    public function __construct($name, $breed) {
+        // Call the parent class's constructor
+        parent::__construct($name, "Woof"); // Pass "Woof" as the sound for dogs
+        $this-&gt;breed = $breed;
+        echo $this-&gt;name . " the Dog of breed " . $this-&gt;breed . " created.&lt;br&gt;";
+    }
+
+    // Dog-specific method
+    public function fetch() {
+        echo $this-&gt;name . " is fetching a ball.&lt;br&gt;";
+    }
+
+    // Overriding the makeSound method from the parent class
+    public function makeSound() {
+        echo $this-&gt;name . " (a " . $this-&gt;breed . ") barks loudly: " . $this-&gt;sound . "!&lt;br&gt;";
+        // You can also call the parent's version if needed:
+        // parent::makeSound();
+    }
+}
+
+class Cat extends Animal {
+    public function __construct($name) {
+        parent::__construct($name, "Meow");
+        echo $this-&gt;name . " the Cat created.&lt;br&gt;";
+    }
+
+    // Cat-specific method
+    public function climbTree() {
+        echo $this-&gt;name . " is climbing a tree.&lt;br&gt;";
+    }
+
+    // Overriding makeSound
+    public function makeSound() {
+        echo $this-&gt;name . " purrs: " . $this-&gt;sound . "...&lt;br&gt;";
+    }
+}
+
+$genericAnimal = new Animal("Generic Creature");
+$genericAnimal-&gt;eat();
+$genericAnimal-&gt;makeSound();
+echo "&lt;hr&gt;";
+
+$dog = new Dog("Buddy", "Golden Retriever");
+$dog-&gt;eat();         // Inherited from Animal
+$dog-&gt;makeSound();   // Overridden in Dog
+$dog-&gt;fetch();       // Specific to Dog
+echo "&lt;hr&gt;";
+
+$cat = new Cat("Whiskers");
+$cat-&gt;eat();         // Inherited
+$cat-&gt;makeSound();   // Overridden in Cat
+$cat-&gt;climbTree();   // Specific to Cat
+?&gt;</code></pre>
+        <p><strong>Key Concepts in Inheritance:</strong></p>
+        <ul>
+            <li><strong>Reusing Functionality:</strong> The <code>Dog</code> and <code>Cat</code> classes automatically get the <code>name</code> property and the <code>eat()</code> method from the <code>Animal</code> class.</li>
+            <li><strong>Extending Functionality:</strong> Child classes can add their own properties (like <code>$breed</code> in <code>Dog</code>) and methods (like <code>fetch()</code> in <code>Dog</code> or <code>climbTree()</code> in <code>Cat</code>).</li>
+            <li><strong>Overriding Methods:</strong> A child class can provide its own specific implementation of a method that it inherited from the parent class (e.g., <code>makeSound()</code> is overridden in both <code>Dog</code> and <code>Cat</code>). The method signature (name, parameters, and access modifier compatibility) should generally remain the same or be less restrictive.</li>
+            <li><strong><code>parent::</code> Keyword:</strong><br>
+            Inside a child class, you can use <code>parent::</code> to access methods and properties from the parent class. This is often used in constructors (<code>parent::__construct()</code>) or when you want to extend the parent's method functionality rather than completely replacing it.
+            <pre><code>class MyChildClass extends MyParentClass {
+    public function someMethod() {
+        parent::someMethod(); // Call parent's version
+        // Add more child-specific logic here
+        echo "Child class extending functionality.&lt;br&gt;";
+    }
+}</code></pre>
+            </li>
+            <li><strong><code>final</code> Keyword:</strong>
+                <ul>
+                    <li>If you declare a method as <code>final</code> in the parent class, it <strong>cannot be overridden</strong> by child classes.<br>
+                    <code>public final function cannotBeOverridden() { ... }</code></li>
+                    <li>If you declare a class as <code>final</code>, it <strong>cannot be inherited</strong> (i.e., no other class can extend it).<br>
+                    <code>final class NoMoreChildren { ... }</code></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>6. Abstract Classes and Methods</h2>
+        <p>An <strong>abstract class</strong> is a class that cannot be instantiated directly. It's designed to be a base class that other classes inherit from. Abstract classes can contain both regular methods (with implementation) and <strong>abstract methods</strong>.</p>
+        <p>An <strong>abstract method</strong> is declared in an abstract class but does not contain any implementation (no body). It only defines the method signature (name, parameters, and return type if any). Subclasses that inherit from an abstract class <strong>must</strong> provide concrete implementations for all abstract methods declared in the parent abstract class.</p>
+        <p><strong>Syntax:</strong></p>
+        <pre><code>&lt;?php
+abstract class AbstractShape {
+    public $color;
+
+    public function __construct($color = "transparent") {
+        $this-&gt;color = $color;
+    }
+
+    public function displayColor() {
+        echo "Color: " . $this-&gt;color . "&lt;br&gt;";
+    }
+
+    // Abstract method (no body, just signature)
+    // All concrete child classes MUST implement this method.
+    abstract protected function calculateArea(): float;
+
+    public function printAreaDetails() {
+        $area = $this-&gt;calculateArea();
+        echo "The area is: " . $area . " square units.&lt;br&gt;";
+    }
+}
+
+class Circle extends AbstractShape {
+    private $radius;
+
+    public function __construct($color, $radius) {
+        parent::__construct($color);
+        $this-&gt;radius = $radius;
+    }
+
+    // Must implement calculateArea from AbstractShape
+    protected function calculateArea(): float {
+        return pi() * $this-&gt;radius * $this-&gt;radius;
+    }
+}
+
+class Rectangle extends AbstractShape {
+    private $width;
+    private $height;
+
+    public function __construct($color, $width, $height) {
+        parent::__construct($color);
+        $this-&gt;width = $width;
+        $this-&gt;height = $height;
+    }
+
+    // Must implement calculateArea from AbstractShape
+    protected function calculateArea(): float {
+        return $this-&gt;width * $this-&gt;height;
+    }
+}
+
+// $shape = new AbstractShape("Red"); // ERROR! Cannot instantiate abstract class.
+
+$circle = new Circle("Red", 5);
+$circle-&gt;displayColor();
+$circle-&gt;printAreaDetails(); // The area is: 78.539... square units.
+
+$rectangle = new Rectangle("Blue", 4, 6);
+$rectangle-&gt;displayColor();
+$rectangle-&gt;printAreaDetails(); // The area is: 24 square units.
+?&gt;</code></pre>
+        <p><strong>Purpose and Use Cases:</strong></p>
+        <ul>
+            <li><strong>Defining a Template/Contract:</strong> Abstract classes define a common structure and a set of methods that all subclasses must adhere to, ensuring consistency.</li>
+            <li><strong>Code Reusability:</strong> They can provide common functionality (implemented methods) that subclasses can share, while forcing subclasses to implement specific behaviors (abstract methods).</li>
+            <li>Useful when you have a group of related classes that share some common logic but also have specific implementations for certain actions. For example, a <code>Shape</code> abstract class could have an abstract <code>calculateArea()</code> method, and concrete classes like <code>Circle</code> and <code>Rectangle</code> would implement it differently.</li>
+        </ul>
+        <p><strong>Rules for Abstract Classes/Methods:</strong></p>
+        <ul>
+            <li>A class containing at least one abstract method must itself be declared abstract.</li>
+            <li>Abstract methods cannot have a body (implementation) in the abstract class.</li>
+            <li>Abstract methods must be implemented by any child class that is not itself abstract.</li>
+            <li>The visibility of the implemented method in the child class must be the same or less restrictive than the abstract method's visibility (e.g., if abstract method is <code>protected</code>, implementation can be <code>protected</code> or <code>public</code>, but not <code>private</code>).</li>
+            <li>The signature (number and type of parameters, return type) of the implemented method must match the abstract method's signature.</li>
+        </ul>
+
+        <h2>7. Interfaces</h2>
+        <p>An <strong>interface</strong> defines a contract for what methods a class should implement. It specifies the method signatures (name, parameters, return type) but does not provide any implementation for those methods.</p>
+        <p>When a class <strong>implements</strong> an interface, it is obligated to provide concrete implementations for all methods declared in that interface.</p>
+        <p><strong>Syntax:</strong></p>
+        <pre><code>&lt;?php
+// Define an interface
+interface Loggable {
+    public function getLogMessage(): string; // Method signature for logging
+    public function getSeverity(): int;    // Another method contract
+    const DEFAULT_SEVERITY = 0; // Interfaces can have constants
+}
+
+// Class implementing the interface
+class UserEvent implements Loggable {
+    private $username;
+    private $action;
+
+    public function __construct($username, $action) {
+        $this-&gt;username = $username;
+        $this-&gt;action = $action;
+    }
+
+    public function getLogMessage(): string {
+        return "User '{$this-&gt;username}' performed action '{$this-&gt;action}'.";
+    }
+
+    public function getSeverity(): int {
+        if ($this-&gt;action === 'delete_account') {
+            return 2; // High severity
+        }
+        return Loggable::DEFAULT_SEVERITY; // Using constant from interface
+    }
+}
+
+class SystemError implements Loggable {
+    private $errorCode;
+    private $errorMessage;
+
+    public function __construct($code, $message) {
+        $this-&gt;errorCode = $code;
+        $this-&gt;errorMessage = $message;
+    }
+
+    public function getLogMessage(): string {
+        return "System Error #{$this-&gt;errorCode}: {$this-&gt;errorMessage}";
+    }
+
+    public function getSeverity(): int {
+        return 3; // Critical severity
+    }
+}
+
+$userLogin = new UserEvent("Alice", "login");
+echo $userLogin-&gt;getLogMessage() . " (Severity: " . $userLogin-&gt;getSeverity() . ")&lt;br&gt;";
+
+$dbError = new SystemError(500, "Database connection failed");
+echo $dbError-&gt;getLogMessage() . " (Severity: " . $dbError-&gt;getSeverity() . ")&lt;br&gt;";
+?&gt;</code></pre>
+        <p><strong>Key Features and Rules:</strong></p>
+        <ul>
+            <li><strong>Contract:</strong> Interfaces ensure that different classes provide a common set of functionalities, making them interchangeable in certain contexts (polymorphism).</li>
+            <li><strong><code>implements</code> Keyword:</strong> A class uses the <code>implements</code> keyword to adopt an interface.</li>
+            <li><strong>Multiple Interfaces:</strong> A class can implement multiple interfaces by listing them separated by commas: <code>class MyClass implements InterfaceA, InterfaceB { ... }</code>.</li>
+            <li><strong>Methods are Implicitly Public and Abstract:</strong> All methods declared in an interface are implicitly <code>public</code> and <code>abstract</code>. You don't need to write <code>public abstract function ...</code>, just <code>public function ...</code> (or even just <code>function ...</code> as <code>public</code> is implied).</li>
+            <li><strong>No Properties:</strong> Interfaces cannot declare properties (member variables), though they can declare <code>public const</code>ants.</li>
+            <li><strong>No Implementation:</strong> Interface methods cannot have bodies.</li>
+        </ul>
+        <p><strong>Differences between Interfaces and Abstract Classes:</strong></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Abstract Class</th>
+                    <th>Interface</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Instantiation</strong></td>
+                    <td>Cannot be instantiated.</td>
+                    <td>Cannot be instantiated.</td>
+                </tr>
+                <tr>
+                    <td><strong>Methods</strong></td>
+                    <td>Can have both abstract and concrete methods.</td>
+                    <td>All methods are implicitly abstract (no implementation).</td>
+                </tr>
+                <tr>
+                    <td><strong>Properties</strong></td>
+                    <td>Can have properties (member variables).</td>
+                    <td>Cannot have properties (can have constants).</td>
+                </tr>
+                <tr>
+                    <td><strong>Inheritance</strong></td>
+                    <td>A class can <code>extend</code> only <strong>one</strong> abstract class.</td>
+                    <td>A class can <code>implement</code> <strong>multiple</strong> interfaces.</td>
+                </tr>
+                <tr>
+                    <td><strong>Purpose</strong></td>
+                    <td>Provide a base class with some shared implementation and a template for subclasses. Establishes an "is-a" relationship.</td>
+                    <td>Define a contract of methods a class <em>must</em> implement. Establishes a "can-do" or "behaves-like" relationship.</td>
+                </tr>
+                <tr>
+                    <td><strong>Constructors</strong></td>
+                    <td>Can have constructors.</td>
+                    <td>Cannot have constructors.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>When to Use Which:</strong></p>
+        <ul>
+            <li><strong>Use an abstract class when:</strong>
+                <ul>
+                    <li>You want to share code (implemented methods) among several closely related classes.</li>
+                    <li>You expect that classes that extend your abstract class have many common methods or properties, or require access modifiers other than public for some base functionality.</li>
+                    <li>You want to define a common base for a hierarchy of classes.</li>
+                </ul>
+            </li>
+            <li><strong>Use an interface when:</strong>
+                <ul>
+                    <li>You want to define a contract that unrelated classes can implement.</li>
+                    <li>You want to specify the behavior of a particular data type, but you are not concerned about who implements its behavior.</li>
+                    <li>You want to take advantage of multiple inheritance of type (a class can implement multiple interfaces).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>8. Polymorphism</h2>
+        <p>Polymorphism, meaning "many forms," is a core OOP concept that allows objects of different classes to be treated as objects of a common superclass or interface. They can respond to the same method call in their own distinct ways.</p>
+        <p><strong>Example demonstrating Polymorphism using an Interface:</strong></p>
+        <pre><code>&lt;?php
+// Interface defining a contract for objects that can be rendered
+interface Renderable {
+    public function render(): string;
+}
+
+// Class 1 implementing Renderable
+class Button implements Renderable {
+    private $label;
+    public function __construct($label) { $this-&gt;label = $label; }
+    public function render(): string {
+        return "&lt;button&gt;{$this-&gt;label}&lt;/button&gt;";
+    }
+}
+
+// Class 2 implementing Renderable
+class Image implements Renderable {
+    private $src;
+    private $alt;
+    public function __construct($src, $alt) { $this-&gt;src = $src; $this-&gt;alt = $alt; }
+    public function render(): string {
+        return "&lt;img src='{$this-&gt;src}' alt='{$this-&gt;alt}'&gt;";
+    }
+}
+
+// Class 3, also Renderable
+class TextField implements Renderable {
+    private $name;
+    private $value;
+    public function __construct($name, $value = "") { $this-&gt;name = $name; $this-&gt;value = $value; }
+    public function render(): string {
+        return "&lt;input type='text' name='{$this-&gt;name}' value='{$this-&gt;value}'&gt;";
+    }
+}
+
+// A function that can work with any object that implements Renderable
+function displayElement(Renderable $element) {
+    // $element can be a Button, an Image, or a TextField
+    echo $element-&gt;render() . "&lt;br&gt;"; // Calls the specific implementation of render()
+}
+
+// Create objects of different types
+$submitButton = new Button("Submit Form");
+$logoImage = new Image("logo.png", "Our Company Logo");
+$nameField = new TextField("username", "JohnDoe");
+
+// Pass them to the same function - Polymorphism in action!
+displayElement($submitButton); // &lt;button&gt;Submit Form&lt;/button&gt;
+displayElement($logoImage);    // &lt;img src='logo.png' alt='Our Company Logo'&gt;
+displayElement($nameField);    // &lt;input type='text' name='username' value='JohnDoe'&gt;
+
+// You can also store them in an array of Renderable items
+$formElements = [$nameField, $submitButton];
+echo "&lt;h2&gt;Form:&lt;/h2&gt;";
+foreach ($formElements as $item) {
+    // $item is treated as Renderable, its specific render() is called
+    displayElement($item);
+}
+?&gt;</code></pre>
+        <p>In this example, <code>displayElement()</code> doesn't need to know if it's dealing with a <code>Button</code>, <code>Image</code>, or <code>TextField</code> object. It only cares that the object implements the <code>Renderable</code> interface and thus has a <code>render()</code> method. Each object type provides its own version of <code>render()</code>, demonstrating polymorphism.</p>
+
+        <h2>9. Traits</h2>
+        <p>Traits are a mechanism for code reuse in single-inheritance languages like PHP. A class can only inherit from one parent class, but it can use multiple traits. Traits allow you to compose sets of methods into classes.</p>
+        <p><strong>Syntax:</strong></p>
+        <pre><code>&lt;?php
+trait LoggerTrait {
+    public function log($message) {
+        // In a real scenario, this would write to a file or other logging system
+        echo "LOG: [" . date("Y-m-d H:i:s") . "] " . $message . "&lt;br&gt;";
+    }
+}
+
+trait TimestampableTrait {
+    protected $createdAt;
+    protected $updatedAt;
+
+    public function setTimestamps() {
+        $this-&gt;createdAt = $this-&gt;createdAt ?? time();
+        $this-&gt;updatedAt = time();
+    }
+
+    public function getCreatedAt($format = "Y-m-d H:i:s") {
+        return date($format, $this-&gt;createdAt);
+    }
+
+    public function getUpdatedAt($format = "Y-m-d H:i:s") {
+        return date($format, $this-&gt;updatedAt);
+    }
+}
+
+class UserProfile {
+    use LoggerTrait; // Use the LoggerTrait
+    use TimestampableTrait; // Use the TimestampableTrait
+
+    public $username;
+
+    public function __construct($username) {
+        $this-&gt;username = $username;
+        $this-&gt;setTimestamps(); // From TimestampableTrait
+        $this-&gt;log("User profile for '{$this-&gt;username}' created."); // From LoggerTrait
+    }
+
+    public function updateProfile($newUsername) {
+        $this-&gt;log("Updating username from '{$this-&gt;username}' to '{$newUsername}'.");
+        $this-&gt;username = $newUsername;
+        $this-&gt;setTimestamps(); // Update updatedAt timestamp
+    }
+}
+
+$profile = new UserProfile("johndoe");
+echo "Username: " . $profile-&gt;username . "&lt;br&gt;";
+echo "Created At: " . $profile-&gt;getCreatedAt() . "&lt;br&gt;";
+
+sleep(1); // Wait for a second to see updated timestamp change
+$profile-&gt;updateProfile("john_doe_updated");
+echo "Updated Username: " . $profile-&gt;username . "&lt;br&gt;";
+echo "Updated At: " . $profile-&gt;getUpdatedAt() . "&lt;br&gt;";
+?&gt;</code></pre>
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li><strong>Code Reuse:</strong> Share methods (and properties) across multiple independent classes that do not share a common parent.</li>
+            <li><strong><code>use</code> Keyword:</strong> A class incorporates a trait's methods and properties using the <code>use</code> keyword within the class definition.</li>
+            <li><strong>Horizontal Composition:</strong> Traits offer a way to compose functionality horizontally, as opposed to the vertical composition of inheritance.</li>
+            <li><strong>Precedence:</strong> Methods from the current class override methods from a trait, which in turn override methods from a parent class.
+                <ul>
+                    <li>Current Class Method &gt; Trait Method &gt; Inherited Parent Method.</li>
+                </ul>
+            </li>
+        </ul>
+        <p><strong>Conflict Resolution:</strong><br>
+        If two traits define a method with the same name, or a trait has a method with the same name as one in the class itself or its parent class, PHP will raise a fatal error unless the conflict is explicitly resolved.</p>
+        <ul>
+            <li><strong><code>insteadof</code>:</strong> To specify which trait's method to use when there's a name collision between traits.</li>
+            <li><strong><code>as</code>:</strong> To change the visibility or alias a method from a trait.</li>
+        </ul>
+        <pre><code>&lt;?php
+trait Sharable {
+    public function share($item) {
+        echo "Sharing " . $item . " via Sharable trait.&lt;br&gt;";
+    }
+}
+
+trait Likeable {
+    public function share($item) { // Same method name as in Sharable
+        echo "Sharing " . $item . " via Likeable trait (different implementation).&lt;br&gt;";
+    }
+
+    public function like($item) {
+        echo "Liking " . $item . ".&lt;br&gt;";
+    }
+}
+
+class SocialPost {
+    use Sharable, Likeable {
+        Likeable::share insteadof Sharable; // Use Likeable's share()
+        Sharable::share as shareViaSharable; // Alias Sharable's share() to a new name
+        Likeable::like as public likeItem; // Can change visibility (though 'like' is already public)
+    }
+
+    public $content;
+    public function __construct($content) {
+        $this-&gt;content = $content;
+    }
+}
+
+$post = new SocialPost("My new blog post");
+$post-&gt;share($post-&gt;content);           // Sharing My new blog post via Likeable trait.
+$post-&gt;shareViaSharable($post-&gt;content); // Sharing My new blog post via Sharable trait.
+$post-&gt;likeItem($post-&gt;content);        // Liking My new blog post.
+?&gt;</code></pre>
+        <p>Traits are a powerful tool for organizing and reusing code in a flexible way.</p>
+
+        <h2>10. Static Methods and Properties</h2>
+        <p>Static methods and properties belong to the <strong>class itself</strong>, not to a specific instance (object) of the class. They are accessed directly using the class name and the scope resolution operator (<code>::</code>).</p>
+        <p><strong>Declaring Static Members:</strong><br>
+        Use the <code>static</code> keyword.</p>
+        <pre><code>&lt;?php
+class MathUtils {
+    public static $pi = 3.14159; // Static property
+    public static $counter = 0;  // Another static property
+
+    // Static method
+    public static function add($a, $b) {
+        self::$counter++; // Increment static counter
+        return $a + $b;
+    }
+
+    public static function circleArea($radius) {
+        self::$counter++; // Increment static counter
+        // Accessing static property from within the class using self::
+        return self::$pi * $radius * $radius;
+        // Or using ClassName::$pi: return MathUtils::$pi * $radius * $radius;
+    }
+
+    public function nonStaticMethod() {
+        echo "This is a non-static method. PI is " . self::$pi . "&lt;br&gt;";
+        // Non-static methods can access static properties/methods.
+        self::$counter++;
+    }
+}
+
+// Accessing static property
+echo "Value of PI: " . MathUtils::$pi . "&lt;br&gt;";
+
+// Calling static method
+$sum = MathUtils::add(5, 10);
+echo "Sum: " . $sum . "&lt;br&gt;";
+
+echo "Area of circle with radius 5: " . MathUtils::circleArea(5) . "&lt;br&gt;";
+echo "MathUtils methods called " . MathUtils::$counter . " times.&lt;br&gt;"; // Counter will be 2
+
+$mathObj = new MathUtils();
+$mathObj-&gt;nonStaticMethod();
+echo "MathUtils methods called " . MathUtils::$counter . " times.&lt;br&gt;"; // Counter will be 3
+
+// Note: Inside a static method, you cannot use $this because $this refers to an object instance,
+// and static methods are not tied to a specific object.
+// You use `self::` to refer to static members of the current class.
+?&gt;</code></pre>
+        <p><strong>Key Points:</strong></p>
+        <ul>
+            <li><strong>No Object Instance Needed:</strong> Static members can be used without creating an object of the class.</li>
+            <li><strong><code>self::</code> Keyword:</strong> Inside a class, use <code>self::</code> to access static properties or call static methods of the <em>same</em> class.
+                <ul>
+                    <li><code>self::$staticProperty</code></li>
+                    <li><code>self::staticMethod()</code></li>
+                </ul>
+            </li>
+            <li><strong><code>parent::</code> Keyword:</strong> Can also be used to access static members of a parent class from within a child class.</li>
+            <li><strong>State:</strong> Static properties share a single value across all uses of the class, not per object.</li>
+            <li><strong><code>$this</code> in Static Methods:</strong> The <code>$this</code> pseudo-variable is <strong>not available</strong> inside static methods because they are not associated with a specific object instance. Trying to use <code>$this</code> in a static method will result in an error.</li>
+            <li><strong>Use Cases:</strong>
+                <ul>
+                    <li><strong>Utility functions:</strong> Functions that perform a task but don't need to rely on the state of a specific object (e.g., <code>MathUtils::add()</code>).</li>
+                    <li><strong>Counters or global settings for a class:</strong> E.g., counting how many objects of a class have been instantiated or tracking method calls as shown above.</li>
+                    <li><strong>Factory methods:</strong> Static methods that create and return instances of the class (e.g., <code>User::createGuestUser()</code>).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>11. Namespaces</h2>
+        <p>Namespaces are a way of encapsulating items (classes, interfaces, functions, constants) to prevent naming collisions. Imagine two different libraries you want to use in your project, and both define a class named <code>Logger</code>. Without namespaces, PHP wouldn't know which <code>Logger</code> class you intend to use.</p>
+        <p><strong>Purpose:</strong></p>
+        <ul>
+            <li><strong>Prevent Naming Conflicts:</strong> Allows you to use the same class or function name in different parts of your code or from different libraries without conflict.</li>
+            <li><strong>Organize Code:</strong> Helps organize code into logical groups, similar to how directories organize files.</li>
+        </ul>
+        <p><strong>Defining a Namespace:</strong><br>
+        The <code>namespace</code> keyword is used to declare a namespace. It must be the <strong>first statement</strong> in a PHP file (before any other code, except <code>declare</code> statements).</p>
+        <p><strong>Example Structure (Conceptual - for real use, place in separate files):</strong></p>
+        <pre><code class="language-php">// File: MyProject/Utils/Logger.php (Conceptual content)
+// &lt;?php
+// namespace MyProject\Utils; // Declares the namespace
+//
+// class Logger {
+//     public static function log($message) {
+//         echo "MyProject Log: " . $message . "&lt;br&gt;";
+//     }
+// }
+// ?&gt;
+
+// File: AnotherProject/Logging/Logger.php (Conceptual content)
+// &lt;?php
+// namespace AnotherProject\Logging; // A different namespace
+//
+// class Logger { // Same class name, but in a different namespace
+//     public static function log($message) {
+//         echo "AnotherProject Log: " . $message . "&lt;br&gt;";
+//     }
+// }
+// ?&gt;</code></pre>
+        <p><strong>Using Namespaces:</strong><br>
+        To use classes, interfaces, functions, or constants from a namespace, you can:</p>
+        <ol>
+            <li><p><strong>Fully Qualified Name:</strong> Refer to them by their full name including the namespace.</p>
+            <pre><code>&lt;?php
+// Assuming the classes below are defined in their respective files and namespaces
+// require_once 'MyProject/Utils/Logger.php';
+// require_once 'AnotherProject/Logging/Logger.php';
+
+// Dummy class definitions for this example to run standalone
+if (!class_exists('MyProject\Utils\Logger')) {
+    namespace MyProject\Utils;
+    class Logger { public static function log($m){ echo "MyProject Log: $m&lt;br&gt;"; } }
+}
+if (!class_exists('AnotherProject\Logging\Logger')) {
+    namespace AnotherProject\Logging;
+    class Logger { public static function log($m){ echo "AnotherProject Log: $m&lt;br&gt;"; } }
+}
+// Reset to global namespace for subsequent code if any, or manage carefully
+namespace { // Switch to global namespace
+
+\MyProject\Utils\Logger::log("System started.");
+\AnotherProject\Logging\Logger::log("User logged in.");
+} // End global namespace block
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>use</code> Keyword (Importing/Aliasing):</strong> The <code>use</code> keyword allows you to import a namespace or a specific class/interface/etc. from a namespace, so you can refer to it with a shorter name or an alias.</p>
+            <pre><code>&lt;?php
+// Assuming the classes below are defined in their respective files and namespaces
+// require_once 'MyProject/Utils/Logger.php';
+// require_once 'AnotherProject/Logging/Logger.php';
+
+// Dummy class definitions for this example to run standalone
+if (!class_exists('MyProject\Utils\Logger')) { namespace MyProject\Utils; class Logger { public static function log($m){ echo "MyProject Log: $m&lt;br&gt;"; }}}
+if (!class_exists('AnotherProject\Logging\Logger')) { namespace AnotherProject\Logging; class Logger { public static function log($m){ echo "AnotherProject Log: $m&lt;br&gt;"; }}}
+
+// Must be at the top level or within a namespace declaration
+namespace MyDemoApp { // Define a namespace for the 'use' statements
+
+use MyProject\Utils\Logger; // Import MyProject's Logger
+use AnotherProject\Logging\Logger as AnotherLogger; // Import and alias
+
+Logger::log("System check.");        // Uses MyProject\Utils\Logger
+AnotherLogger::log("Data processed."); // Uses AnotherProject\Logging\Logger
+
+// You can also import an entire namespace (less common for direct class use)
+// use MyProject\Utils as MyUtils;
+// MyUtils\Logger::log("Namespace import.");
+
+// To use multiple classes from the same namespace (PHP 7+):
+// use MyProject\Utils\{Logger, Formatter, Helper};
+} // End MyDemoApp namespace
+?&gt;</code></pre>
+            </li>
+        </ol>
+        <p><strong>Referring to Global Classes/Functions:</strong><br>
+        If you are inside a namespace and want to refer to a class, function, or constant from the global scope (i.e., not namespaced, like PHP's built-in classes), you need to prefix it with a backslash <code>\</code>.</p>
+        <pre><code>&lt;?php
+namespace MyCustomApp;
+
+class DateTimeHandler {
+    public function getCurrentDateTime() {
+        // Without '\', PHP would look for MyCustomApp\DateTime
+        $dateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        return $dateTime-&gt;format('Y-m-d H:i:s');
+    }
+}
+
+$handler = new DateTimeHandler();
+echo $handler-&gt;getCurrentDateTime() . "&lt;br&gt;";
+
+// Calling a global function:
+$length = \strlen("test"); // Refers to global strlen()
+echo "Length: " . $length . "&lt;br&gt;";
+?&gt;</code></pre>
+        <p>Namespaces are essential for modern PHP development, especially when working with third-party libraries or building large applications.</p>
+
+        <h2>12. Autoloading Classes</h2>
+        <p>In PHP projects, you might have many class files. Including each one manually using <code>require</code> or <code>include</code> at the beginning of your scripts can be cumbersome and error-prone.</p>
+        <pre><code>require 'classes/User.php';
+require 'classes/Product.php';
+require 'classes/Order.php';
+// ... and so on</code></pre>
+        <p><strong>Autoloading</strong> solves this problem by automatically loading class files when they are first needed in your code.</p>
+        <p><strong><code>spl_autoload_register()</code> Function:</strong><br>
+        PHP provides the <code>spl_autoload_register()</code> function to register one or more "autoloader" functions. When your code tries to use a class that hasn't been defined yet, PHP will call each registered autoloader function in sequence, passing it the name of the class it's trying to load. The autoloader function is then responsible for locating and including the file for that class.</p>
+        <p><strong>How Autoloaders Typically Work (Convention-Based):</strong><br>
+        A common convention is to name your class files in a way that directly maps to the class name (and its namespace). For example:</p>
+        <ul>
+            <li>Class <code>MyProject\Utils\Logger</code> would be in the file <code>MyProject/Utils/Logger.php</code>.</li>
+            <li>Class <code>User</code> (global namespace) would be in <code>User.php</code> or <code>classes/User.php</code>.</li>
+        </ul>
+        <p><strong>Example of a Simple Autoloader:</strong><br>
+        (This example assumes a specific directory structure. For real projects, use Composer.)</p>
+        <pre><code>&lt;?php
+// This would typically be in a central bootstrap file or config file
+
+spl_autoload_register(function ($className) {
+    // A very basic example: assumes classes are in a 'src/' directory
+    // and namespace separators match directory separators.
+    // Example: class App\Service\MyService -&gt; src/App/Service/MyService.php
+    $baseDir = __DIR__ . '/src/'; // Assuming classes are in 'src' subdirectory
+
+    // Replace namespace separators with directory separators
+    $classFile = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
+    $filePath = $baseDir . $classFile;
+
+    echo "Autoloader: Trying to load class '{$className}' from '{$filePath}'.&lt;br&gt;";
+
+    if (file_exists($filePath)) {
+        require_once $filePath;
+        echo "Autoloader: Successfully loaded '{$className}'.&lt;br&gt;";
+    } else {
+        echo "Autoloader: File '{$filePath}' not found for class '{$className}'.&lt;br&gt;";
+    }
+});
+
+// --- To test this autoloader: ---
+// 1. Create a directory named 'src' in the same directory as this script.
+// 2. Inside 'src', create a directory 'MyApp'.
+// 3. Inside 'src/MyApp', create a file 'MyTestClass.php' with the following content:
+// &lt;?php
+// namespace MyApp;
+// class MyTestClass {
+//     public function __construct() {
+//         echo "MyApp\MyTestClass instantiated!&lt;br&gt;";
+//     }
+// }
+// ?&gt;
+//
+// Then, uncomment the following line to test:
+// $testObj = new MyApp\MyTestClass();
+
+// Expected output if files are set up correctly:
+// Autoloader: Trying to load class 'MyApp\MyTestClass' from '.../src/MyApp/MyTestClass.php'.
+// Autoloader: Successfully loaded 'MyApp\MyTestClass'.
+// MyApp\MyTestClass instantiated!
+?&gt;</code></pre>
+        <p><strong>Note:</strong> The autoloader example above is simplified. Real-world autoloaders, especially those generated by Composer, are more robust and follow standards like PSR-4.</p>
+        <p><strong>Composer's Autoloader:</strong><br>
+        In modern PHP development, the vast majority of projects use <strong>Composer</strong>, a dependency manager for PHP. Composer generates a highly optimized autoloader file (<code>vendor/autoload.php</code>) that can load classes based on configurations in your <code>composer.json</code> file (e.g., PSR-4 autoloading standard).</p>
+        <p>To use Composer's autoloader:</p>
+        <ol>
+            <li>Install Composer (<a href="https://getcomposer.org/">https://getcomposer.org/</a>).</li>
+            <li>Define your autoloading rules in <code>composer.json</code> (e.g., for PSR-4).
+            <pre><code class="language-json">{
+    "autoload": {
+        "psr-4": {
+            "MyProject\\": "src/"
+        }
+    }
+}</code></pre>
+            This maps the <code>MyProject</code> namespace to the <code>src/</code> directory. So <code>MyProject\MyClass</code> would be looked for in <code>src/MyClass.php</code>.</li>
+            <li>Run <code>composer dump-autoload</code> or <code>composer install</code>.</li>
+            <li>Include Composer's autoloader in your project's entry point:<br>
+            <code>require_once 'vendor/autoload.php';</code></li>
+        </ol>
+        <p>This is the standard and recommended way to handle autoloading in contemporary PHP projects.</p>
+
+        <h2>13. Magic Methods</h2>
+        <p>Magic methods in PHP are special methods that are automatically called by PHP when certain actions are performed on an object. They are recognizable by their double underscore (<code>__</code>) prefix. We've already seen <code>__construct()</code> and <code>__destruct()</code>.</p>
+        <p>Here are some other common magic methods:</p>
+        <ul>
+            <li><p><strong><code>__get($property)</code>:</strong></p>
+                <ul>
+                    <li>Called when trying to read an inaccessible (private or protected) or non-existent property.</li>
+                    <li>Allows you to implement "virtual" properties.</li>
+                </ul>
+                <pre><code>&lt;?php
+class DataStore {
+    private $data = [];
+    public function __set($name, $value) { $this-&gt;data[$name] = $value; } // Needs __set for the example
+    public function __get($name) {
+        echo "Accessing '{$name}' via __get.&lt;br&gt;";
+        return $this-&gt;data[$name] ?? "Default Value for {$name}";
+    }
+}
+$store = new DataStore();
+$store-&gt;name = "Alice"; // Calls __set()
+echo $store-&gt;name . "&lt;br&gt;"; // Calls __get. Output: Accessing 'name' via __get. Alice
+echo $store-&gt;city . "&lt;br&gt;"; // Calls __get. Output: Accessing 'city' via __get. Default Value for city
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>__set($property, $value)</code>:</strong></p>
+                <ul>
+                    <li>Called when trying to write to an inaccessible or non-existent property.</li>
+                </ul>
+                <pre><code>&lt;?php
+class UserProfileSetter {
+    private $properties = [];
+    public function __set($key, $val) {
+        echo "Setting '{$key}' to '{$val}' via __set.&lt;br&gt;";
+        if ($key === 'email') { // Example validation
+            if (filter_var($val, FILTER_VALIDATE_EMAIL)) {
+                $this-&gt;properties[$key] = $val;
+            } else {
+                echo "Invalid email format for '{$key}'. Not set.&lt;br&gt;";
+            }
+        } else {
+            $this-&gt;properties[$key] = strtoupper($val); // Example: always store others uppercase
+        }
+    }
+    public function __get($key) { return $this-&gt;properties[$key] ?? null; } // Needs __get for retrieval
+}
+$profileSet = new UserProfileSetter();
+$profileSet-&gt;city = "London"; // Setting 'city' to 'London' via __set.
+$profileSet-&gt;email = "test@example.com"; // Setting 'email' to 'test@example.com' via __set.
+$profileSet-&gt;country = "UK"; // Setting 'country' to 'UK' via __set.
+$profileSet-&gt;email = "invalid-email"; // Setting 'email' to 'invalid-email' via __set. Invalid email format...
+echo "City: " . $profileSet-&gt;city . "&lt;br&gt;";       // City: LONDON
+echo "Email: " . $profileSet-&gt;email . "&lt;br&gt;";     // Email: test@example.com
+echo "Country: " . $profileSet-&gt;country . "&lt;br&gt;"; // Country: UK
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>__isset($property)</code>:</strong></p>
+                <ul>
+                    <li>Triggered by calling <code>isset()</code> or <code>empty()</code> on an inaccessible or non-existent property.</li>
+                    <li>Should return <code>true</code> if the property exists and is not null, <code>false</code> otherwise.</li>
+                </ul>
+                <pre><code>&lt;?php
+class Config {
+    private $settings = ['host' => 'localhost', 'user' => 'admin'];
+    public function __isset($name) {
+        echo "Checking '{$name}' via __isset.&lt;br&gt;";
+        return isset($this-&gt;settings[$name]);
+    }
+}
+$conf = new Config();
+var_dump(isset($conf-&gt;host));  // Checking 'host' via __isset. bool(true)
+var_dump(isset($conf-&gt;port));  // Checking 'port' via __isset. bool(false)
+var_dump(empty($conf-&gt;user)); // Checking 'user' via __isset. bool(false)
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>__unset($property)</code>:</strong></p>
+                <ul>
+                    <li>Called when <code>unset()</code> is used on an inaccessible or non-existent property.</li>
+                </ul>
+                <pre><code>&lt;?php
+class DynamicProps {
+    private $values = ['name' => 'Test', 'value' => 123];
+    public function __unset($name) {
+        echo "Unsetting '{$name}' via __unset.&lt;br&gt;";
+        unset($this-&gt;values[$name]);
+    }
+    public function __get($name) { return $this-&gt;values[$name] ?? null; }
+}
+$dp = new DynamicProps();
+unset($dp-&gt;value); // Unsetting 'value' via __unset.
+var_dump($dp-&gt;value); // NULL
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>__call($method, $arguments)</code>:</strong></p>
+                <ul>
+                    <li>Called when an inaccessible or non-existent instance method is invoked.</li>
+                    <li><code>$method</code>: The name of the method being called.</li>
+                    <li><code>$arguments</code>: An array of arguments passed to the method.</li>
+                </ul>
+                <pre><code>&lt;?php
+class MethodRouter {
+    public function __call($methodName, $args) {
+        echo "Attempted to call instance method '{$methodName}' with arguments: ";
+        print_r($args);
+        echo "&lt;br&gt;";
+        if (method_exists($this, 'custom_' . $methodName)) {
+            return call_user_func_array([$this, 'custom_' . $methodName], $args);
+        }
+        return "Method '{$methodName}' not found.&lt;br&gt;";
+    }
+    private function custom_doSomething($param1, $param2) {
+        return "Did something with {$param1} and {$param2}.&lt;br&gt;";
+    }
+}
+$router = new MethodRouter();
+echo $router-&gt;doSomething("paramA", "paramB"); // Calls __call(), then custom_doSomething()
+echo $router-&gt;anotherMethod("test");          // Calls __call(), method not found
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>__callStatic($method, $arguments)</code>:</strong></p>
+                <ul>
+                    <li>Similar to <code>__call()</code>, but for inaccessible or non-existent static methods.</li>
+                </ul>
+                <pre><code>&lt;?php
+class StaticMethodRouter {
+    public static function __callStatic($methodName, $args) {
+        echo "Attempted to call static method '{$methodName}' with arguments: ";
+        print_r($args);
+        echo "&lt;br&gt;";
+        return "Static method '{$methodName}' handled.&lt;br&gt;";
+    }
+}
+echo StaticMethodRouter::runAction("start", 123); // Calls __callStatic()
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>__toString()</code>:</strong></p>
+                <ul>
+                    <li>Called when an object is treated as a string (e.g., using <code>echo $object;</code> or string concatenation).</li>
+                    <li>The method <strong>must</strong> return a string.</li>
+                </ul>
+                <pre><code>&lt;?php
+class Point3D {
+    public function __construct(public int $x, public int $y, public int $z) {}
+    public function __toString(): string {
+        return "Point3D({$this-&gt;x}, {$this-&gt;y}, {$this-&gt;z})";
+    }
+}
+$p3d = new Point3D(10, 20, 30);
+echo "The point is: " . $p3d . "&lt;br&gt;"; // The point is: Point3D(10, 20, 30)
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>__clone()</code>:</strong></p>
+                <ul>
+                    <li>Called on the <em>newly created copy</em> when an object is cloned using the <code>clone</code> keyword (e.g., <code>$newObj = clone $oldObj;</code>).</li>
+                    <li>Useful for customizing the cloning process, especially for objects that contain references to other objects (deep cloning, where referenced objects are also cloned).</li>
+                </ul>
+                <pre><code>&lt;?php
+class Document {
+    public $title;
+    public $content; // Assume this could be a complex object
+    public function __construct($title) { $this-&gt;title = $title; }
+    public function __clone() {
+        echo "Cloning Document '{$this-&gt;title}'.&lt;br&gt;";
+        // If $this-&gt;content were an object, you might want to deep clone it:
+        // $this-&gt;content = clone $this-&gt;content;
+    }
+}
+$doc1 = new Document("Original Report");
+$doc1-&gt;content = "Some important text.";
+$doc2 = clone $doc1; // Calls __clone() on $doc2
+$doc2-&gt;title = "Copied Report";
+echo "Doc1: {$doc1-&gt;title}, Doc2: {$doc2-&gt;title}&lt;br&gt;";
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>__invoke(...$arguments)</code>:</strong></p>
+                <ul>
+                    <li>Allows an object to be called as if it were a function.</li>
+                </ul>
+                <pre><code>&lt;?php
+class Adder {
+    public function __invoke(int $a, int $b): int {
+        echo "Adder object called as a function.&lt;br&gt;";
+        return $a + $b;
+    }
+}
+$add = new Adder();
+$sum = $add(5, 7); // Calls __invoke(). Output: Adder object called as a function.
+echo "Sum: " . $sum . "&lt;br&gt;"; // Sum: 12
+?&gt;</code></pre>
+            </li>
+        </ul>
+        <p>Magic methods provide powerful ways to control object behavior and create more dynamic and flexible classes. However, they should be used judiciously as they can sometimes make code harder to understand if overused or used inappropriately.</p>
+        <p>This concludes our overview of Object-Oriented Programming in PHP. Mastering these concepts will enable you to write more robust, scalable, and maintainable PHP applications. Remember to practice by building your own classes and exploring how these principles work together.</p>
+    </div>
+</body>
+</html>
+[end of html_output/en/04_php_oop.html]

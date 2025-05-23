@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP and Databases</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #343a40;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid #dee2e6; padding-bottom: 0.3em;}
+        h2 { font-size: 1.8em; border-bottom: 1px solid #e9ecef; padding-bottom: 0.2em;}
+        h3 { font-size: 1.5em; }
+        p {
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #282c34; /* Dark background for code blocks */
+            color: #abb2bf; /* Light text for contrast */
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit; /* Inherit color from pre */
+        }
+        strong {
+            font-weight: 600;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 0.75em;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PHP and Databases</h1>
+
+        <p>Most modern web applications require a way to store, retrieve, and manage data persistently. Databases are the backbone for this functionality. This section explores how PHP interacts with databases, focusing on the widely-used PDO extension for secure and flexible database operations.</p>
+
+        <h2>1. Introduction to Databases for Web Applications</h2>
+
+        <h3>What is a Database?</h3>
+        <p>A <strong>database</strong> is an organized collection of structured information, or data, typically stored electronically in a computer system. It allows for efficient storage, retrieval, management, and updating of data. Think of it as a sophisticated digital filing cabinet.</p>
+
+        <h3>Why Use Databases in Web Applications?</h3>
+        <p>Databases are essential for web applications for several reasons:</p>
+        <ul>
+            <li><strong>Persistent Storage:</strong> Web servers and PHP scripts are generally stateless. Once a script finishes executing, any variables or data in memory are lost. Databases provide a way to store information permanently, so it's available across different user sessions and over time (e.g., user accounts, product catalogs, blog posts).</li>
+            <li><strong>Managing Large Amounts of Data:</strong> Databases are optimized to handle vast quantities of data, far more than can be reasonably managed in text files or in-memory structures.</li>
+            <li><strong>Data Integrity and Consistency:</strong> Databases can enforce rules and constraints (e.g., data types, uniqueness, relationships) to ensure data accuracy and consistency.</li>
+            <li><strong>Concurrent Access:</strong> Databases are designed to handle multiple users or processes accessing and modifying data simultaneously without conflicts or corruption.</li>
+            <li><strong>Efficient Data Retrieval and Querying:</strong> They provide powerful query languages (like SQL) to search, sort, filter, and aggregate data efficiently.</li>
+            <li><strong>Security:</strong> Databases offer mechanisms for controlling access to data, ensuring that only authorized users can view or modify sensitive information.</li>
+        </ul>
+
+        <h3>Relational Databases (RDBMS) vs. NoSQL Databases</h3>
+        <p>There are different types of database management systems (DBMS):</p>
+        <ul>
+            <li><strong>Relational Database Management Systems (RDBMS):</strong>
+                <ul>
+                    <li>These are the most common type for many web applications.</li>
+                    <li>Data is organized into <strong>tables</strong> (similar to spreadsheets).</li>
+                    <li>Tables have predefined <strong>columns</strong> (attributes with specific data types) and <strong>rows</strong> (records or individual entries).</li>
+                    <li>Relationships between tables are established using <strong>keys</strong>.</li>
+                    <li>They use <strong>SQL (Structured Query Language)</strong> for data definition and manipulation.</li>
+                    <li>Examples: MySQL, MariaDB, PostgreSQL, Microsoft SQL Server, Oracle, SQLite.</li>
+                    <li><strong>Focus of this tutorial:</strong> We will primarily focus on RDBMS, specifically MySQL/MariaDB syntax, as it's very common in PHP development.</li>
+                </ul>
+            </li>
+            <li><strong>NoSQL Databases ("Not Only SQL"):</strong>
+                <ul>
+                    <li>Offer more flexible data models than the rigid structure of RDBMS.</li>
+                    <li>Can be document-based (e.g., MongoDB, CouchDB - storing data in JSON-like documents), key-value stores (e.g., Redis, Memcached), column-family stores (e.g., Cassandra), or graph databases (e.g., Neo4j).</li>
+                    <li>Often chosen for applications with very large datasets, high scalability needs, or rapidly evolving data structures.</li>
+                    <li>While powerful, they are beyond the scope of this introductory section.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Basic SQL Concepts (for RDBMS)</h3>
+        <ul>
+            <li><strong>Tables:</strong> A collection of related data entries, consisting of columns and rows. For example, a <code>users</code> table or a <code>products</code> table.</li>
+            <li><strong>Columns (Fields/Attributes):</strong> A vertical entity in a table that contains all information associated with a specific field. Each column has a name and a data type (e.g., <code>INT</code> for integer, <code>VARCHAR</code> for strings, <code>DATETIME</code> for dates). Example columns in a <code>users</code> table: <code>id</code>, <code>username</code>, <code>email</code>, <code>password_hash</code>, <code>registration_date</code>.</li>
+            <li><strong>Rows (Records/Tuples):</strong> A horizontal entity in a table representing a single data item or record. Each row contains a value for each column. Example row in <code>users</code> table: <code>(1, 'johndoe', 'john.doe@example.com', 'hashed_password_here', '2023-01-15 10:00:00')</code>.</li>
+            <li><strong>Primary Key (PK):</strong> A column (or a set of columns) in a table that uniquely identifies each row. Values in the primary key column must be unique and usually cannot be null. Often, this is an auto-incrementing integer like <code>id</code>.</li>
+            <li><strong>Foreign Key (FK):</strong> A column (or a set of columns) in one table that references the primary key of another table. Foreign keys are used to establish and enforce links (relationships) between tables. For example, an <code>orders</code> table might have a <code>user_id</code> column that is a foreign key referencing the <code>id</code> column in the <code>users</code> table.</li>
+        </ul>
+
+        <h3>Common RDBMS for PHP</h3>
+        <ul>
+            <li><strong>MySQL:</strong> The most popular open-source RDBMS, widely used with PHP. Known for its ease of use and good performance. (Oracle product)</li>
+            <li><strong>MariaDB:</strong> A community-developed fork of MySQL, created by the original developers of MySQL. It aims to be a drop-in replacement for MySQL with more features and better performance in some cases. Highly compatible with MySQL.</li>
+            <li><strong>PostgreSQL:</strong> A powerful, open-source object-relational database system with a strong reputation for reliability, feature robustness, and data integrity.</li>
+            <li><strong>SQLite:</strong> A self-contained, serverless, zero-configuration, transactional SQL database engine. The database is stored in a single file, making it very portable and easy to use for smaller applications or for development/testing.</li>
+        </ul>
+        <p><strong>This tutorial will use syntax and examples generally applicable to MySQL and MariaDB, accessed via PHP's PDO extension.</strong></p>
+
+        <h2>2. Connecting to a Database with PHP</h2>
+        <p>PHP needs a way to communicate with the database server. This is done using database extensions.</p>
+
+        <h3>Choosing a PHP Extension</h3>
+        <p>There are several ways to connect to databases in PHP:</p>
+        <ul>
+            <li><strong>PDO (PHP Data Objects):</strong>
+                <ul>
+                    <li><strong>This is the recommended approach for most new PHP projects.</strong></li>
+                    <li>PDO provides a <strong>consistent, object-oriented API</strong> for accessing various database systems (MySQL, PostgreSQL, SQLite, MS SQL Server, Oracle, etc.). This means if you switch your database backend, you only need to change the connection string and possibly some SQL queries (if they use database-specific features), but your PHP data access code (fetching, binding) remains largely the same.</li>
+                    <li>Supports <strong>prepared statements</strong>, which are crucial for preventing SQL injection vulnerabilities.</li>
+                    <li><strong>Enabling PDO:</strong> PDO and its specific database drivers (e.g., <code>pdo_mysql</code>, <code>pdo_pgsql</code>) are usually enabled by default in modern PHP installations. If not, you might need to uncomment or add lines like <code>extension=pdo.so</code> and <code>extension=pdo_mysql.so</code> (or <code>.dll</code> on Windows) in your <code>php.ini</code> file and restart your web server.</li>
+                </ul>
+            </li>
+            <li><strong>MySQLi (MySQL Improved Extension):</strong>
+                <ul>
+                    <li>Specifically designed for working with <strong>MySQL (and MariaDB) databases.</strong></li>
+                    <li>Offers both a <strong>procedural style</strong> (similar to the older <code>mysql_*</code> functions, which are now deprecated and removed) and an <strong>object-oriented style</strong>.</li>
+                    <li>Also supports prepared statements.</li>
+                    <li>If you are <em>certain</em> you will only ever use MySQL/MariaDB, MySQLi is a viable option. However, PDO offers better portability.</li>
+                    <li>We will briefly mention it but focus our examples on PDO.</li>
+                </ul>
+            </li>
+            <li><code>mysql_*</code> functions (e.g., <code>mysql_connect()</code>, <code>mysql_query()</code>):
+                <ul>
+                    <li>These are <strong>deprecated</strong> as of PHP 5.5.0 and <strong>removed</strong> as of PHP 7.0.0.</li>
+                    <li><strong>Do not use them in new code.</strong> They lack support for prepared statements and other modern database features, making them insecure and outdated.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Connecting with PDO</h3>
+        <p>Connecting with PDO involves creating an instance of the <code>PDO</code> class.</p>
+        <p><strong>Data Source Name (DSN):</strong><br>
+        The DSN is a string that specifies the database type, host, database name, and other connection parameters.</p>
+        <ul>
+            <li><strong>For MySQL/MariaDB:</strong><br>
+            <code>"mysql:host=your_host;dbname=your_database_name;charset=your_charset"</code>
+                <ul>
+                    <li><code>mysql</code>: Specifies the PDO driver to use.</li>
+                    <li><code>host</code>: The hostname or IP address of your database server (e.g., <code>localhost</code> or <code>127.0.0.1</code> if on the same machine).</li>
+                    <li><code>dbname</code>: The name of the database you want to connect to.</li>
+                    <li><code>charset</code>: The character set to use for the connection. <code>utf8mb4</code> is highly recommended for supporting a wide range of characters, including emojis.</li>
+                </ul>
+                Example: <code>"mysql:host=localhost;dbname=my_app_db;charset=utf8mb4"</code>
+            </li>
+            <li><strong>For PostgreSQL:</strong><br>
+            <code>"pgsql:host=your_host;dbname=your_database_name;options='--client_encoding=UTF8'"</code> (Charset might be handled differently)</li>
+            <li><strong>For SQLite:</strong><br>
+            <code>"sqlite:/path/to/your/database/file.sqlite"</code><br>
+            Or for an in-memory database (useful for testing): <code>"sqlite::memory:"</code></li>
+        </ul>
+        <p><strong>Creating a PDO Instance:</strong></p>
+        <p>You create a new <code>PDO</code> object by passing the DSN, database username, database password, and optionally an array of driver options.</p>
+        <pre><code>&lt;?php
+$db_host = 'localhost';     // Database host
+$db_name = 'my_blog';       // Database name
+$db_user = 'blog_user';     // Database username
+$db_pass = 'P@$$wOrd';      // Database password
+$charset = 'utf8mb4';       // Preferred charset
+
+// DSN (Data Source Name)
+$dsn = "mysql:host=$db_host;dbname=$db_name;charset=$charset";
+
+// PDO Connection Options
+$options = [
+    PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION, // Throw exceptions on errors
+    PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,       // Fetch results as associative arrays
+    PDO::ATTR_EMULATE_PREPARES   =&gt; false,                  // Disable emulated prepared statements for security
+];
+
+try {
+    // Create a PDO instance (connect to the database)
+    $pdo = new PDO($dsn, $db_user, $db_pass, $options);
+    echo "Connected to the database successfully!&lt;br&gt;";
+    // You can now use the $pdo object to interact with the database
+} catch (\PDOException $e) {
+    // Handle connection errors
+    echo "Connection failed: " . $e-&gt;getMessage() . "&lt;br&gt;";
+    // In a real application, you might log this error and display a user-friendly message
+    // throw new \PDOException($e-&gt;getMessage(), (int)$e-&gt;getCode()); // Optional: re-throw exception
+    die("Database connection error. Please try again later."); // Or exit gracefully
+}
+?&gt;</code></pre>
+        <p><strong>Explanation of Options:</strong></p>
+        <ul>
+            <li><strong><code>PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION</code></strong>:
+                <ul>
+                    <li>This is a <strong>highly recommended</strong> setting. It tells PDO to throw exceptions of type <code>PDOException</code> whenever a database error occurs.</li>
+                    <li>This allows you to catch these exceptions using <code>try...catch</code> blocks for robust error handling.</li>
+                    <li>Other error modes are <code>PDO::ERRMODE_SILENT</code> (default, just sets error codes, you must check manually) and <code>PDO::ERRMODE_WARNING</code> (emits E_WARNING). <code>ERRMODE_EXCEPTION</code> is generally the most practical.</li>
+                </ul>
+            </li>
+            <li><strong><code>PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC</code></strong>:
+                <ul>
+                    <li>Sets the default way PDO will return rows from the database when you fetch data.</li>
+                    <li><code>PDO::FETCH_ASSOC</code>: Returns rows as associative arrays (keys are column names).<br>
+                    <code>['username' =&gt; 'johndoe', 'email' =&gt; 'john@example.com']</code></li>
+                    <li>Other common modes:
+                        <ul>
+                            <li><code>PDO::FETCH_OBJ</code>: Returns rows as anonymous objects.<br>
+                            <code>$row-&gt;username</code>, <code>$row-&gt;email</code></li>
+                            <li><code>PDO::FETCH_NUM</code>: Returns rows as numerically indexed arrays.<br>
+                            <code>$row[0]</code>, <code>$row[1]</code></li>
+                            <li><code>PDO::FETCH_BOTH</code> (default if not set): Returns rows as arrays indexed by both column name and number. This can be redundant.</li>
+                        </ul>
+                    </li>
+                    <li>You can override this default fetch mode when calling specific fetch methods.</li>
+                </ul>
+            </li>
+            <li><strong><code>PDO::ATTR_EMULATE_PREPARES =&gt; false</code></strong>:
+                <ul>
+                    <li>When set to <code>false</code>, PDO uses native prepared statements provided by the database driver. This is generally more secure and sometimes more efficient.</li>
+                    <li>If set to <code>true</code> (can be default in older PHP versions or some drivers), PDO emulates prepared statements, which might not offer the same level of security against SQL injection in all edge cases. <strong>It's best to set this to <code>false</code> if your driver supports native prepared statements (most modern drivers do).</strong></li>
+                </ul>
+            </li>
+        </ul>
+        <p><strong>Error Handling with <code>try...catch</code>:</strong><br>
+        When <code>PDO::ERRMODE_EXCEPTION</code> is set, any database operation (connection, query execution) that fails will throw a <code>PDOException</code>. You should wrap your database code in <code>try...catch</code> blocks to handle these potential errors gracefully.</p>
+        <pre><code>&lt;?php
+// ... (DSN and credentials from above) ...
+try {
+    $pdo = new PDO($dsn, $db_user, $db_pass, $options);
+    // ... perform database operations ...
+} catch (\PDOException $e) {
+    error_log("Database Error: " . $e-&gt;getMessage()); // Log the detailed error
+    // Display a generic message to the user
+    die("A database error occurred. Please try again later or contact support.");
+}
+?&gt;</code></pre>
+
+        <h2>3. Performing CRUD Operations with PDO</h2>
+        <p>CRUD stands for Create, Read, Update, and Delete – the four basic functions of persistent storage.</p>
+        <p><strong>The Golden Rule: Use Prepared Statements</strong><br>
+        For any SQL query that involves user-supplied data (or any data that might change), <strong>always use prepared statements</strong>. This is the most effective way to prevent SQL injection attacks.</p>
+        <p>A prepared statement is a pre-compiled SQL query template. You send the query structure to the database first, and then you send the data separately. The database treats the data purely as data, not as executable SQL code.</p>
+
+        <h3>C - Create (INSERT)</h3>
+        <p>To add new records (rows) to a table, you use the SQL <code>INSERT</code> statement.</p>
+        <p><strong>Steps:</strong></p>
+        <ol>
+            <li><strong>Prepare the SQL <code>INSERT</code> statement:</strong> Use placeholders (e.g., <code>?</code> or named placeholders like <code>:username</code>) for the values you want to insert.<br>
+            <code>INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)</code><br>
+            <code>INSERT INTO users (username, email, password_hash) VALUES (:uname, :email, :pword)</code></li>
+            <li><strong>Create a prepared statement object:</strong> Call <code>$pdo-&gt;prepare($sql)</code>. This returns a <code>PDOStatement</code> object.</li>
+            <li><strong>Bind values/parameters to the placeholders:</strong>
+                <ul>
+                    <li><strong>Anonymous placeholders (<code>?</code>):</strong> Bind values in the order they appear in the query.</li>
+                    <li><strong>Named placeholders (<code>:name</code>):</strong> Bind values to specific placeholder names. This is often more readable.</li>
+                </ul>
+                You can bind values using:
+                <ul>
+                    <li><code>$stmt-&gt;bindParam($placeholder, $variable, $dataType)</code>: Binds a PHP variable to the placeholder. If the variable's value changes before <code>execute()</code>, the new value is used.</li>
+                    <li><code>$stmt-&gt;bindValue($placeholder, $value, $dataType)</code>: Binds a specific value to the placeholder directly.</li>
+                    <li>Or, pass an array of values directly to the <code>$stmt-&gt;execute()</code> method. This is often the most concise way for simple inserts.</li>
+                </ul>
+            </li>
+            <li><strong>Execute the prepared statement:</strong> Call <code>$stmt-&gt;execute()</code>. For named placeholders, the array passed to <code>execute()</code> should be associative. For <code>?</code> placeholders, it should be a numerically indexed array.</li>
+            <li><strong>Get the ID of the last inserted row (optional):</strong> If your table has an auto-incrementing primary key, you can get its value using <code>$pdo-&gt;lastInsertId()</code>.</li>
+        </ol>
+        <p><strong>Example using <code>?</code> placeholders and <code>execute()</code> with an array:</strong></p>
+        <pre><code>&lt;?php
+// Assume $pdo is your connected PDO object from the previous section
+// And a 'users' table: id (INT, PK, AI), username (VARCHAR), email (VARCHAR), registration_date (DATETIME)
+
+$username = "janedoe";
+$email = "jane.doe@example.com";
+$registration_date = date('Y-m-d H:i:s'); // Current date and time
+
+try {
+    $sql = "INSERT INTO users (username, email, registration_date) VALUES (?, ?, ?)";
+    $stmt = $pdo-&gt;prepare($sql);
+
+    // Execute the statement by passing an array of values
+    $stmt-&gt;execute([$username, $email, $registration_date]);
+
+    $lastId = $pdo-&gt;lastInsertId();
+    echo "New user created successfully! User ID: " . $lastId . "&lt;br&gt;";
+
+} catch (\PDOException $e) {
+    echo "Error creating user: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+        <p><strong>Example using named placeholders:</strong></p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+$productName = "Awesome Gadget";
+$price = 99.99;
+$description = "The most awesome gadget you'll ever own!";
+
+try {
+    $sql = "INSERT INTO products (name, price, description) VALUES (:name, :price, :desc)";
+    $stmt = $pdo-&gt;prepare($sql);
+
+    // Bind values using an associative array in execute()
+    $stmt-&gt;execute([
+        ':name' =&gt; $productName,
+        ':price' =&gt; $price,
+        ':desc' =&gt; $description
+    ]);
+    // Or bind individually (more verbose for this case):
+    // $stmt-&gt;bindValue(':name', $productName);
+    // $stmt-&gt;bindValue(':price', $price);
+    // $stmt-&gt;bindValue(':desc', $description);
+    // $stmt-&gt;execute();
+
+    $lastProductId = $pdo-&gt;lastInsertId();
+    echo "New product added! Product ID: " . $lastProductId . "&lt;br&gt;";
+
+} catch (\PDOException $e) {
+    echo "Error adding product: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h3>R - Read (SELECT)</h3>
+        <p>To retrieve data from the database, you use the SQL <code>SELECT</code> statement.</p>
+        <p><strong>Fetching Data:</strong></p>
+        <ul>
+            <li><strong><code>PDO::query($sql)</code> (For simple queries WITHOUT user input):</strong>
+                <ul>
+                    <li>You can use <code>$pdo-&gt;query($sql)</code> for direct queries that do <strong>not</strong> include any variable parts or user input.</li>
+                    <li>It immediately executes the SQL and returns a <code>PDOStatement</code> object, or <code>false</code> on failure (if error mode isn't <code>ERRMODE_EXCEPTION</code>).</li>
+                    <li><strong>Use with extreme caution.</strong> If the query string is built with user input, this method is vulnerable to SQL injection.
+                    <pre><code>// Example: Fetch all users (ONLY if no user input is involved)
+// try {
+//     $stmt = $pdo-&gt;query("SELECT id, username, email FROM users");
+//     while ($row = $stmt-&gt;fetch()) { // Default fetch mode (e.g., PDO::FETCH_ASSOC)
+//         echo "User ID: " . $row['id'] . ", Username: " . $row['username'] . "&lt;br&gt;";
+//     }
+// } catch (\PDOException $e) {
+//     echo "Error fetching users: " . $e-&gt;getMessage() . "&lt;br&gt;";
+// }</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><strong><code>SELECT</code> with Prepared Statements (Recommended):</strong><br>
+            This is the standard and secure way, especially if your <code>SELECT</code> query has a <code>WHERE</code> clause involving user input.</li>
+        </ul>
+        <p><strong>Steps for <code>SELECT</code> with prepared statements:</strong></p>
+        <ol>
+            <li><strong>Prepare the SQL <code>SELECT</code> statement:</strong> Use placeholders for any variable parts (e.g., in a <code>WHERE</code> clause).<br>
+            <code>SELECT id, username, email FROM users WHERE id = ?</code><br>
+            <code>SELECT * FROM products WHERE category = :category AND price &lt; :max_price</code></li>
+            <li><strong>Create a prepared statement object:</strong> <code>$stmt = $pdo-&gt;prepare($sql);</code></li>
+            <li><strong>Bind values to the placeholders (if any):</strong> Use <code>$stmt-&gt;bindValue()</code>, <code>$stmt-&gt;bindParam()</code>, or pass an array to <code>execute()</code>.</li>
+            <li><strong>Execute the prepared statement:</strong> <code>$stmt-&gt;execute()</code>.</li>
+            <li><strong>Fetch the results:</strong>
+                <ul>
+                    <li><code>$stmt-&gt;fetch($fetchStyle)</code>: Fetches the next single row from the result set. Returns <code>false</code> if there are no more rows.
+                        <ul>
+                            <li><code>$fetchStyle</code> (optional): Overrides the default fetch style (e.g., <code>PDO::FETCH_OBJ</code>, <code>PDO::FETCH_NUM</code>).</li>
+                        </ul>
+                    </li>
+                    <li><code>$stmt-&gt;fetchAll($fetchStyle)</code>: Fetches all remaining rows from the result set and returns them as an array of rows.
+                        <ul>
+                            <li>Be cautious with <code>fetchAll()</code> on very large result sets, as it loads everything into memory.</li>
+                        </ul>
+                    </li>
+                    <li><code>$stmt-&gt;rowCount()</code>: For <code>SELECT</code> statements, <code>rowCount()</code> behaviour varies across databases. For MySQL, it typically returns the number of rows <em>affected</em> by the last <code>DELETE</code>, <code>INSERT</code>, or <code>UPDATE</code> statement. For <code>SELECT</code>, it may not reliably give the number of rows returned until after all rows are fetched, or it might not work as expected with all drivers for <code>SELECT</code>. It's often better to check if <code>fetch()</code> returns <code>false</code> or if <code>fetchAll()</code> returns an empty array. With some drivers, it might return the number of rows found by a <code>SELECT</code> <em>after</em> <code>fetchAll</code> or if the statement was prepared with <code>PDO::CURSOR_SCROLLABLE</code>.</li>
+                </ul>
+            </li>
+        </ol>
+        <p><strong>Example: Fetching a single user by ID:</strong></p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+$userIdToFetch = 1; // Example user ID (could come from $_GET['id'])
+
+try {
+    $sql = "SELECT id, username, email, registration_date FROM users WHERE id = ?";
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute([$userIdToFetch]);
+
+    // Fetch a single row
+    $user = $stmt-&gt;fetch(); // Uses default fetch mode (e.g., PDO::FETCH_ASSOC)
+
+    if ($user) {
+        echo "User Found:&lt;br&gt;";
+        echo "ID: " . htmlspecialchars($user['id']) . "&lt;br&gt;";
+        echo "Username: " . htmlspecialchars($user['username']) . "&lt;br&gt;";
+        echo "Email: " . htmlspecialchars($user['email']) . "&lt;br&gt;";
+        echo "Registered: " . htmlspecialchars($user['registration_date']) . "&lt;br&gt;";
+    } else {
+        echo "User with ID " . htmlspecialchars($userIdToFetch) . " not found.&lt;br&gt;";
+    }
+
+} catch (\PDOException $e) {
+    echo "Error fetching user: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+        <p><strong>Example: Fetching all products in a category:</strong></p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+$category = 'electronics';
+
+try {
+    $sql = "SELECT name, price FROM products WHERE category = :cat ORDER BY price DESC";
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute([':cat' =&gt; $category]);
+
+    // Fetch all matching rows
+    $products = $stmt-&gt;fetchAll(); // Uses default fetch mode
+
+    if ($products) {
+        echo "Products in '" . htmlspecialchars($category) . "':&lt;br&gt;";
+        echo "&lt;ul&gt;";
+        foreach ($products as $product) {
+            echo "&lt;li&gt;" . htmlspecialchars($product['name']) . " - $" . htmlspecialchars($product['price']) . "&lt;/li&gt;";
+        }
+        echo "&lt;/ul&gt;";
+    } else {
+        echo "No products found in category '" . htmlspecialchars($category) . "'.&lt;br&gt;";
+    }
+
+} catch (\PDOException $e) {
+    echo "Error fetching products: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h3>U - Update (UPDATE)</h3>
+        <p>To modify existing records in a table, you use the SQL <code>UPDATE</code> statement.</p>
+        <p><strong>Steps:</strong></p>
+        <ol>
+            <li><strong>Prepare the SQL <code>UPDATE</code> statement:</strong> Use placeholders for values in the <code>SET</code> clause and the <code>WHERE</code> clause.<br>
+            <code>UPDATE users SET email = ?, last_login = ? WHERE id = ?</code><br>
+            <code>UPDATE products SET price = :new_price, stock_quantity = :stock WHERE product_id = :id</code></li>
+            <li><strong>Create a prepared statement object:</strong> <code>$stmt = $pdo-&gt;prepare($sql);</code></li>
+            <li><strong>Bind values to all placeholders.</strong></li>
+            <li><strong>Execute the prepared statement:</strong> <code>$stmt-&gt;execute()</code>.</li>
+            <li><strong>Check affected rows (optional):</strong> <code>$stmt-&gt;rowCount()</code> can tell you how many rows were changed by the <code>UPDATE</code> statement.</li>
+        </ol>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+$userIdToUpdate = 1;
+$newEmail = "john.doe.updated@example.com";
+$lastLoginTime = date('Y-m-d H:i:s');
+
+try {
+    $sql = "UPDATE users SET email = :email, last_login = :last_login WHERE id = :id";
+    $stmt = $pdo-&gt;prepare($sql);
+
+    $stmt-&gt;execute([
+        ':email' =&gt; $newEmail,
+        ':last_login' =&gt; $lastLoginTime,
+        ':id' =&gt; $userIdToUpdate
+    ]);
+
+    $affectedRows = $stmt-&gt;rowCount();
+    if ($affectedRows &gt; 0) {
+        echo "User ID " . htmlspecialchars($userIdToUpdate) . " updated successfully. " . $affectedRows . " row(s) affected.&lt;br&gt;";
+    } else {
+        echo "No user found with ID " . htmlspecialchars($userIdToUpdate) . " or data was the same.&lt;br&gt;";
+    }
+
+} catch (\PDOException $e) {
+    echo "Error updating user: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h3>D - Delete (DELETE)</h3>
+        <p>To remove records from a table, you use the SQL <code>DELETE</code> statement.</p>
+        <p><strong>Steps:</strong></p>
+        <ol>
+            <li><strong>Prepare the SQL <code>DELETE</code> statement:</strong> Use placeholders in the <code>WHERE</code> clause to specify which records to delete. <strong>Be very careful with <code>DELETE</code> statements; without a <code>WHERE</code> clause, you will delete all rows in the table!</strong><br>
+            <code>DELETE FROM users WHERE id = ?</code><br>
+            <code>DELETE FROM logs WHERE log_date &lt; :cutoff_date</code></li>
+            <li><strong>Create a prepared statement object:</strong> <code>$stmt = $pdo-&gt;prepare($sql);</code></li>
+            <li><strong>Bind values to the placeholders in the <code>WHERE</code> clause.</strong></li>
+            <li><strong>Execute the prepared statement:</strong> <code>$stmt-&gt;execute()</code>.</li>
+            <li><strong>Check affected rows (optional):</strong> <code>$stmt-&gt;rowCount()</code> can tell you how many rows were deleted.</li>
+        </ol>
+        <p><strong>Example:</strong></p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+$userIdToDelete = 2; // Example user ID to delete
+
+try {
+    $sql = "DELETE FROM users WHERE id = :id";
+    $stmt = $pdo-&gt;prepare($sql);
+
+    $stmt-&gt;execute([':id' =&gt; $userIdToDelete]);
+
+    $affectedRows = $stmt-&gt;rowCount();
+    if ($affectedRows &gt; 0) {
+        echo "User ID " . htmlspecialchars($userIdToDelete) . " deleted successfully. " . $affectedRows . " row(s) affected.&lt;br&gt;";
+    } else {
+        echo "No user found with ID " . htmlspecialchars($userIdToDelete) . " to delete.&lt;br&gt;";
+    }
+
+} catch (\PDOException $e) {
+    echo "Error deleting user: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h2>4. Prepared Statements and SQL Injection</h2>
+
+        <h3>What is SQL Injection?</h3>
+        <p>SQL Injection (SQLi) is a common and dangerous web application vulnerability. It occurs when an attacker is able to insert or "inject" malicious SQL code into input fields, which then gets executed as part of your application's database queries.</p>
+        <p><strong>Consequences:</strong></p>
+        <ul>
+            <li>Bypassing authentication.</li>
+            <li>Reading sensitive data (e.g., user credentials, personal information, credit card numbers).</li>
+            <li>Modifying or deleting data.</li>
+            <li>Gaining administrative control over the database server.</li>
+            <li>Executing operating system commands (in some configurations).</li>
+        </ul>
+        <p><strong>How it Happens (Vulnerable Code Example):</strong></p>
+        <p>Imagine you have code that builds a query by concatenating user input directly:</p>
+        <pre><code>// --- VULNERABLE CODE - DO NOT USE ---
+// Assume $pdo is connected
+// $username_input = $_POST['username']; // e.g., 'admin'
+// $password_input = $_POST['password']; // e.g., user inputs: 'password' OR '1'='1'
+
+// Vulnerable query construction:
+// $sql = "SELECT * FROM users WHERE username = '" . $username_input . "' AND password = '" . $password_input . "'";
+// $stmt = $pdo-&gt;query($sql); // Directly executing the concatenated query
+// $user = $stmt-&gt;fetch();
+
+// If $username_input is 'admin' and $password_input is " ' OR '1'='1 ", the SQL becomes:
+// SELECT * FROM users WHERE username = 'admin' AND password = '' OR '1'='1'
+// The '1'='1' is always true, so the WHERE clause becomes true, potentially logging the attacker in as admin.
+// --- END VULNERABLE CODE ---</code></pre>
+        <p>In the example above, if an attacker enters <code>' OR '1'='1</code> into the password field, they can bypass the password check.</p>
+
+        <h3>How Prepared Statements Prevent SQL Injection</h3>
+        <p>Prepared statements work by separating the SQL query structure (the template) from the data (the values to be inserted or compared).</p>
+        <ol>
+            <li><strong>Prepare:</strong> The SQL query template with placeholders is sent to the database server first. The server parses this template and plans how to execute it, without seeing the actual data values yet.<br>
+            <code>SELECT * FROM users WHERE username = :uname AND password = :pword</code></li>
+            <li><strong>Bind &amp; Execute:</strong> The data values are then sent to the server separately. The database engine takes these values and uses them in the pre-compiled template. <strong>Crucially, these values are treated strictly as data, not as executable SQL code.</strong> Even if the data contains SQL-like syntax (e.g., <code>OR '1'='1'</code>), it will be treated as a literal string to be compared, not as part of the SQL command.</li>
+        </ol>
+        <p>This separation makes it virtually impossible for an attacker to alter the structure or logic of the original SQL query using input fields.</p>
+        <p><strong>Secure Code with Prepared Statements (Counterpart to Vulnerable Example):</strong></p>
+        <pre><code>&lt;?php
+// --- SECURE CODE ---
+// Assume $pdo is connected and in ERRMODE_EXCEPTION
+$username_input = $_POST['username'] ?? '';
+$password_input = $_POST['password'] ?? ''; // In a real app, you'd compare hashed passwords
+
+try {
+    $sql = "SELECT id, username FROM users WHERE username = :uname AND password_hash = :pword_hash"; // Compare against a hashed password
+    $stmt = $pdo-&gt;prepare($sql);
+
+    // Example: Assume $hashed_password_from_db is fetched based on username first,
+    // or you are hashing $password_input to compare. For simplicity here, we're just showing binding.
+    // In a real login, you would typically:
+    // 1. Fetch user by username.
+    // 2. If user exists, use password_verify($password_input, $user['password_hash']).
+    // This example primarily demonstrates binding for the WHERE clause.
+
+    $stmt-&gt;execute([
+        ':uname' =&gt; $username_input,
+        ':pword_hash' =&gt; hash_function($password_input) // Placeholder for actual password hashing
+    ]);
+    $user = $stmt-&gt;fetch();
+
+    if ($user) {
+        echo "Login successful (User: " . htmlspecialchars($user['username']) . ")&lt;br&gt;";
+        // Set session variables, etc.
+    } else {
+        echo "Login failed: Invalid username or password.&lt;br&gt;";
+    }
+
+} catch (\PDOException $e) {
+    echo "Database error: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+
+function hash_function($password) {
+    // Placeholder for a strong hashing algorithm like password_hash()
+    // return password_hash($password, PASSWORD_DEFAULT);
+    return "hashed_" . $password; // Simplified for example
+}
+?&gt;</code></pre>
+        <p>Even if <code>$username_input</code> was <code>admin' --</code> or <code>$password_input</code> was <code>' OR '1'='1</code>, these values would be treated as literal strings when searching for a username or password hash, not as SQL commands.</p>
+        <p><strong>Always use prepared statements whenever user input or any variable data is part of your SQL query, especially in <code>WHERE</code>, <code>INSERT</code>, or <code>UPDATE</code> clauses.</strong></p>
+
+        <h2>5. Working with Result Sets</h2>
+        <p>After executing a <code>SELECT</code> query, you often need to process the rows returned.</p>
+
+        <h3>Looping Through Results from <code>fetchAll()</code></h3>
+        <p><code>fetchAll()</code> retrieves all rows into an array, making it easy to loop with <code>foreach</code>.</p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+try {
+    $stmt = $pdo-&gt;query("SELECT id, name, email FROM contacts LIMIT 10"); // Simple query, no user input
+    $contacts = $stmt-&gt;fetchAll(PDO::FETCH_OBJ); // Fetch all as objects
+
+    if ($contacts) {
+        echo "Contacts:&lt;br&gt;";
+        foreach ($contacts as $contact) {
+            echo "ID: " . htmlspecialchars($contact-&gt;id) .
+                 " - Name: " . htmlspecialchars($contact-&gt;name) .
+                 " - Email: " . htmlspecialchars($contact-&gt;email) . "&lt;br&gt;";
+        }
+    } else {
+        echo "No contacts found.&lt;br&gt;";
+    }
+} catch (\PDOException $e) {
+    echo "Error: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h3>Looping with <code>fetch()</code> in a <code>while</code> Loop</h3>
+        <p>For very large result sets, fetching one row at a time with <code>fetch()</code> inside a <code>while</code> loop can be more memory-efficient than <code>fetchAll()</code>.</p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+try {
+    $sql = "SELECT product_name, category FROM products WHERE stock_quantity &gt; :min_stock";
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute([':min_stock' =&gt; 0]);
+
+    echo "Available Products:&lt;br&gt;";
+    // Fetch rows one by one using the default fetch mode (e.g., PDO::FETCH_ASSOC)
+    while ($row = $stmt-&gt;fetch()) {
+        echo "Product: " . htmlspecialchars($row['product_name']) .
+             " - Category: " . htmlspecialchars($row['category']) . "&lt;br&gt;";
+    }
+    // Check if any rows were processed if needed (e.g., by using a counter in the loop)
+
+} catch (\PDOException $e) {
+    echo "Error: " . $e-&gt;getMessage() . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h3>Checking if a Query Returned Any Results</h3>
+        <ul>
+            <li>After <code>fetchAll()</code>: Check if the returned array is empty (<code>empty($results)</code> or <code>count($results) &gt; 0</code>).</li>
+            <li>After <code>fetch()</code>: Check if the result of <code>fetch()</code> is <code>false</code>.</li>
+            <li><code>$stmt-&gt;rowCount()</code>: As mentioned, its reliability for <code>SELECT</code> row counts varies. It's more reliable for <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>.</li>
+        </ul>
+
+        <h2>6. Error Handling in Database Operations</h2>
+        <p>Robust error handling is crucial. With <code>PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION</code>, PDO will throw <code>PDOException</code>s for database errors.</p>
+        <p><strong>Using <code>try...catch</code> Blocks:</strong></p>
+        <p>Always wrap your database interactions (connection, prepare, execute, fetch) in <code>try...catch</code> blocks.</p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+$newUsername = "test_user";
+$newEmail = "test@example.com";
+
+try {
+    // Start a transaction if multiple related queries
+    // $pdo-&gt;beginTransaction();
+
+    $sql = "INSERT INTO users (username, email) VALUES (:username, :email)";
+    $stmt = $pdo-&gt;prepare($sql);
+
+    $stmt-&gt;bindValue(':username', $newUsername);
+    $stmt-&gt;bindValue(':email', $newEmail);
+    // $stmt-&gt;bindValue(':email', "not_an_email"); // To trigger a potential constraint violation for testing
+
+    $stmt-&gt;execute();
+    echo "User registered successfully.&lt;br&gt;";
+
+    // If part of a transaction:
+    // $pdo-&gt;commit();
+
+} catch (\PDOException $e) {
+    // If part of a transaction, roll back
+    // if ($pdo-&gt;inTransaction()) {
+    //     $pdo-&gt;rollBack();
+    //     echo "Transaction rolled back due to error.&lt;br&gt;";
+    // }
+
+    // Log the error (server-side)
+    error_log("DATABASE ERROR: " . $e-&gt;getMessage() . " in " . $e-&gt;getFile() . " on line " . $e-&gt;getLine());
+    // error_log("SQL executed: " . $sql); // Be careful logging SQL with sensitive data in placeholders
+
+    // Display a user-friendly message
+    echo "An error occurred while processing your request. Please try again. (Error code: DB" . $e-&gt;getCode() . ")&lt;br&gt;";
+    // You might have a mapping of error codes to more specific user messages
+    // For example, if $e-&gt;getCode() == 23000 (integrity constraint violation for MySQL)
+    // if ($e-&gt;errorInfo[1] == 1062) { // MySQL duplicate entry error code
+    //    echo "This username or email is already taken.&lt;br&gt;";
+    // }
+}
+?&gt;</code></pre>
+        <p><strong>Key Error Handling Practices:</strong></p>
+        <ul>
+            <li><strong>Log Detailed Errors:</strong> Store detailed error messages (like <code>$e-&gt;getMessage()</code>, file, line number) in server-side logs. These are invaluable for debugging. <strong>Do not show detailed SQL errors or stack traces to end-users in a production environment</strong> as they can reveal security vulnerabilities.</li>
+            <li><strong>Display User-Friendly Messages:</strong> Show generic, helpful messages to the user (e.g., "An error occurred, please try again later.").</li>
+            <li><strong>Specific Error Codes:</strong> <code>PDOException::getCode()</code> or <code>$e-&gt;errorInfo</code> (an array containing SQLSTATE code, driver-specific error code, and driver-specific error message) can sometimes be used to identify specific types of errors (like duplicate entry, foreign key constraint violation) and provide more targeted feedback to the user if appropriate.</li>
+        </ul>
+
+        <h2>7. Transactions (Brief Introduction)</h2>
+
+        <h3>What are Transactions?</h3>
+        <p>A <strong>transaction</strong> is a sequence of one or more SQL operations that are performed as a single, atomic "unit of work." Either all operations within the transaction are successfully completed and committed to the database, or if any operation fails, the entire transaction is rolled back, and the database is left in its state prior to the transaction.</p>
+
+        <h3>ACID Properties (Briefly)</h3>
+        <p>Transactions in robust database systems adhere to ACID properties:</p>
+        <ul>
+            <li><strong>Atomicity:</strong> All changes within a transaction are performed as a single unit. Either all complete successfully, or none of them do (they are rolled back).</li>
+            <li><strong>Consistency:</strong> A transaction brings the database from one valid state to another. Data integrity constraints are maintained.</li>
+            <li><strong>Isolation:</strong> Concurrent transactions are isolated from each other. The effect of one transaction is not visible to other incomplete transactions.</li>
+            <li><strong>Durability:</strong> Once a transaction is committed, its changes are permanent and will survive system failures (e.g., power outages, crashes).</li>
+        </ul>
+
+        <h3>PDO Transaction Methods</h3>
+        <p>PDO provides methods to control transactions:</p>
+        <ul>
+            <li><strong><code>PDO::beginTransaction()</code></strong>: Turns off auto-commit mode and starts a new transaction. Subsequent queries will not be permanently saved until <code>commit()</code> is called.</li>
+            <li><strong><code>PDO::commit()</code></strong>: Makes all changes performed since <code>beginTransaction()</code> permanent in the database.</li>
+            <li><strong><code>PDO::rollBack()</code></strong>: Discards all changes made since <code>beginTransaction()</code>. The database is restored to the state it was in before the transaction started.</li>
+        </ul>
+
+        <h3>Use Case Example</h3>
+        <p>Imagine transferring money from one bank account to another. This involves two operations:</p>
+        <ol>
+            <li>Decrementing the balance of the sender's account.</li>
+            <li>Incrementing the balance of the receiver's account.</li>
+        </ol>
+        <p>Both operations must succeed. If one fails (e.g., the sender's account update works, but the receiver's fails), you don't want inconsistent data. Transactions handle this.</p>
+        <pre><code>&lt;?php
+// Assume $pdo is connected
+$senderId = 1;
+$receiverId = 2;
+$amountToTransfer = 50.00;
+
+try {
+    // 1. Start the transaction
+    $pdo-&gt;beginTransaction();
+
+    // 2. Decrement sender's balance
+    $sqlDebit = "UPDATE accounts SET balance = balance - :amount WHERE id = :id AND balance &gt;= :amount";
+    $stmtDebit = $pdo-&gt;prepare($sqlDebit);
+    $stmtDebit-&gt;execute([':amount' =&gt; $amountToTransfer, ':id' =&gt; $senderId]);
+    $debitAffectedRows = $stmtDebit-&gt;rowCount();
+
+    if ($debitAffectedRows == 0) {
+        // Sender either doesn't exist or has insufficient funds
+        throw new \Exception("Insufficient funds or sender account not found.");
+    }
+
+    // 3. Increment receiver's balance
+    $sqlCredit = "UPDATE accounts SET balance = balance + :amount WHERE id = :id";
+    $stmtCredit = $pdo-&gt;prepare($sqlCredit);
+    $stmtCredit-&gt;execute([':amount' =&gt; $amountToTransfer, ':id' =&gt; $receiverId]);
+    $creditAffectedRows = $stmtCredit-&gt;rowCount();
+
+    if ($creditAffectedRows == 0) {
+        // Receiver account not found
+        throw new \Exception("Receiver account not found.");
+    }
+
+    // 4. If both operations were successful, commit the transaction
+    $pdo-&gt;commit();
+    echo "Transfer of $" . htmlspecialchars($amountToTransfer) . " successful!&lt;br&gt;";
+
+} catch (\PDOException $e) {
+    // A database error occurred (constraint violation, syntax error, connection issue)
+    if ($pdo-&gt;inTransaction()) {
+        $pdo-&gt;rollBack(); // Roll back changes on database error
+    }
+    error_log("Transfer PDOException: " . $e-&gt;getMessage());
+    echo "Transfer failed due to a database error. Please try again.&lt;br&gt;";
+} catch (\Exception $e) {
+    // An application logic error occurred (e.g., insufficient funds)
+    if ($pdo-&gt;inTransaction()) {
+        $pdo-&gt;rollBack(); // Roll back changes on application error
+    }
+    error_log("Transfer Application Exception: " . $e-&gt;getMessage());
+    echo "Transfer failed: " . htmlspecialchars($e-&gt;getMessage()) . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+        <p>In this example, if either the debit or the credit operation fails (or throws an exception), <code>rollBack()</code> is called, ensuring that neither account balance is changed incorrectly. If both succeed, <code>commit()</code> makes the changes permanent.</p>
+        <p>Transactions are crucial for maintaining data integrity in operations that involve multiple dependent steps.</p>
+        <p>This section provides a solid foundation for working with databases in PHP using PDO. Remember that security (especially preventing SQL injection with prepared statements) and robust error handling are paramount.</p>
+    </div>
+</body>
+</html>
+[end of html_output/en/06_php_and_databases.html]

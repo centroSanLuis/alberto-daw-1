@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Basics</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #343a40;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid #dee2e6; padding-bottom: 0.3em;}
+        h2 { font-size: 1.8em; border-bottom: 1px solid #e9ecef; padding-bottom: 0.2em;}
+        h3 { font-size: 1.5em; }
+        p {
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #282c34; /* Dark background for code blocks */
+            color: #abb2bf; /* Light text for contrast */
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit; /* Inherit color from pre */
+        }
+        strong {
+            font-weight: 600;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 0.75em;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PHP Basics</h1>
+
+        <p>Now that you have your PHP environment set up, it's time to learn the fundamental building blocks of the PHP language. This section covers basic syntax, variables, data types, operators, and control structures.</p>
+
+        <h2>1. Basic PHP Syntax</h2>
+
+        <p>PHP scripts are typically embedded within HTML files. The PHP interpreter processes only the code within special PHP tags.</p>
+
+        <h3>PHP Tags</h3>
+        <ul>
+            <li><p><strong>Standard Tags:</strong> <code>&lt;?php ... ?&gt;</code><br>
+            This is the most common and recommended way to delimit PHP code.</p>
+            <pre><code>&lt;?php
+echo "Hello from standard PHP tags!";
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Short Echo Tags:</strong> <code>&lt;?= ... ?&gt;</code><br>
+            This is a shortcut for <code>&lt;?php echo ... ?&gt;</code>. It's convenient for quickly printing a variable or expression. It is enabled by default in modern PHP versions.</p>
+            <pre><code class="language-html">&lt;p&gt;My name is &lt;?= "John Doe"; ?&gt;.&lt;/p&gt;</code></pre>
+            </li>
+        </ul>
+        <p>While other tag styles like <code>&lt;script language="php"&gt;...&lt;/script&gt;</code> and ASP-style tags (<code>&lt;% ... %&gt;</code>) exist, they are less common, often deprecated, or require special configuration. <strong>It's best to stick to the standard <code>&lt;?php ... ?&gt;</code> tags for maximum compatibility and clarity.</strong></p>
+
+        <h3>Escaping from HTML</h3>
+        <p>PHP code is processed on the server. When the PHP interpreter encounters code outside of its tags, it simply outputs that content directly to the browser. This allows you to easily mix PHP with HTML.</p>
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;PHP Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;&lt;?php echo "Welcome to My Page"; ?&gt;&lt;/h1&gt;
+    &lt;p&gt;This is a standard HTML paragraph.&lt;/p&gt;
+    &lt;?php
+    // This is PHP code
+    $message = "PHP is fun!";
+    echo "&lt;p&gt;" . $message . "&lt;/p&gt;";
+    ?&gt;
+    &lt;p&gt;Another HTML paragraph.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h3>Instruction Separation: Semicolons</h3>
+        <p>Like many other programming languages (C, Java, JavaScript), PHP uses a semicolon (<code>;</code>) to separate individual statements.</p>
+        <pre><code>&lt;?php
+$name = "Alice";
+echo $name;
+$age = 30;
+echo $age;
+?&gt;</code></pre>
+        <p>The closing PHP tag <code>?&gt;</code> automatically implies a semicolon, so you don't strictly need one for the very last statement in a PHP block. However, it's good practice to always include it for consistency.</p>
+
+        <h3>Comments</h3>
+        <p>Comments are parts of the code that are ignored by the PHP interpreter. They are used to explain code, make notes, or temporarily disable parts of a script.</p>
+        <ul>
+            <li><p><strong>Single-line comments:</strong> Start with <code>//</code> or <code>#</code>.</p>
+            <pre><code>&lt;?php
+// This is a single-line comment
+$x = 5; // This comment explains the variable assignment
+
+# This is also a single-line comment (less common for PHP, more common in shell scripts)
+$y = 10;
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Multi-line comments:</strong> Start with <code>/*</code> and end with <code>*/</code>.</p>
+            <pre><code>&lt;?php
+/*
+This is a
+multi-line comment block.
+It can span several lines.
+*/
+$sum = $x + $y;
+echo $sum;
+?&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h3>Case Sensitivity</h3>
+        <p>PHP's case sensitivity rules are important to understand:</p>
+        <ul>
+            <li><p><strong>Variable names ARE case-sensitive.</strong></p>
+            <pre><code>&lt;?php
+$name = "Alice";
+echo $name; // Outputs "Alice"
+// echo $Name; // This would cause an error or output nothing if $Name is not defined
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Function names, class names, method names, and PHP keywords (e.g., <code>echo</code>, <code>if</code>, <code>else</code>, <code>while</code>, <code>class</code>) are generally case-INSENSITIVE.</strong></p>
+            <pre><code>&lt;?php
+ECHO "Hello!"; // Works
+function myFunction() {
+    PRINT "Inside function."; // Works
+}
+myFUNCTION(); // Works
+
+// However, for consistency and readability, it's best practice to stick to a
+// consistent casing for function calls and keywords (usually lowercase for functions and keywords).
+?&gt;</code></pre>
+            <p><strong>Recommendation:</strong> Always use consistent casing (e.g., <code>camelCase</code> for variables, <code>PascalCase</code> for classes, lowercase for functions and keywords) to improve code readability and avoid potential confusion.</p>
+            </li>
+        </ul>
+
+        <h2>2. Variables</h2>
+        <p>Variables are containers for storing information like text, numbers, or arrays.</p>
+
+        <h3>Declaration and Naming Rules</h3>
+        <ul>
+            <li>Variable names in PHP must start with a dollar sign (<code>$</code>).</li>
+            <li>The first character after the <code>$</code> must be a letter (a-z, A-Z) or an underscore (<code>_</code>).</li>
+            <li>Subsequent characters can be letters, numbers (0-9), or underscores.</li>
+            <li>Variable names are case-sensitive (<code>$name</code> and <code>$Name</code> are two different variables).</li>
+        </ul>
+        <pre><code>&lt;?php
+$name = "John";
+$_age = 30;
+$user_email_address = "john.doe@example.com";
+$totalAmount = 100.50;
+// $1variable = "error"; // Invalid: starts with a number after $
+// $variable-name = "error"; // Invalid: contains a hyphen
+?&gt;</code></pre>
+        <p>PHP is a <strong>loosely typed language</strong>. This means you don't need to declare the data type of a variable before assigning a value to it. PHP automatically determines the type based on the value assigned.</p>
+
+        <h3>Assigning Values</h3>
+        <p>Values are assigned to variables using the assignment operator (<code>=</code>).</p>
+        <pre><code>&lt;?php
+$firstName = "Jane"; // Assigns the string "Jane" to $firstName
+$age = 25;         // Assigns the integer 25 to $age
+$isStudent = true; // Assigns the boolean true to $isStudent
+
+// Variables can also be assigned the value of other variables
+$personName = $firstName;
+echo $personName; // Outputs "Jane"
+?&gt;</code></pre>
+
+        <h3>Variable Scope</h3>
+        <p>The scope of a variable defines where in your script it can be accessed.</p>
+        <ul>
+            <li><p><strong>Local Scope:</strong><br>
+            Variables declared inside a function are local to that function. They can only be accessed from within that function.</p>
+            <pre><code>&lt;?php
+function greet() {
+    $message = "Hello from inside the function!"; // Local variable
+    echo $message;
+}
+
+greet();
+// echo $message; // This would cause an error because $message is not defined globally
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Global Scope:</strong><br>
+            Variables declared outside of any function have global scope. They can be accessed from anywhere in the script <em>except</em> from within a function by default.</p>
+            <pre><code>&lt;?php
+$globalVar = "I am global!";
+
+function testGlobal() {
+    // echo $globalVar; // This would cause an error or try to access an undefined local $globalVar
+}
+testGlobal();
+echo $globalVar; // Outputs "I am global!"
+?&gt;</code></pre>
+            <p>To access a global variable from within a function, you must use the <code>global</code> keyword:</p>
+            <pre><code>&lt;?php
+$count = 0;
+
+function incrementCount() {
+    global $count; // Declare that we want to use the global $count
+    $count++;
+    echo "Count inside function: " . $count . "&lt;br&gt;";
+}
+
+incrementCount(); // Count inside function: 1
+incrementCount(); // Count inside function: 2
+echo "Count outside function: " . $count; // Count outside function: 2
+?&gt;</code></pre>
+            <p>Alternatively, you can use the <code>$GLOBALS</code> array (see Superglobals).</p>
+            </li>
+            <li><p><strong>Static Scope:</strong><br>
+            When a variable inside a function is declared as <code>static</code>, it retains its value between multiple calls to that function. Normally, when a function finishes executing, all its local variables are destroyed.</p>
+            <pre><code>&lt;?php
+function staticCounter() {
+    static $num = 0; // Static variable
+    $num++;
+    echo $num . "&lt;br&gt;";
+}
+
+staticCounter(); // Outputs: 1
+staticCounter(); // Outputs: 2
+staticCounter(); // Outputs: 3
+?&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h3>Superglobals</h3>
+        <p>Superglobals are predefined variables in PHP that are always accessible, regardless of scope. You don't need to use the <code>global</code> keyword to access them from within functions or methods.</p>
+        <p>Here are some of the most commonly used superglobals:</p>
+        <ul>
+            <li><code>$_GET</code>: An associative array of variables passed to the current script via the URL parameters (query string).
+                <ul>
+                    <li>Example: If the URL is <code>example.php?name=Alice&amp;age=30</code>, then <code>$_GET['name']</code> is "Alice" and <code>$_GET['age']</code> is "30".</li>
+                </ul>
+            </li>
+            <li><code>$_POST</code>: An associative array of variables passed to the current script via the HTTP POST method (typically from HTML forms).</li>
+            <li><code>$_REQUEST</code>: An associative array that by default contains the contents of <code>$_GET</code>, <code>$_POST</code>, and <code>$_COOKIE</code>. It's generally recommended to use <code>$_GET</code> or <code>$_POST</code> directly for clarity and security.</li>
+            <li><code>$_SERVER</code>: An array containing information such as headers, paths, and script locations.
+                <ul>
+                    <li>Examples: <code>$_SERVER['PHP_SELF']</code> (filename of the currently executing script), <code>$_SERVER['HTTP_HOST']</code> (host name), <code>$_SERVER['REQUEST_METHOD']</code> (GET, POST, etc.).</li>
+                </ul>
+            </li>
+            <li><code>$_SESSION</code>: An associative array containing session variables. Used to persist user data across multiple page requests. You need to start a session with <code>session_start()</code> before using it.</li>
+            <li><code>$_COOKIE</code>: An associative array of variables passed to the current script via HTTP Cookies.</li>
+            <li><code>$_FILES</code>: An associative array of items uploaded to the current script via the HTTP POST method. Used for handling file uploads.</li>
+            <li><code>$_ENV</code>: An associative array of variables passed to the current script via the environment method.</li>
+            <li><code>$GLOBALS</code>: An associative array containing references to all variables which are currently defined in the global scope of the script. The keys of this array are the names of the global variables.
+            <pre><code>&lt;?php
+$myGlobal = "Hello from global scope!";
+
+function accessGlobalViaGLOBALS() {
+    echo $GLOBALS['myGlobal'];
+}
+
+accessGlobalViaGLOBALS(); // Outputs: Hello from global scope!
+?&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h2>3. Data Types</h2>
+        <p>PHP supports several data types. As a dynamically typed language, the type of a variable is not set by declaration but is determined at runtime by the value it holds.</p>
+
+        <h3>Explanation of Dynamic Typing</h3>
+        <p>In PHP, you don't explicitly tell PHP what type of data a variable will hold. PHP figures it out automatically:</p>
+        <pre><code>&lt;?php
+$data = "Hello";      // $data is a string
+echo gettype($data) . "&lt;br&gt;"; // Output: string
+
+$data = 123;          // Now $data is an integer
+echo gettype($data) . "&lt;br&gt;"; // Output: integer
+
+$data = true;         // Now $data is a boolean
+echo gettype($data) . "&lt;br&gt;"; // Output: boolean
+?&gt;</code></pre>
+        <p><code>gettype()</code> is a function that returns the type of a variable.</p>
+
+        <h3>Scalar Types</h3>
+        <p>Scalar types represent single values.</p>
+        <ul>
+            <li><p><strong>String:</strong> A sequence of characters.</p>
+                <ul>
+                    <li>Can be enclosed in single quotes (<code>'...'</code>) or double quotes (<code>"..."</code>).</li>
+                    <li><strong>Single quotes:</strong> Treat the content literally. Variables and most escape sequences are not interpreted.
+                        <pre><code>$name = 'Alice';
+$text = 'My name is $name.'; // Output: My name is $name.
+$text2 = 'This is a single quote: \'';</code></pre>
+                    </li>
+                    <li><strong>Double quotes:</strong> Interpret variables (variable interpolation) and special escape sequences (e.g., <code>\n</code> for newline, <code>\t</code> for tab, <code>\$</code> for a literal dollar sign).
+                        <pre><code>$name = "Bob";
+$text = "My name is $name.";   // Output: My name is Bob.
+$text2 = "This is a newline:\nAnd this is a tab:\t.";
+$text3 = "He said, \"Hello!\""; // Escaping double quotes</code></pre>
+                    </li>
+                    <li><strong>String Concatenation:</strong> The dot (<code>.</code>) operator is used to join strings.
+                        <pre><code>$greeting = "Hello";
+$subject = "World";
+$fullGreeting = $greeting . ", " . $subject . "!"; // "Hello, World!"
+echo $fullGreeting;</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><p><strong>Integer:</strong> Whole numbers (positive, negative, or zero) without decimal points.</p>
+            <pre><code>&lt;?php
+$age = 30;
+$negative_num = -100;
+$octal_num = 0123; // Octal (equivalent to 83 decimal)
+$hex_num = 0x1A;   // Hexadecimal (equivalent to 26 decimal)
+$binary_num = 0b1010; // Binary (equivalent to 10 decimal)
+var_dump($age, $negative_num); // var_dump() shows type and value
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Float (Floating-point number or Double):</strong> Numbers with a decimal point or in exponential form.</p>
+            <pre><code>&lt;?php
+$price = 19.99;
+$pi = 3.14159;
+$scientific = 3.0e8; // 3 * 10^8
+var_dump($price, $scientific);
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Boolean:</strong> Represents two possible states: <code>true</code> or <code>false</code>. Boolean values are case-insensitive (<code>true</code>, <code>TRUE</code>, <code>True</code> are all the same).</p>
+            <pre><code>&lt;?php
+$isLoggedIn = true;
+$isAdmin = false;
+var_dump($isLoggedIn, $isAdmin);
+?&gt;</code></pre>
+                <ul>
+                    <li><strong>Truthy and Falsy Values:</strong> When converting non-boolean values to boolean, PHP considers certain values as <code>false</code>:
+                        <ul>
+                            <li>The boolean <code>false</code> itself.</li>
+                            <li>The integer <code>0</code>.</li>
+                            <li>The float <code>0.0</code>.</li>
+                            <li>The empty string <code>""</code> and the string <code>"0"</code>.</li>
+                            <li>An array with zero elements.</li>
+                            <li>The special type <code>NULL</code>.</li>
+                            <li>SimpleXML objects created from empty tags.</li>
+                        </ul>
+                    All other values are considered <code>true</code> (truthy).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Compound Types</h3>
+        <p>Compound types can hold multiple values.</p>
+        <ul>
+            <li><p><strong>Array:</strong> An ordered map that associates values with keys.</p>
+                <ul>
+                    <li><strong>Indexed arrays:</strong> Arrays with numeric indices (keys usually start from 0).
+                        <pre><code>&lt;?php
+// Using array() construct
+$colors = array("Red", "Green", "Blue");
+// Using short array syntax [] (PHP 5.4+)
+$fruits = ["Apple", "Banana", "Cherry"];
+
+echo $colors[0]; // Outputs: Red
+echo $fruits[1]; // Outputs: Banana
+$fruits[1] = "Orange"; // Modify an element
+var_dump($fruits);
+?&gt;</code></pre>
+                    </li>
+                    <li><strong>Associative arrays:</strong> Arrays with named (string) keys.
+                        <pre><code>&lt;?php
+$person = array(
+    "name" => "Alice",
+    "age" => 30,
+    "city" => "New York"
+);
+// Using short syntax
+$car = [
+    "make" => "Toyota",
+    "model" => "Camry",
+    "year" => 2021
+];
+
+echo $person["name"]; // Outputs: Alice
+echo $car["model"];  // Outputs: Camry
+$person["email"] = "alice@example.com"; // Add a new element
+var_dump($person);
+?&gt;</code></pre>
+                    </li>
+                    <li><strong>Multi-dimensional arrays:</strong> Arrays containing other arrays.
+                        <pre><code>&lt;?php
+$students = [
+    ["name" => "John", "age" => 20, "grade" => "A"],
+    ["name" => "Jane", "age" => 22, "grade" => "B"],
+    ["name" => "Doe",  "age" => 21, "grade" => "A+"]
+];
+echo $students[1]["name"]; // Outputs: Jane
+echo $students[0]["grade"]; // Outputs: A
+var_dump($students);
+?&gt;</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><p><strong>Object:</strong> Instances of classes. Objects encapsulate data (properties) and behavior (methods). We'll cover objects and classes in detail in the Object-Oriented Programming (OOP) section. For now, just know it's a data type.</p>
+            <pre><code>&lt;?php
+class MyClass {
+    public $property = "Hello Object!";
+}
+$obj = new MyClass();
+echo $obj->property; // Accessing object property
+var_dump($obj);
+?&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h3>Special Types</h3>
+        <ul>
+            <li><p><strong>NULL:</strong> A special data type that represents a variable with no value. A variable is considered <code>NULL</code> if:</p>
+                <ul>
+                    <li>It has been assigned the constant <code>NULL</code>.</li>
+                    <li>It has not been set to any value yet.</li>
+                    <li>It has been <code>unset()</code>.</li>
+                </ul>
+                <p><code>NULL</code> is case-insensitive (<code>null</code>, <code>NULL</code>, <code>Null</code> are the same).</p>
+            <pre><code>&lt;?php
+$noValue = NULL;
+$undefinedVar; // Automatically NULL, but raises a notice if accessed before assignment
+
+var_dump($noValue);
+// var_dump($undefinedVar); // Would show NULL but also a notice
+$x = 10;
+unset($x); // $x is now NULL
+// var_dump($x); // Would show NULL but also a notice
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Resource:</strong> A special variable holding a reference to an external resource, such as a database connection, a file handle, or an image canvas. You don't typically create resource variables directly; they are returned by specific functions.</p>
+            <pre><code>&lt;?php
+// Example: Opening a file
+// Ensure 'example.txt' exists or fopen might fail.
+// You can create an empty 'example.txt' in the same directory as this script.
+$fileHandle = @fopen("example.txt", "r"); // fopen returns a resource or false on error
+if ($fileHandle) {
+    echo gettype($fileHandle) . "&lt;br&gt;"; // Output: resource
+    var_dump($fileHandle);
+    fclose($fileHandle); // Important to close resources
+} else {
+    echo "Failed to open file.";
+}
+?&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h3>Type Juggling and Casting</h3>
+        <p>PHP often automatically converts types when needed in an expression ("type juggling").</p>
+        <pre><code>&lt;?php
+$numString = "10"; // String
+$integer = 5;      // Integer
+$result = $numString + $integer; // $numString is converted to an integer for addition
+echo $result; // Output: 15
+var_dump($result); // Output: int(15)
+
+$boolValue = true;
+$sum = 1 + $boolValue; // true is converted to 1
+echo $sum; // Output: 2
+?&gt;</code></pre>
+        <p>You can also explicitly convert types using <strong>type casting</strong>:</p>
+        <ul>
+            <li><code>(int)</code>, <code>(integer)</code> - cast to integer</li>
+            <li><code>(bool)</code>, <code>(boolean)</code> - cast to boolean</li>
+            <li><code>(float)</code>, <code>(double)</code>, <code>(real)</code> - cast to float</li>
+            <li><code>(string)</code> - cast to string</li>
+            <li><code>(array)</code> - cast to array</li>
+            <li><code>(object)</code> - cast to object</li>
+            <li><code>(unset)</code> - cast to NULL (PHP 7.2+)</li>
+        </ul>
+        <pre><code>&lt;?php
+$floatNum = 123.789;
+$intNum = (int) $floatNum;
+echo $intNum; // Output: 123 (fractional part is truncated)
+
+$strValue = "false";
+$boolVal = (bool) $strValue; // Non-empty string becomes true
+var_dump($boolVal); // Output: bool(true)
+
+$num = 100;
+$strNum = (string) $num;
+var_dump($strNum); // Output: string(3) "100"
+
+$value = 10;
+$arr = (array) $value;
+var_dump($arr); // Output: array(1) { [0]=&gt; int(10) }
+?&gt;</code></pre>
+
+        <h2>4. Operators</h2>
+        <p>Operators are symbols that perform operations on variables and values.</p>
+
+        <h3>Arithmetic Operators</h3>
+        <p>Perform mathematical calculations.</p>
+        <ul>
+            <li><code>+</code> : Addition</li>
+            <li><code>-</code> : Subtraction</li>
+            <li><code>*</code> : Multiplication</li>
+            <li><code>/</code> : Division</li>
+            <li><code>%</code> : Modulus (remainder of a division)</li>
+            <li><code>**</code>: Exponentiation (PHP 5.6+)</li>
+        </ul>
+        <pre><code>&lt;?php
+$x = 10;
+$y = 3;
+echo $x + $y;  // 13
+echo $x - $y;  // 7
+echo $x * $y;  // 30
+echo $x / $y;  // 3.333...
+echo $x % $y;  // 1
+echo 2 ** 4; // 16 (2 to the power of 4)
+?&gt;</code></pre>
+
+        <h3>Assignment Operators</h3>
+        <p>Assign values to variables.</p>
+        <ul>
+            <li><code>=</code>   : Basic assignment (<code>$a = $b</code>)</li>
+            <li><code>+=</code>  : Addition assignment (<code>$a += $b</code> is <code>$a = $a + $b</code>)</li>
+            <li><code>-=</code>  : Subtraction assignment (<code>$a -= $b</code> is <code>$a = $a - $b</code>)</li>
+            <li><code>*=</code>  : Multiplication assignment (<code>$a *= $b</code> is <code>$a = $a * $b</code>)</li>
+            <li><code>/=</code>  : Division assignment (<code>$a /= $b</code> is <code>$a = $a / $b</code>)</li>
+            <li><code>%=</code>  : Modulus assignment (<code>$a %= $b</code> is <code>$a = $a % $b</code>)</li>
+            <li><code>.=</code>  : Concatenation assignment (<code>$a .= $b</code> is <code>$a = $a . $b</code>) (for strings)</li>
+        </ul>
+        <pre><code>&lt;?php
+$a = 5;
+$b = 3;
+$a += $b; // $a is now 8
+echo $a . "&lt;br&gt;";
+
+$str = "Hello";
+$str .= " World!"; // $str is now "Hello World!"
+echo $str . "&lt;br&gt;";
+?&gt;</code></pre>
+
+        <h3>Comparison Operators</h3>
+        <p>Compare two values and return a boolean (<code>true</code> or <code>false</code>).</p>
+        <ul>
+            <li><code>==</code>  : Equal (value). Type juggling may occur.</li>
+            <li><code>===</code> : Identical (value and type). No type juggling.</li>
+            <li><code>!=</code>  : Not equal (value).</li>
+            <li><code>&lt;&gt;</code>  : Not equal (value, alternative to <code>!=</code>).</li>
+            <li><code>!==</code> : Not identical (value or type).</li>
+            <li><code>&lt;</code>   : Less than.</li>
+            <li><code>&gt;</code>   : Greater than.</li>
+            <li><code>&lt;=</code>  : Less than or equal to.</li>
+            <li><code>&gt;=</code>  : Greater than or equal to.</li>
+            <li><code>&lt;=&gt;</code> : Spaceship operator (PHP 7+). Returns -1 if left is less than right, 0 if equal, 1 if left is greater than right.</li>
+        </ul>
+        <pre><code>&lt;?php
+$x = 5;
+$y = "5";
+
+var_dump($x == $y);  // bool(true) because "5" is converted to 5
+var_dump($x === $y); // bool(false) because $x is int, $y is string
+
+var_dump($x != $y);  // bool(false)
+var_dump($x !== $y); // bool(true)
+
+$a = 10;
+$b = 20;
+var_dump($a &lt; $b);   // bool(true)
+
+var_dump(5 &lt;=&gt; 5); // int(0)
+var_dump(5 &lt;=&gt; 10); // int(-1)
+var_dump(10 &lt;=&gt; 5); // int(1)
+?&gt;</code></pre>
+        <p><strong>Difference between <code>==</code> and <code>===</code>:</strong><br>
+        Always prefer <code>===</code> for comparisons if you also want to ensure the types are the same, as it's stricter and can prevent subtle bugs caused by type juggling. Use <code>==</code> only when you specifically need to compare values after type conversion.</p>
+
+        <h3>Logical Operators</h3>
+        <p>Combine conditional statements.</p>
+        <ul>
+            <li><code>&amp;&amp;</code> (and): True if both operands are true.</li>
+            <li><code>||</code> (or) : True if either operand is true.</li>
+            <li><code>!</code> (not) : True if the operand is false.</li>
+            <li><code>and</code>     : Logical AND (lower precedence than <code>&amp;&amp;</code>).</li>
+            <li><code>or</code>      : Logical OR (lower precedence than <code>||</code>).</li>
+            <li><code>xor</code>     : Logical XOR (exclusive OR - true if one operand is true, but not both).</li>
+        </ul>
+        <pre><code>&lt;?php
+$age = 25;
+$isCitizen = true;
+
+if ($age &gt;= 18 &amp;&amp; $isCitizen) {
+    echo "Can vote.&lt;br&gt;";
+}
+
+if ($age &lt; 18 || !$isCitizen) {
+    echo "Cannot vote.&lt;br&gt;";
+}
+
+// Using 'and' (note precedence difference with assignment)
+// ($result = true and false;) would assign true to $result then evaluate (true and false)
+// $result = (true and false); // $result is false
+?&gt;</code></pre>
+        <p><strong>Short-circuiting:</strong> Logical operators <code>&amp;&amp;</code> and <code>||</code> perform short-circuit evaluation.</p>
+        <ul>
+            <li>For <code>&amp;&amp;</code>, if the left operand is <code>false</code>, the right operand is not evaluated because the result will always be <code>false</code>.</li>
+            <li>For <code>||</code>, if the left operand is <code>true</code>, the right operand is not evaluated because the result will always be <code>true</code>.</li>
+        </ul>
+        <p>This can be useful for performance or to avoid errors:</p>
+        <pre><code>&lt;?php
+$divisor = 0;
+// if ($divisor != 0 &amp;&amp; (10 / $divisor) &gt; 2) { // This would cause a division by zero error
+//     echo "Result is greater than 2";
+// }
+
+if ($divisor != 0 &amp;&amp; (10 / $divisor) &gt; 2) { // Short-circuiting prevents division by zero
+    echo "Result is greater than 2";
+} else {
+    echo "Condition not met or division by zero avoided.&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+        <h3>Increment/Decrement Operators</h3>
+        <p>Increase or decrease a variable's value by one.</p>
+        <ul>
+            <li><code>++$var</code> (Pre-increment): Increments <code>$var</code> by one, then returns <code>$var</code>.</li>
+            <li><code>$var++</code> (Post-increment): Returns <code>$var</code>, then increments <code>$var</code> by one.</li>
+            <li><code>--$var</code> (Pre-decrement): Decrements <code>$var</code> by one, then returns <code>$var</code>.</li>
+            <li><code>$var--</code> (Post-decrement): Returns <code>$var</code>, then decrements <code>$var</code> by one.</li>
+        </ul>
+        <pre><code>&lt;?php
+$a = 5;
+echo ++$a; // 6 (a becomes 6, then 6 is printed)
+echo $a;   // 6
+
+$b = 5;
+echo $b++; // 5 (5 is printed, then b becomes 6)
+echo $b;   // 6
+
+$c = 5;
+echo --$c; // 4 (c becomes 4, then 4 is printed)
+
+$d = 5;
+echo $d--; // 5 (5 is printed, then d becomes 4)
+?&gt;</code></pre>
+
+        <h3>String Concatenation Operator</h3>
+        <ul>
+            <li><code>.</code> : Joins two strings.</li>
+        </ul>
+        <pre><code>&lt;?php
+$str1 = "Hello";
+$str2 = "PHP";
+$message = $str1 . " " . $str2 . "!"; // "Hello PHP!"
+echo $message;
+?&gt;</code></pre>
+
+        <h3>Array Operators</h3>
+        <ul>
+            <li><code>+</code>   : Union. Appends elements from the right-hand array to the left-hand array. If keys are the same, elements from the left array are kept.</li>
+            <li><code>==</code>  : Equality. Returns <code>true</code> if both arrays have the same key/value pairs (order doesn't matter for associative, but does for indexed unless keys are explicitly specified).</li>
+            <li><code>===</code> : Identity. Returns <code>true</code> if both arrays have the same key/value pairs in the same order and of the same types.</li>
+            <li><code>!=</code>, <code>&lt;&gt;</code> : Inequality.</li>
+            <li><code>!==</code> : Non-identity.</li>
+        </ul>
+        <pre><code>&lt;?php
+$arr1 = ["a" => "apple", "b" => "banana"];
+$arr2 = ["b" => "blueberry", "c" => "cherry"]; // "b" key exists in $arr1
+$union = $arr1 + $arr2;
+print_r($union); // Output: Array ( [a] => apple [b] => banana [c] => cherry )
+
+$x = [1, 2, 3];
+$y = [3, 2, 1];
+$z = ["1", 2, "3"];
+var_dump($x == $y); // bool(false) - order and values matter for indexed
+var_dump($x == $z); // bool(true) - values are compared after type juggling
+
+$a = ["name" => "Alice", "age" => 30];
+$b = ["age" => 30, "name" => "Alice"];
+var_dump($a == $b); // bool(true) - order doesn't matter for associative with same key/value pairs
+var_dump($a === $b); // bool(false) - order still matters for === if key/value pairs are not in the same sequence internally. For ===, key order also matters.
+?&gt;</code></pre>
+
+        <h3>Error Control Operator</h3>
+        <ul>
+            <li><code>@</code> : When prepended to an expression, any error messages that might be generated by that expression will be ignored.</li>
+        </ul>
+        <pre><code>&lt;?php
+// Example: Trying to access an undefined variable
+$value = @$undefinedVar; // Suppresses the "Undefined variable" notice
+echo "Value is: " . $value . "&lt;br&gt;"; // Value is: (empty)
+
+// Example: Opening a file that might not exist
+$file = @fopen("non_existent_file.txt", "r");
+if ($file) {
+    echo "File opened.";
+    fclose($file);
+} else {
+    echo "Failed to open file (error suppressed).&lt;br&gt;";
+}
+?&gt;</code></pre>
+        <p><strong>Caution:</strong> While the <code>@</code> operator can be useful for suppressing errors in specific situations (e.g., when you know an error might occur and have a plan to handle it), it should be used sparingly. Overusing it can hide real problems in your code and make debugging much harder. It's generally better to handle errors explicitly using <code>try-catch</code> blocks (for exceptions) or by checking return values of functions.</p>
+
+        <h3>Ternary Operator</h3>
+        <p>A shorthand for an <code>if-else</code> statement.<br>
+        Syntax: <code>condition ? expression_if_true : expression_if_false</code></p>
+        <pre><code>&lt;?php
+$age = 20;
+$status = ($age >= 18) ? "adult" : "minor";
+echo "Status: " . $status . "&lt;br&gt;"; // Status: adult
+
+// Equivalent if-else:
+// if ($age >= 18) {
+//     $status = "adult";
+// } else {
+//     $status = "minor";
+// }
+?&gt;</code></pre>
+
+        <h3>Null Coalescing Operator</h3>
+        <p>Available since PHP 7.0. Returns its first operand if it exists and is not <code>NULL</code>; otherwise, it returns its second operand.<br>
+        Syntax: <code>operand1 ?? operand2</code></p>
+        <pre><code>&lt;?php
+// Example 1: Variable might not be set
+// $username = $_GET['user']; // This would produce a notice if 'user' is not in GET params
+$username = $_GET['user'] ?? 'guest'; // Sets $username to 'guest' if $_GET['user'] is not set or is NULL
+echo "Username: " . $username . "&lt;br&gt;";
+
+// Example 2: Chaining
+$preferredName = $userProfile['nickname'] ?? $userProfile['firstName'] ?? 'Anonymous';
+echo "Preferred Name: " . $preferredName . "&lt;br&gt;";
+
+// This is a shorthand for:
+// isset($operand1) ? $operand1 : $operand2
+// or more accurately for null:
+// $operand1 !== null ? $operand1 : $operand2
+?&gt;</code></pre>
+
+        <h2>5. Control Structures</h2>
+        <p>Control structures allow you to dictate the flow of execution in your PHP scripts. They enable decision-making (conditionals) and repetition (loops).</p>
+
+        <h3>Conditional Statements</h3>
+        <p>Execute different blocks of code based on specified conditions.</p>
+        <ul>
+            <li><p><strong><code>if</code>, <code>elseif</code>, <code>else</code>:</strong></p>
+            <pre><code>&lt;?php
+$score = 85;
+
+if ($score &gt;= 90) {
+    echo "Grade: A&lt;br&gt;";
+} elseif ($score &gt;= 80) {
+    echo "Grade: B&lt;br&gt;"; // This block will be executed
+} elseif ($score &gt;= 70) {
+    echo "Grade: C&lt;br&gt;";
+} else {
+    echo "Grade: D or F&lt;br&gt;";
+}
+
+$temperature = 15;
+if ($temperature &gt; 25) {
+    echo "It's warm.&lt;br&gt;";
+} else {
+    echo "It's cool.&lt;br&gt;";
+}
+?&gt;</code></pre>
+            </li>
+            <li><p><strong>Alternative syntax for control structures:</strong><br>
+            PHP offers an alternative syntax for some control structures (like <code>if</code>, <code>while</code>, <code>for</code>, <code>foreach</code>, <code>switch</code>), which can be useful when embedding PHP within HTML. This involves replacing the opening brace <code>{</code> with a colon <code>:</code> and the closing brace <code>}</code> with <code>endif;</code>, <code>endwhile;</code>, <code>endfor;</code>, <code>endforeach;</code>, or <code>endswitch;</code> respectively.</p>
+            <pre><code class="language-html">&lt;?php $isLoggedIn = true; ?&gt;
+
+&lt;?php if ($isLoggedIn): ?&gt;
+    &lt;p&gt;Welcome, user!&lt;/p&gt;
+    &lt;a href="logout.php"&gt;Logout&lt;/a&gt;
+&lt;?php else: ?&gt;
+    &lt;p&gt;Please log in.&lt;/p&gt;
+    &lt;a href="login.php"&gt;Login&lt;/a&gt;
+&lt;?php endif; ?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>switch</code>:</strong><br>
+            Used to select one of many blocks of code to be executed. It compares an expression with multiple different values (cases).</p>
+            <pre><code>&lt;?php
+$dayOfWeek = "Wednesday";
+
+switch ($dayOfWeek) {
+    case "Monday":
+        echo "Start of the work week.&lt;br&gt;";
+        break; // Important! Exits the switch statement
+    case "Tuesday":
+    case "Wednesday":
+    case "Thursday":
+        echo "Mid-week.&lt;br&gt;"; // Wednesday will match here
+        break;
+    case "Friday":
+        echo "End of the work week!&lt;br&gt;";
+        break;
+    case "Saturday":
+    case "Sunday":
+        echo "Weekend!&lt;br&gt;";
+        break;
+    default: // Optional: executed if no case matches
+        echo "Invalid day.&lt;br&gt;";
+}
+?&gt;</code></pre>
+            <p>Without <code>break</code>, execution "falls through" to the next <code>case</code>. This can be intentional but is often a source of bugs if forgotten.</p>
+            </li>
+        </ul>
+
+        <h3>Looping Constructs</h3>
+        <p>Execute a block of code repeatedly.</p>
+        <ul>
+            <li><p><strong><code>for</code> loop:</strong><br>
+            Used when you know in advance how many times the script should run.<br>
+            Syntax: <code>for (initializer; condition; incrementer)</code></p>
+            <pre><code>&lt;?php
+for ($i = 0; $i &lt; 5; $i++) { // Initializes $i to 0; continues as long as $i &lt; 5; increments $i by 1 after each iteration
+    echo "The number is: " . $i . "&lt;br&gt;";
+}
+// Output:
+// The number is: 0
+// The number is: 1
+// The number is: 2
+// The number is: 3
+// The number is: 4
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>while</code> loop:</strong><br>
+            Loops through a block of code as long as the specified condition is true. The condition is checked <em>before</em> each iteration.</p>
+            <pre><code>&lt;?php
+$count = 1;
+while ($count &lt;= 3) {
+    echo "Count is: " . $count . "&lt;br&gt;";
+    $count++;
+}
+// Output:
+// Count is: 1
+// Count is: 2
+// Count is: 3
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>do-while</code> loop:</strong><br>
+            Similar to a <code>while</code> loop, but the condition is checked <em>after</em> each iteration. This means the block of code will always be executed at least once.</p>
+            <pre><code>&lt;?php
+$x = 6;
+do {
+    echo "The number is: " . $x . "&lt;br&gt;"; // This will execute once
+    $x++;
+} while ($x &lt;= 5); // Condition is false, so loop stops
+// Output: The number is: 6
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>foreach</code> loop:</strong><br>
+            Provides an easy way to iterate over arrays (and objects).</p>
+            <pre><code>&lt;?php
+// Iterating over values
+$colors = ["Red", "Green", "Blue"];
+foreach ($colors as $color) {
+    echo $color . "&lt;br&gt;";
+}
+// Output: Red, Green, Blue (each on a new line)
+
+// Iterating over keys and values
+$person = ["name" => "Alice", "age" => 30, "city" => "London"];
+foreach ($person as $key => $value) {
+    echo ucfirst($key) . ": " . $value . "&lt;br&gt;";
+}
+// Output:
+// Name: Alice
+// Age: 30
+// City: London
+?&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h3>Other Control Flow Statements</h3>
+        <ul>
+            <li><p><strong><code>break</code>:</strong><br>
+            Immediately terminates the execution of the current <code>for</code>, <code>foreach</code>, <code>while</code>, <code>do-while</code>, or <code>switch</code> structure.</p>
+            <pre><code>&lt;?php
+for ($i = 0; $i &lt; 10; $i++) {
+    if ($i == 5) {
+        break; // Exit the loop when $i is 5
+    }
+    echo "Number: " . $i . "&lt;br&gt;";
+}
+// Output: Numbers 0 through 4
+?&gt;</code></pre>
+            <p><code>break</code> can also accept an optional numeric argument to specify how many nested enclosing structures it should break out of. <code>break 2;</code> would break out of two nested loops.</p>
+            </li>
+            <li><p><strong><code>continue</code>:</strong><br>
+            Skips the rest of the current iteration of a loop (<code>for</code>, <code>while</code>, <code>do-while</code>, <code>foreach</code>) and proceeds to the next iteration (or condition evaluation).</p>
+            <pre><code>&lt;?php
+for ($i = 0; $i &lt; 5; $i++) {
+    if ($i == 2) {
+        continue; // Skip this iteration when $i is 2
+    }
+    echo "Number: " . $i . "&lt;br&gt;";
+}
+// Output:
+// Number: 0
+// Number: 1
+// Number: 3
+// Number: 4
+?&gt;</code></pre>
+            <p>Like <code>break</code>, <code>continue</code> can also take an optional numeric argument.</p>
+            </li>
+            <li><p><strong><code>include</code> and <code>require</code>:</strong><br>
+            These constructs are used to include and evaluate the contents of another PHP file into the current script. This is fundamental for organizing code into reusable modules.</p>
+            <ul>
+                <li><code>include 'filename.php';</code></li>
+                <li><code>require 'filename.php';</code></li>
+            </ul>
+            <p>The main difference between them is how they handle errors if the file is not found:</p>
+            <ul>
+                <li><code>include</code>: If the file is not found, it generates a <strong>warning</strong> (E_WARNING), and the script continues execution.</li>
+                <li><code>require</code>: If the file is not found, it generates a <strong>fatal error</strong> (E_COMPILE_ERROR), and the script terminates.</li>
+            </ul>
+            <p>Use <code>require</code> for files that are essential for your application to run (e.g., database configurations, core functions). Use <code>include</code> for files that are optional or whose absence can be handled gracefully (e.g., template parts).</p>
+            <pre><code>&lt;?php
+// Assume 'header.php' contains: echo "&lt;h1&gt;My Website&lt;/h1&gt;";
+@include 'header.php'; // Using @ to suppress warning if header.php doesn't exist for this example
+
+echo "&lt;p&gt;This is the main content.&lt;/p&gt;";
+
+// Assume 'functions.php' contains essential functions
+// require 'functions.php';
+// If functions.php is missing, 'require' would stop the script.
+?&gt;</code></pre>
+                <ul>
+                    <li><strong><code>include_once</code> and <code>require_once</code>:</strong><br>
+                    These are variants that ensure a file is included only once, even if the statement is encountered multiple times. This prevents errors from re-declaring functions or classes.
+                        <ul>
+                            <li><code>include_once 'filename.php';</code></li>
+                            <li><code>require_once 'filename.php';</code></li>
+                        </ul>
+                    It's generally good practice to use the <code>_once</code> versions for including files that define functions, classes, or set configurations to avoid issues.</li>
+                </ul>
+            </li>
+            <li><p><strong><code>goto</code>:</strong><br>
+            Allows you to jump to another section in the program, identified by a label.</p>
+            <pre><code>&lt;?php
+goto end_point;
+echo "This will be skipped.&lt;br&gt;";
+
+end_point:
+echo "Reached the end point.&lt;br&gt;";
+?&gt;</code></pre>
+            <p><strong>Advice:</strong> The <code>goto</code> statement is available in PHP but is generally <strong>discouraged</strong> in modern programming practices. It can make code difficult to read, understand, and debug, leading to "spaghetti code." There are almost always better ways to structure your code using loops, conditionals, functions, or exceptions. Use it very sparingly, if at all.</p>
+            </li>
+        </ul>
+        <p>This covers the basics of PHP! With these fundamentals, you can start writing simple scripts and understand more complex code. In the next sections, we'll build upon this knowledge.</p>
+    </div>
+</body>
+</html>
+[end of html_output/en/02_php_basics.html]

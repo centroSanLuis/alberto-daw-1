@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working with Forms and User Input</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #343a40;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid #dee2e6; padding-bottom: 0.3em;}
+        h2 { font-size: 1.8em; border-bottom: 1px solid #e9ecef; padding-bottom: 0.2em;}
+        h3 { font-size: 1.5em; }
+        p {
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #282c34; /* Dark background for code blocks */
+            color: #abb2bf; /* Light text for contrast */
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit; /* Inherit color from pre */
+        }
+        strong {
+            font-weight: 600;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 0.75em;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Styles for form elements for better presentation */
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"],
+        input[type="file"],
+        textarea,
+        select {
+            width: calc(100% - 1em); /* Adjust width to prevent overflow with padding */
+            padding: 0.5em;
+            margin-bottom: 1em;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 0.6em 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .error { 
+            color: red; 
+            font-size: 0.9em; 
+        }
+        .success-message {
+            color: green; 
+            border: 1px solid green; 
+            padding: 10px; 
+            margin-bottom: 15px;
+        }
+        .error-summary {
+            color: red; 
+            border: 1px solid red; 
+            padding: 10px; 
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Working with Forms and User Input</h1>
+
+        <p>Interacting with users is a fundamental aspect of web applications. HTML forms are the primary way to collect user input, and PHP provides powerful tools to process, validate, and secure this data. This section covers how to handle form submissions, manage user data with cookies and sessions, and ensure your application is secure.</p>
+
+        <h2>1. HTML Forms - A Quick Recap</h2>
+        <p>Before diving into PHP, let's quickly review the basics of HTML forms.</p>
+        <p>An HTML form is a section of a document containing controls such as text fields, password fields, checkboxes, radio buttons, select menus, and buttons. Users fill out these controls and submit the form to a web server for processing.</p>
+
+        <h3>Basic Structure:</h3>
+        <pre><code class="language-html">&lt;form action="process_form.php" method="POST"&gt;
+    &lt;!-- Input field for text --&gt;
+    &lt;label for="username"&gt;Username:&lt;/label&gt;
+    &lt;input type="text" id="username" name="username"&gt;&lt;br&gt;&lt;br&gt;
+
+    &lt;!-- Input field for password --&gt;
+    &lt;label for="password"&gt;Password:&lt;/label&gt;
+    &lt;input type="password" id="password" name="password"&gt;&lt;br&gt;&lt;br&gt;
+
+    &lt;!-- Textarea for longer messages --&gt;
+    &lt;label for="message"&gt;Message:&lt;/label&gt;
+    &lt;textarea id="message" name="message" rows="4" cols="50"&gt;&lt;/textarea&gt;&lt;br&gt;&lt;br&gt;
+
+    &lt;!-- Select dropdown --&gt;
+    &lt;label for="color"&gt;Favorite Color:&lt;/label&gt;
+    &lt;select id="color" name="color"&gt;
+        &lt;option value="red"&gt;Red&lt;/option&gt;
+        &lt;option value="green"&gt;Green&lt;/option&gt;
+        &lt;option value="blue"&gt;Blue&lt;/option&gt;
+    &lt;/select&gt;&lt;br&gt;&lt;br&gt;
+
+    &lt;!-- Checkbox --&gt;
+    &lt;input type="checkbox" id="subscribe" name="subscribe" value="yes"&gt;
+    &lt;label for="subscribe"&gt;Subscribe to newsletter&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+
+    &lt;!-- Radio buttons --&gt;
+    &lt;p&gt;Gender:&lt;/p&gt;
+    &lt;input type="radio" id="male" name="gender" value="male"&gt;
+    &lt;label for="male"&gt;Male&lt;/label&gt;&lt;br&gt;
+    &lt;input type="radio" id="female" name="gender" value="female"&gt;
+    &lt;label for="female"&gt;Female&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+
+    &lt;!-- Submit button --&gt;
+    &lt;button type="submit"&gt;Submit Form&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+        <h3>Key Attributes:</h3>
+        <ul>
+            <li><strong><code>&lt;form&gt;</code> Tag:</strong> The container for all form elements.
+                <ul>
+                    <li><strong><code>action</code> Attribute:</strong> Specifies the URL of the PHP script (or other server-side resource) that will process the form data. In the example, it's <code>process_form.php</code>. If empty, it submits to the current page.</li>
+                    <li><strong><code>method</code> Attribute:</strong> Defines the HTTP method to be used when submitting the form data.
+                        <ul>
+                            <li><strong><code>GET</code></strong>:
+                                <ul>
+                                    <li>Appends form data to the URL specified in the <code>action</code> attribute (e.g., <code>process_form.php?username=john&amp;color=red</code>).</li>
+                                    <li>Data is visible in the URL, browser history, and server logs.</li>
+                                    <li>Suitable for non-sensitive data, idempotent requests (requests that can be repeated without changing server state), such as search queries or filtering.</li>
+                                    <li>Limited data length (URLs have a maximum length).</li>
+                                </ul>
+                            </li>
+                            <li><strong><code>POST</code></strong>:
+                                <ul>
+                                    <li>Sends form data in the body of the HTTP request.</li>
+                                    <li>Data is not visible in the URL.</li>
+                                    <li>Suitable for sensitive information (like passwords), large amounts of data, or actions that modify server state (e.g., creating a new user, submitting a blog post).</li>
+                                    <li>No practical limit on data length.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Input Elements (<code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;button&gt;</code>):</strong>
+                <ul>
+                    <li><strong><code>type</code> Attribute (for <code>&lt;input&gt;</code>):</strong> Specifies the kind of input control. Common types include: <code>text</code>, <code>password</code>, <code>email</code>, <code>number</code>, <code>checkbox</code>, <code>radio</code>, <code>file</code>, <code>submit</code>, <code>hidden</code>.</li>
+                    <li><strong><code>name</code> Attribute:</strong> <strong>This is crucial for PHP.</strong> The <code>name</code> attribute provides the key that PHP will use to access the submitted value in the <code>$_GET</code> or <code>$_POST</code> superglobal arrays. Each form field that you want to process in PHP must have a unique <code>name</code> attribute (except for radio buttons in the same group).</li>
+                    <li><strong><code>value</code> Attribute:</strong> For most input types, this specifies the initial value or the value sent when the form is submitted. For checkboxes and radio buttons, it's the value sent if that option is selected. For <code>&lt;textarea&gt;</code>, the content between the tags is its value. For <code>&lt;option&gt;</code> within <code>&lt;select&gt;</code>, it's the value sent.</li>
+                    <li><strong><code>id</code> Attribute:</strong> Used to associate a <code>&lt;label&gt;</code> with an input field for better accessibility and user experience.</li>
+                    <li><strong><code>&lt;label for="id_of_input"&gt;</code>:</strong> Provides a descriptive label for a form control. Clicking the label focuses on or activates the associated control.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>2. Retrieving Data in PHP</h2>
+        <p>When a form is submitted, PHP makes the data available through special associative arrays called <strong>superglobals</strong>. These are available in all scopes throughout a script.</p>
+
+        <h3><code>$_GET</code> Superglobal</h3>
+        <ul>
+            <li>Used to collect values from a form submitted with the <code>method="GET"</code>.</li>
+            <li>Also used to collect values from the URL's query string (e.g., <code>mypage.php?id=123&amp;category=books</code>).</li>
+            <li>It's an associative array where keys are the <code>name</code> attributes of the form fields (or query string parameters) and values are the submitted data.</li>
+        </ul>
+        <p><strong>Example:</strong><br>
+        If a form with <code>method="GET"</code> has an input field <code>&lt;input type="text" name="search_term"&gt;</code> and the user types "PHP tutorial" and submits, the URL might be <code>process.php?search_term=PHP+tutorial</code>.</p>
+        <p>In <code>process.php</code>:</p>
+        <pre><code>&lt;?php
+if (isset($_GET['search_term'])) {
+    $searchTerm = $_GET['search_term'];
+    echo "You searched for: " . htmlspecialchars($searchTerm) . "&lt;br&gt;";
+} else {
+    echo "No search term provided.&lt;br&gt;";
+}
+
+// Using null coalescing operator (PHP 7+) for a default value
+$category = $_GET['category'] ?? 'all';
+echo "Category: " . htmlspecialchars($category) . "&lt;br&gt;";
+?&gt;</code></pre>
+        <ul>
+            <li><strong><code>isset($_GET['search_term'])</code></strong>: Checks if the <code>search_term</code> key exists in the <code>$_GET</code> array. This is important to avoid "undefined index" notices if the form field wasn't submitted or the parameter isn't in the URL.</li>
+            <li><strong><code>htmlspecialchars($searchTerm)</code></strong>: <strong>Crucial for security!</strong> This function converts special HTML characters (like <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>"</code>) into their HTML entity equivalents (e.g., <code>&amp;lt;</code>, <code>&amp;gt;</code>). This prevents Cross-Site Scripting (XSS) attacks if you're displaying the user input back on the page. (More on this in Data Sanitization).</li>
+        </ul>
+
+        <h3><code>$_POST</code> Superglobal</h3>
+        <ul>
+            <li>Used to collect values from a form submitted with the <code>method="POST"</code>.</li>
+            <li>Data is sent in the HTTP request body and is not visible in the URL.</li>
+            <li>It's an associative array, similar to <code>$_GET</code>.</li>
+        </ul>
+        <p><strong>Example:</strong><br>
+        If a form with <code>method="POST"</code> has <code>&lt;input type="text" name="username"&gt;</code> and <code>&lt;input type="password" name="password"&gt;</code>.</p>
+        <p>In <code>login_handler.php</code>:</p>
+        <pre><code>&lt;?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form was submitted via POST
+    // Check if username is set and not empty
+    if (isset($_POST['username']) &amp;&amp; !empty(trim($_POST['username']))) {
+        $username = $_POST['username']; // No need to htmlspecialchars if not immediately displaying
+        echo "Username: " . htmlspecialchars($username) . "&lt;br&gt;";
+    } else {
+        echo "Username is required.&lt;br&gt;";
+    }
+
+    // Check for password
+    if (isset($_POST['password']) &amp;&amp; !empty($_POST['password'])) {
+        $password = $_POST['password'];
+        // Process the password (e.g., hash it, verify it)
+        // NEVER display or store passwords in plain text!
+        echo "Password received (but not displayed for security).&lt;br&gt;";
+    } else {
+        echo "Password is required.&lt;br&gt;";
+    }
+} else {
+    echo "Please submit the form.&lt;br&gt;";
+}
+?&gt;</code></pre>
+        <ul>
+            <li><strong><code>$_SERVER["REQUEST_METHOD"] == "POST"</code></strong>: A common way to check if the script is being accessed via a POST request (i.e., the form was submitted).</li>
+            <li><strong><code>!empty(trim($_POST['username']))</code></strong>: Checks if the username is not empty after removing leading/trailing whitespace.</li>
+        </ul>
+
+        <h3><code>$_REQUEST</code> Superglobal</h3>
+        <ul>
+            <li><code>$_REQUEST</code> is another superglobal array that, by default, contains the contents of <code>$_GET</code>, <code>$_POST</code>, and <code>$_COOKIE</code>.</li>
+            <li>While it can be convenient, it's generally <strong>recommended to use <code>$_GET</code> or <code>$_POST</code> directly.</strong>
+                <ul>
+                    <li><strong>Clarity:</strong> Using <code>$_GET</code> or <code>$_POST</code> makes your code more explicit about where you expect the data to come from.</li>
+                    <li><strong>Security:</strong> Relying on <code>$_REQUEST</code> can introduce security vulnerabilities if you're not careful about the source of the data, especially due to the inclusion of <code>$_COOKIE</code> data. For instance, if <code>$_GET['action']</code> is expected but a cookie named <code>action</code> exists, <code>$_REQUEST['action']</code> might take the cookie's value if the order of variables in <code>request_order</code> (php.ini setting) prioritizes cookies.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Example Script Processing Both GET (for an ID) and POST (for form data):</h3>
+        <p><code>edit_item.php</code>:</p>
+        <pre><code class="language-php">&lt;?php
+// Initialize variables
+$itemId = null;
+$itemName = '';
+$itemPrice = '';
+$message = '';
+
+// --- Handle GET request for item ID (e.g., from a link like edit_item.php?id=1) ---
+if (isset($_GET['id'])) {
+    $itemId = (int)$_GET['id']; // Cast to integer for basic sanitization
+    // In a real app, you would fetch item details from a database using $itemId
+    $message = "Editing item ID: " . htmlspecialchars($itemId);
+    // For demonstration, let's pre-fill some dummy data if ID is found
+    if ($itemId == 1) {
+        $itemName = "Sample Item";
+        $itemPrice = "19.99";
+    }
+}
+
+// --- Handle POST request from form submission ---
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $submittedItemId = $_POST['item_id'] ?? null; // Keep track of the ID submitted with the form
+    $itemName = $_POST['item_name'] ?? '';
+    $itemPrice = $_POST['item_price'] ?? '';
+
+    // Basic validation (more on this next)
+    if (empty(trim($itemName))) {
+        $message = "Error: Item name cannot be empty.";
+    } elseif (!is_numeric($itemPrice) || $itemPrice &lt; 0) {
+        $message = "Error: Item price must be a non-negative number.";
+    } else {
+        // Process the data (e.g., save to database)
+        $message = "Item '" . htmlspecialchars($itemName) . "' (ID: " . htmlspecialchars($submittedItemId) . ") updated successfully with price $" . htmlspecialchars($itemPrice) . "!";
+        // Usually, you'd redirect after successful POST to prevent re-submission
+        // header("Location: success_page.php");
+        // exit;
+    }
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Edit Item&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Edit Item&lt;/h1&gt;
+    &lt;?php if (!empty($message)): ?&gt;
+        &lt;p style="color: &lt;?php echo strpos($message, 'Error') === 0 ? 'red' : 'green'; ?&gt;;"&gt;
+            &lt;?php echo $message; ?&gt;
+        &lt;/p&gt;
+    &lt;?php endif; ?&gt;
+
+    &lt;form action="edit_item.php&lt;?php echo $itemId ? '?id=' . $itemId : ''; ?&gt;" method="POST"&gt;
+        &lt;!-- Hidden field to send item ID back if we are editing an existing item --&gt;
+        &lt;?php if ($itemId): ?&gt;
+            &lt;input type="hidden" name="item_id" value="&lt;?php echo htmlspecialchars($itemId); ?&gt;"&gt;
+        &lt;?php endif; ?&gt;
+
+        &lt;label for="item_name"&gt;Item Name:&lt;/label&gt;
+        &lt;input type="text" id="item_name" name="item_name" value="&lt;?php echo htmlspecialchars($itemName); ?&gt;"&gt;&lt;br&gt;&lt;br&gt;
+
+        &lt;label for="item_price"&gt;Item Price:&lt;/label&gt;
+        &lt;input type="text" id="item_price" name="item_price" value="&lt;?php echo htmlspecialchars($itemPrice); ?&gt;"&gt;&lt;br&gt;&lt;br&gt;
+
+        &lt;button type="submit"&gt;Save Changes&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;p&gt;&lt;a href="edit_item.php?id=1"&gt;Edit Item 1&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href="edit_item.php"&gt;Start New Item (No ID)&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <p>This example shows how a single PHP script can handle both displaying a form (optionally pre-filled via GET) and processing its submission (via POST).</p>
+
+        <h2>3. Data Validation</h2>
+        <p><strong>Never trust user input!</strong> Data validation is the process of ensuring that user input is appropriate, accurate, and secure before processing it. It's a critical step in building robust and safe web applications.</p>
+        <p><strong>Why Server-Side Validation is Essential:</strong><br>
+        Client-side validation (using HTML5 attributes like <code>required</code> or JavaScript) can improve user experience by providing immediate feedback. However, it <strong>must not be relied upon for security or data integrity.</strong></p>
+        <ul>
+            <li>Users can disable JavaScript.</li>
+            <li>Malicious users can bypass client-side validation and submit arbitrary data directly to your server (e.g., using tools like cURL or browser developer tools).</li>
+        </ul>
+        <p><strong>Always validate data on the server-side (in PHP).</strong></p>
+
+        <h3>Common Validation Tasks:</h3>
+        <ul>
+            <li><strong>Checking for Empty/Required Fields:</strong>
+                <pre><code>&lt;?php
+$username = $_POST['username'] ?? '';
+if (empty(trim($username))) {
+    $errors['username'] = "Username is required.";
+}
+?&gt;</code></pre>
+                <ul>
+                    <li><code>trim()</code>: Removes whitespace from the beginning and end of a string. Useful to prevent users from submitting only spaces.</li>
+                    <li><code>empty()</code>: Checks if a variable is empty. Considers <code>""</code>, <code>0</code>, <code>"0"</code>, <code>NULL</code>, <code>FALSE</code>, and an empty array as empty.</li>
+                </ul>
+            </li>
+            <li><strong>Validating Data Types:</strong>
+                <ul>
+                    <li><code>is_numeric()</code>: Checks if a variable is a number or a numeric string.</li>
+                    <li><code>is_int()</code>: Checks if a variable is an integer.</li>
+                    <li><code>is_string()</code>: Checks if a variable is a string.</li>
+                    <li><code>is_bool()</code>: Checks if a variable is a boolean.</li>
+                </ul>
+                <pre><code>&lt;?php
+$age = $_POST['age'] ?? '';
+if (!is_numeric($age) || $age &lt; 0) {
+    $errors['age'] = "Age must be a non-negative number.";
+} else {
+    $age = (int)$age; // Optionally cast to integer after validation
+}
+?&gt;</code></pre>
+            </li>
+            <li><strong>Validating String Length (Min/Max):</strong>
+                <pre><code>&lt;?php
+$password = $_POST['password'] ?? '';
+if (strlen($password) &lt; 8) {
+    $errors['password'] = "Password must be at least 8 characters long.";
+} elseif (strlen($password) &gt; 255) {
+    $errors['password'] = "Password is too long (max 255 characters).";
+}
+?&gt;</code></pre>
+            </li>
+            <li><strong>Validating Formats:</strong>
+                <ul>
+                    <li><strong>Email:</strong> Use <code>filter_var()</code> with <code>FILTER_VALIDATE_EMAIL</code>.
+                        <pre><code>&lt;?php
+$email = $_POST['email'] ?? '';
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors['email'] = "Invalid email format.";
+}
+?&gt;</code></pre>
+                    </li>
+                    <li><strong>URL:</strong> Use <code>filter_var()</code> with <code>FILTER_VALIDATE_URL</code>.
+                        <pre><code>&lt;?php
+$website = $_POST['website'] ?? '';
+if (!empty($website) &amp;&amp; !filter_var($website, FILTER_VALIDATE_URL)) {
+    $errors['website'] = "Invalid URL format.";
+}
+?&gt;</code></pre>
+                    </li>
+                    <li><strong>Regular Expressions (<code>preg_match()</code>):</strong> For complex patterns (e.g., specific username formats, postal codes).
+                        <pre><code>&lt;?php
+$zipcode = $_POST['zipcode'] ?? '';
+// Example: US ZIP code (5 digits, optionally +4)
+if (!preg_match('/^\d{5}(-\d{4})?$/', $zipcode)) {
+    $errors['zipcode'] = "Invalid ZIP code format.";
+}
+?&gt;</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Validating Against a List of Allowed Values:</strong>
+                <pre><code>&lt;?php
+$userRole = $_POST['role'] ?? '';
+$allowedRoles = ['editor', 'author', 'subscriber'];
+if (!in_array($userRole, $allowedRoles)) {
+    $errors['role'] = "Invalid role selected.";
+}
+?&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h3>Building a Simple Validation System:</h3>
+        <p>It's common to collect all validation errors in an array.</p>
+        <pre><code>&lt;?php
+$errors = []; // Array to store validation errors
+
+// --- Assume form data is in $_POST ---
+$name = $_POST['name'] ?? '';
+$email = $_POST['email'] ?? '';
+$age = $_POST['age'] ?? '';
+
+// Validate Name
+if (empty(trim($name))) {
+    $errors['name'] = "Name is required.";
+} elseif (strlen($name) &gt; 100) {
+    $errors['name'] = "Name cannot exceed 100 characters.";
+}
+
+// Validate Email
+if (empty($email)) {
+    $errors['email'] = "Email is required.";
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors['email'] = "Invalid email format.";
+}
+
+// Validate Age
+if (empty($age)) {
+    $errors['age'] = "Age is required.";
+} elseif (!is_numeric($age) || $age &lt; 1 || $age &gt; 120) {
+    $errors['age'] = "Age must be a number between 1 and 120.";
+}
+
+// Check if there are any errors
+if (empty($errors)) {
+    // Process the data (e.g., save to database)
+    echo "Form submitted successfully!&lt;br&gt;";
+    // ... your processing logic ...
+} else {
+    // Display errors (or pass them back to the form)
+    echo "&lt;h3&gt;Please correct the following errors:&lt;/h3&gt;";
+    echo "&lt;ul&gt;";
+    foreach ($errors as $field =&gt; $error) {
+        echo "&lt;li&gt;" . htmlspecialchars(ucfirst($field)) . ": " . htmlspecialchars($error) . "&lt;/li&gt;";
+    }
+    echo "&lt;/ul&gt;";
+    // You would typically re-display the form with error messages next to fields
+}
+?&gt;</code></pre>
+        <p><strong>Displaying Error Messages to the User:</strong><br>
+        Error messages should be clear and displayed near the relevant form fields to help the user correct them. (See "Sticky Forms" for how to combine this with repopulating the form).</p>
+
+        <h2>4. Data Sanitization</h2>
+        <p>Data sanitization is the process of cleaning or filtering user input to remove or escape potentially malicious characters or code. This is crucial for preventing security vulnerabilities.</p>
+        <p><strong>Importance:</strong></p>
+        <ul>
+            <li><strong>Preventing Cross-Site Scripting (XSS):</strong> XSS occurs when malicious scripts are injected into web pages viewed by other users. If you display user input directly in HTML without sanitization, an attacker could input <code>&lt;script&gt;alert('XSS');&lt;/script&gt;</code>, which would then execute in other users' browsers.</li>
+            <li><strong>Preventing SQL Injection (SQLi):</strong> SQLi occurs when attackers manipulate input to alter SQL queries executed against your database. (This will be covered in more detail in the database section, but proper input handling starts here).</li>
+            <li><strong>Preventing Other Injection Attacks:</strong> Such as command injection if user input is used in system commands (highly discouraged).</li>
+        </ul>
+
+        <h3>Sanitizing for HTML Output (Preventing XSS):</h3>
+        <ul>
+            <li><p><strong><code>htmlspecialchars($string, $flags = ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, $encoding = 'UTF-8')</code>:</strong></p>
+                <ul>
+                    <li>Converts special HTML characters into their HTML entity equivalents.</li>
+                    <li><code>&amp;</code> (ampersand) becomes <code>&amp;amp;</code></li>
+                    <li><code>"</code> (double quote) becomes <code>&amp;quot;</code> (if <code>ENT_QUOTES</code> is set)</li>
+                    <li><code>'</code> (single quote) becomes <code>&amp;apos;</code> (or <code>&amp;#039;</code>) (if <code>ENT_QUOTES</code> is set)</li>
+                    <li><code>&lt;</code> (less than) becomes <code>&amp;lt;</code></li>
+                    <li><code>&gt;</code> (greater than) becomes <code>&amp;gt;</code></li>
+                    <li>This is the <strong>most common and recommended function</strong> for preventing XSS when displaying user input in an HTML context.</li>
+                    <li><strong>Flags:</strong>
+                        <ul>
+                            <li><code>ENT_QUOTES</code>: Converts both double and single quotes.</li>
+                            <li><code>ENT_SUBSTITUTE</code>: Replaces invalid code unit sequences with a Unicode Replacement Character (U+FFFD) instead of returning an empty string (PHP 5.4+).</li>
+                            <li><code>ENT_HTML401</code>, <code>ENT_HTML5</code>, <code>ENT_XML1</code>, <code>ENT_XHTML</code>: Specify the document type.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <pre><code>&lt;?php
+$userInput = '&lt;script&gt;alert("XSS Attack!");&lt;/script&gt;';
+$safeOutput = htmlspecialchars($userInput, ENT_QUOTES, 'UTF-8');
+echo $safeOutput; // Output: &amp;lt;script&amp;gt;alert(&amp;quot;XSS Attack!&amp;quot;);&amp;lt;/script&amp;gt;
+                  // This will be displayed as text, not executed as a script.
+?&gt;</code></pre>
+            </li>
+            <li><p><strong><code>htmlentities($string, $flags = ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, $encoding = 'UTF-8')</code>:</strong></p>
+                <ul>
+                    <li>Similar to <code>htmlspecialchars()</code>, but it converts <strong>all</strong> characters that have HTML entity equivalents, not just the special ones (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, etc.). For example, it would convert <code>©</code> to <code>&amp;copy;</code>.</li>
+                    <li>Can be more aggressive than necessary for general XSS prevention. <code>htmlspecialchars()</code> is usually sufficient.</li>
+                </ul>
+            </li>
+            <li><p><strong><code>strip_tags($string, $allowed_tags = null)</code>:</strong></p>
+                <ul>
+                    <li>Removes HTML and PHP tags from a string.</li>
+                    <li>You can optionally specify a string of allowed tags (e.g., <code>strip_tags($input, '&lt;p&gt;&lt;a&gt;&lt;b&gt;')</code>).</li>
+                    <li><strong>Use with caution.</strong> It can break legitimate markup if users are allowed to submit some HTML. It's also not foolproof for XSS prevention on its own, as attackers can use attributes or malformed HTML. <code>htmlspecialchars()</code> is generally safer for displaying data.</li>
+                    <li>Might be useful if you want to get plain text content from user input that might contain HTML.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Sanitizing for Database Input:</h3>
+        <ul>
+            <li>When working with databases, the primary defense against SQL Injection is using <strong>prepared statements</strong> with placeholders (e.g., with PDO or MySQLi). This separates the SQL query structure from the data.</li>
+            <li>While input validation (checking types, lengths) is still important, <code>htmlspecialchars()</code> is <strong>not</strong> the correct function for database sanitization.</li>
+            <li>Specific database escaping functions (like <code>mysqli_real_escape_string()</code>) exist but are generally less preferred and more error-prone than prepared statements. (More in the Database section).</li>
+        </ul>
+
+        <h3>Sanitizing for Other Contexts:</h3>
+        <ul>
+            <li><strong>File System:</strong> Be extremely careful if user input is used in file paths or names. Use functions like <code>basename()</code> to prevent directory traversal attacks (e.g., <code>../../etc/passwd</code>). Whitelist allowed characters.</li>
+            <li><strong>Shell Commands:</strong> <strong>Avoid using user input in shell commands if at all possible.</strong> If absolutely necessary, use <code>escapeshellcmd()</code> and <code>escapeshellarg()</code> with extreme caution and thorough validation. This is a high-risk area.</li>
+        </ul>
+        <p><strong>General Rule:</strong> Sanitize data appropriately for the <em>context</em> in which it will be used. Data safe for HTML output might not be safe for a SQL query, and vice-versa.</p>
+
+        <h2>5. Sticky Forms (Repopulating Form Fields)</h2>
+        <p>A "sticky form" is a form that, upon submission (especially if there are validation errors), redisplays with the values the user previously entered. This improves user experience as users don't have to re-enter everything.</p>
+        <p><strong>How to Implement:</strong><br>
+        You achieve this by setting the <code>value</code> attribute of input fields (or the <code>checked</code> / <code>selected</code> attributes for checkboxes/radios/selects) to the previously submitted data. Remember to use <code>htmlspecialchars()</code> on any data you output back into form fields to prevent XSS.</p>
+        <p><strong>Example:</strong></p>
+        <pre><code class="language-php">&lt;?php
+// Assume validation code from earlier, populating $errors and $_POST data
+$name = $_POST['name'] ?? '';
+$email = $_POST['email'] ?? '';
+$age = $_POST['age'] ?? '';
+$selectedColor = $_POST['color'] ?? ''; // For select
+$isSubscribed = isset($_POST['subscribe']); // For checkbox
+$gender = $_POST['gender'] ?? ''; // For radio
+
+$errors = []; // Assume this gets populated by validation logic
+// Example validation:
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty(trim($name))) $errors['name'] = "Name is required.";
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors['email'] = "Invalid email.";
+    // ... more validation
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Sticky Form&lt;/title&gt;
+    &lt;style&gt; .error { color: red; font-size: 0.9em; } &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;User Registration&lt;/h2&gt;
+    &lt;?php if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; !empty($errors)): ?&gt;
+        &lt;div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px;"&gt;
+            &lt;strong&gt;Please correct the errors:&lt;/strong&gt;
+            &lt;ul&gt;
+                &lt;?php foreach ($errors as $error): ?&gt;
+                    &lt;li&gt;&lt;?php echo htmlspecialchars($error); ?&gt;&lt;/li&gt;
+                &lt;?php endforeach; ?&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;?php elseif ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; empty($errors)): ?&gt;
+        &lt;div style="color: green; border: 1px solid green; padding: 10px; margin-bottom: 15px;"&gt;
+            Form submitted successfully!
+        &lt;/div&gt;
+    &lt;?php endif; ?&gt;
+
+    &lt;form action="&lt;?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?&gt;" method="POST"&gt;
+        &lt;div&gt;
+            &lt;label for="name"&gt;Name:&lt;/label&gt;
+            &lt;input type="text" id="name" name="name" value="&lt;?php echo htmlspecialchars($name); ?&gt;"&gt;
+            &lt;?php if (isset($errors['name'])): ?&gt;&lt;span class="error"&gt;&lt;?php echo htmlspecialchars($errors['name']); ?&gt;&lt;/span&gt;&lt;?php endif; ?&gt;
+        &lt;/div&gt;&lt;br&gt;
+
+        &lt;div&gt;
+            &lt;label for="email"&gt;Email:&lt;/label&gt;
+            &lt;input type="email" id="email" name="email" value="&lt;?php echo htmlspecialchars($email); ?&gt;"&gt;
+            &lt;?php if (isset($errors['email'])): ?&gt;&lt;span class="error"&gt;&lt;?php echo htmlspecialchars($errors['email']); ?&gt;&lt;/span&gt;&lt;?php endif; ?&gt;
+        &lt;/div&gt;&lt;br&gt;
+
+        &lt;div&gt;
+            &lt;label for="age"&gt;Age:&lt;/label&gt;
+            &lt;input type="number" id="age" name="age" value="&lt;?php echo htmlspecialchars($age); ?&gt;"&gt;
+            &lt;?php if (isset($errors['age'])): ?&gt;&lt;span class="error"&gt;&lt;?php echo htmlspecialchars($errors['age']); ?&gt;&lt;/span&gt;&lt;?php endif; ?&gt;
+        &lt;/div&gt;&lt;br&gt;
+
+        &lt;div&gt;
+            &lt;label for="color"&gt;Favorite Color:&lt;/label&gt;
+            &lt;select id="color" name="color"&gt;
+                &lt;option value=""&gt;--Select Color--&lt;/option&gt;
+                &lt;option value="red" &lt;?php if ($selectedColor === 'red') echo 'selected'; ?&gt;&gt;Red&lt;/option&gt;
+                &lt;option value="green" &lt;?php if ($selectedColor === 'green') echo 'selected'; ?&gt;&gt;Green&lt;/option&gt;
+                &lt;option value="blue" &lt;?php if ($selectedColor === 'blue') echo 'selected'; ?&gt;&gt;Blue&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;?php if (isset($errors['color'])): ?&gt;&lt;span class="error"&gt;&lt;?php echo htmlspecialchars($errors['color']); ?&gt;&lt;/span&gt;&lt;?php endif; ?&gt;
+        &lt;/div&gt;&lt;br&gt;
+
+        &lt;div&gt;
+            &lt;input type="checkbox" id="subscribe" name="subscribe" value="yes" &lt;?php if ($isSubscribed) echo 'checked'; ?&gt;&gt;
+            &lt;label for="subscribe"&gt;Subscribe to newsletter&lt;/label&gt;
+        &lt;/div&gt;&lt;br&gt;
+
+        &lt;div&gt;
+            &lt;p&gt;Gender:&lt;/p&gt;
+            &lt;input type="radio" id="male" name="gender" value="male" &lt;?php if ($gender === 'male') echo 'checked'; ?&gt;&gt;
+            &lt;label for="male"&gt;Male&lt;/label&gt;
+            &lt;input type="radio" id="female" name="gender" value="female" &lt;?php if ($gender === 'female') echo 'checked'; ?&gt;&gt;
+            &lt;label for="female"&gt;Female&lt;/label&gt;
+            &lt;?php if (isset($errors['gender'])): ?&gt;&lt;span class="error"&gt;&lt;?php echo htmlspecialchars($errors['gender']); ?&gt;&lt;/span&gt;&lt;?php endif; ?&gt;
+        &lt;/div&gt;&lt;br&gt;
+
+        &lt;button type="submit"&gt;Register&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <ul>
+            <li><code>htmlspecialchars($_SERVER["PHP_SELF"])</code>: Used as the form action to submit to the current script. <code>htmlspecialchars</code> prevents XSS if the <code>PHP_SELF</code> variable is manipulated.</li>
+            <li>Values are echoed into <code>value</code> attributes.</li>
+            <li><code>selected</code> attribute is added to <code>&lt;option&gt;</code> tags if that value was previously chosen.</li>
+            <li><code>checked</code> attribute is added to checkbox/radio inputs if they were previously checked.</li>
+            <li>Error messages are displayed next to their respective fields (a common practice).</li>
+        </ul>
+
+        <h2>6. File Uploads</h2>
+        <p>PHP can handle files uploaded via HTML forms. This is commonly used for profile pictures, document sharing, etc.</p>
+        <p><strong>HTML Form for File Upload:</strong></p>
+        <ol>
+            <li>The form's <code>method</code> attribute <strong>must be <code>POST</code></strong>.</li>
+            <li>The form's <code>enctype</code> attribute <strong>must be set to <code>multipart/form-data</code></strong>. This encoding type allows files to be sent along with the form data.</li>
+            <li>Use <code>&lt;input type="file" name="your_file_input_name"&gt;</code>.</li>
+        </ol>
+        <pre><code class="language-html">&lt;form action="upload_parser.php" method="POST" enctype="multipart/form-data"&gt;
+    &lt;label for="profile_pic"&gt;Choose a profile picture:&lt;/label&gt;
+    &lt;input type="file" id="profile_pic" name="profile_picture"&gt;&lt;br&gt;&lt;br&gt;
+
+    &lt;label for="document"&gt;Upload a document:&lt;/label&gt;
+    &lt;input type="file" id="document" name="user_document"&gt;&lt;br&gt;&lt;br&gt;
+
+    &lt;button type="submit"&gt;Upload Files&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+        <h3>The <code>$_FILES</code> Superglobal</h3>
+        <p>When a form with <code>enctype="multipart/form-data"</code> is submitted, PHP populates the <code>$_FILES</code> superglobal array with information about the uploaded files.</p>
+        <p>If you have an input like <code>&lt;input type="file" name="profile_picture"&gt;</code>, the data for this file will be in <code>$_FILES['profile_picture']</code>. This itself will be an associative array containing:</p>
+        <ul>
+            <li><strong><code>$_FILES['profile_picture']['name']</code></strong>: The original name of the file on the client machine (e.g., <code>my_photo.jpg</code>). <strong>Trust this only as a hint.</strong></li>
+            <li><strong><code>$_FILES['profile_picture']['type']</code></strong>: The MIME type of the file as provided by the browser (e.g., <code>image/jpeg</code>). <strong>Do not trust this for validation; it can be easily spoofed.</strong></li>
+            <li><strong><code>$_FILES['profile_picture']['tmp_name']</code></strong>: The temporary filename where the uploaded file is stored on the server (e.g., <code>/tmp/phpA1b2C3</code>). You must move this file to a permanent location if you want to keep it.</li>
+            <li><strong><code>$_FILES['profile_picture']['error']</code></strong>: An error code associated with this file upload.
+                <ul>
+                    <li><code>UPLOAD_ERR_OK</code> (Value: 0): No error, file uploaded successfully.</li>
+                    <li><code>UPLOAD_ERR_INI_SIZE</code>: File exceeds <code>upload_max_filesize</code> directive in <code>php.ini</code>.</li>
+                    <li><code>UPLOAD_ERR_FORM_SIZE</code>: File exceeds <code>MAX_FILE_SIZE</code> directive specified in the HTML form (if present).</li>
+                    <li><code>UPLOAD_ERR_PARTIAL</code>: File was only partially uploaded.</li>
+                    <li><code>UPLOAD_ERR_NO_FILE</code>: No file was uploaded.</li>
+                    <li>Other error codes exist for more specific issues.</li>
+                </ul>
+            </li>
+            <li><strong><code>$_FILES['profile_picture']['size']</code></strong>: The size of the uploaded file in bytes.</li>
+        </ul>
+
+        <h3>Handling Uploaded Files</h3>
+        <p><strong><code>upload_parser.php</code> example:</strong></p>
+        <pre><code class="language-php">&lt;?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // --- Handle 'profile_picture' upload ---
+    if (isset($_FILES['profile_picture']) &amp;&amp; $_FILES['profile_picture']['error'] == UPLOAD_ERR_OK) {
+        $fileInfo = $_FILES['profile_picture'];
+        $uploadDir = 'uploads/'; // Create this directory and make it writable by the web server
+        
+        // Ensure upload directory exists
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        // Sanitize the original filename (basic example)
+        $originalName = $fileInfo['name'];
+        $safeName = time() . "_" . preg_replace("/[^a-zA-Z0-9._-]/", "", basename($originalName));
+        $destination = $uploadDir . $safeName;
+
+        // Validate file type (example: allow only JPEG and PNG)
+        $allowedTypes = ['image/jpeg', 'image/png'];
+        // For more robust type checking, use finfo_open() or getimagesize()
+        $detectedType = mime_content_type($fileInfo['tmp_name']); // Requires fileinfo extension
+
+        if (!in_array($detectedType, $allowedTypes)) {
+            echo "Error: Only JPEG and PNG images are allowed for profile picture.&lt;br&gt;";
+        } elseif ($fileInfo['size'] &gt; 2 * 1024 * 1024) { // Max 2MB
+            echo "Error: Profile picture size exceeds 2MB limit.&lt;br&gt;";
+        } else {
+            // Move the temporary file to the permanent location
+            if (move_uploaded_file($fileInfo['tmp_name'], $destination)) {
+                echo "Profile picture '" . htmlspecialchars($safeName) . "' uploaded successfully!&lt;br&gt;";
+                echo "Stored at: " . htmlspecialchars($destination) . "&lt;br&gt;";
+            } else {
+                echo "Error moving uploaded profile picture.&lt;br&gt;";
+            }
+        }
+    } elseif (isset($_FILES['profile_picture']) &amp;&amp; $_FILES['profile_picture']['error'] != UPLOAD_ERR_NO_FILE) {
+        echo "Error uploading profile picture: Error code " . $_FILES['profile_picture']['error'] . "&lt;br&gt;";
+    }
+
+
+    // --- Handle 'user_document' upload (add similar logic) ---
+    if (isset($_FILES['user_document']) &amp;&amp; $_FILES['user_document']['error'] == UPLOAD_ERR_OK) {
+        // ... (similar validation and move logic for document)
+        $docName = htmlspecialchars($_FILES['user_document']['name']);
+        echo "Document '{$docName}' received (processing logic not fully implemented here).&lt;br&gt;";
+    } elseif (isset($_FILES['user_document']) &amp;&amp; $_FILES['user_document']['error'] != UPLOAD_ERR_NO_FILE) {
+        echo "Error uploading document: Error code " . $_FILES['user_document']['error'] . "&lt;br&gt;";
+    }
+
+} else {
+    echo "Please upload files using the form.&lt;br&gt;";
+}
+?&gt;</code></pre>
+        <p><strong>Key Steps and Security Considerations for File Uploads:</strong></p>
+        <ol>
+            <li><strong>Check for Errors:</strong> Always check <code>$_FILES['input_name']['error']</code>.</li>
+            <li><strong><code>move_uploaded_file($tmp_name, $destination)</code>:</strong> This function is crucial. It checks if the file specified by <code>$tmp_name</code> is a valid uploaded file (preventing attackers from trying to make your script move other files on the server). Then it moves it to <code>$destination</code>.</li>
+            <li><strong>Validate File Type:</strong>
+                <ul>
+                    <li><strong>DO NOT trust <code>$_FILES['input_name']['type']</code></strong>. This value is sent by the browser and can be easily faked.</li>
+                    <li>Use server-side methods like <code>mime_content_type($tmp_name)</code> (requires the <code>fileinfo</code> extension) or <code>getimagesize($tmp_name)</code> (for images, also returns type) to determine the actual file type from its content.</li>
+                    <li>Maintain a whitelist of allowed MIME types or extensions.</li>
+                </ul>
+            </li>
+            <li><strong>Validate File Size:</strong> Check <code>$_FILES['input_name']['size']</code> against reasonable limits to prevent denial-of-service attacks (filling up server storage).</li>
+            <li><strong>Generate Safe Filenames:</strong>
+                <ul>
+                    <li>Do not use the user-supplied filename (<code>$_FILES['input_name']['name']</code>) directly for storage, as it might contain malicious characters or try to overwrite existing files.</li>
+                    <li>Generate a new, unique filename (e.g., using <code>uniqid()</code>, <code>time()</code>, or a hash of the file content) or thoroughly sanitize the original name (e.g., <code>basename()</code> combined with character whitelisting).</li>
+                </ul>
+            </li>
+            <li><strong>Secure Upload Directory:</strong>
+                <ul>
+                    <li>Ideally, store uploaded files <strong>outside the web root directory</strong> if they don't need to be directly accessible via a URL. You can then serve them via a PHP script that handles authentication and authorization.</li>
+                    <li>If files must be in the web root, disable script execution in the upload directory (e.g., using <code>.htaccess</code> for Apache: <code>php_flag engine off</code> or <code>RemoveHandler .php .phtml .php3</code> and <code>AddType text/plain .php .phtml .php3</code>).</li>
+                    <li>Ensure the upload directory is not browsable.</li>
+                </ul>
+            </li>
+            <li><strong>Permissions:</strong> The directory where files are moved must be writable by the web server user (e.g., <code>www-data</code> on Linux).</li>
+        </ol>
+
+        <h2>7. Working with Cookies</h2>
+        <p>Cookies are small pieces of data that a web server stores on the client's (user's) browser. The browser then sends these cookies back to the server with subsequent requests to the same domain.</p>
+        <p><strong>Use Cases:</strong></p>
+        <ul>
+            <li>Remembering user preferences (e.g., theme, language).</li>
+            <li>Tracking user activity (e.g., items in a shopping cart before login, pages visited).</li>
+            <li>Storing non-sensitive identifiers for session management (though PHP sessions often handle this automatically).</li>
+        </ul>
+        <p><strong>Setting Cookies: <code>setcookie()</code></strong></p>
+        <p><code>bool setcookie ( string $name [, string $value = "" [, int $expires = 0 [, string $path = "" [, string $domain = "" [, bool $secure = false [, bool $httponly = false ]]]]]] )</code></p>
+        <ul>
+            <li><code>$name</code>: The name of the cookie.</li>
+            <li><code>$value</code>: The value of the cookie. This value is stored on the clients computer; do not store sensitive information.</li>
+            <li><code>$expires</code> (Optional): The Unix timestamp when the cookie should expire. If 0 or omitted, the cookie expires at the end of the session (when the browser closes). Use <code>time() + seconds</code> for future expiration (e.g., <code>time() + 3600 * 24 * 30</code> for 30 days).</li>
+            <li><code>$path</code> (Optional): The path on the server where the cookie will be available. <code>'/'</code> means available for the entire domain.</li>
+            <li><code>$domain</code> (Optional): The domain that the cookie is available to (e.g., <code>.example.com</code> for all subdomains).</li>
+            <li><code>$secure</code> (Optional): If <code>true</code>, the cookie will only be sent over HTTPS connections.</li>
+            <li><code>$httponly</code> (Optional): If <code>true</code>, the cookie will not be accessible via JavaScript (helps mitigate XSS attacks trying to steal cookie data). <strong>Highly recommended.</strong></li>
+        </ul>
+        <p><strong>Important:</strong> <code>setcookie()</code> <strong>must be called before any HTML output is sent to the browser</strong> (before <code>&lt;html&gt;</code>, <code>echo</code>, etc.) because it modifies HTTP headers.</p>
+        <pre><code>&lt;?php
+// Set a simple cookie
+setcookie("username_preference", "JohnDoe", time() + (86400 * 30), "/"); // Expires in 30 days
+
+// Set a secure, httponly cookie
+setcookie("user_id", "12345", time() + 3600, "/", "", true, true); // Expires in 1 hour
+
+// This must be before any HTML output
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Cookies&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;?php
+echo "Cookies have been set (or attempted).&lt;br&gt;";
+?&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h3>Accessing Cookies: <code>$_COOKIE</code> Superglobal</h3>
+        <p>The <code>$_COOKIE</code> superglobal is an associative array containing cookies sent by the browser to the script.</p>
+        <pre><code>&lt;?php
+if (isset($_COOKIE['username_preference'])) {
+    $usernamePref = htmlspecialchars($_COOKIE['username_preference']);
+    echo "Welcome back, " . $usernamePref . "!&lt;br&gt;";
+} else {
+    echo "No username preference cookie found.&lt;br&gt;";
+}
+
+if (isset($_COOKIE['user_id'])) {
+    $userId = htmlspecialchars($_COOKIE['user_id']);
+    echo "User ID from cookie: " . $userId . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+        <ul>
+            <li>Always use <code>isset()</code> to check if a cookie exists before trying to access it.</li>
+            <li>Sanitize cookie values with <code>htmlspecialchars()</code> if you display them, as they can be modified by the user.</li>
+        </ul>
+
+        <h3>Modifying/Deleting Cookies:</h3>
+        <ul>
+            <li><strong>Modify:</strong> Call <code>setcookie()</code> again with the same name but a new value and/or expiration time.</li>
+            <li><strong>Delete:</strong> Call <code>setcookie()</code> with the same name and an expiration date in the past (e.g., <code>time() - 3600</code>).</li>
+        </ul>
+        <pre><code>&lt;?php
+// To delete the 'username_preference' cookie
+setcookie("username_preference", "", time() - 3600, "/");
+// It's good practice to also unset it from the $_COOKIE array for the current script execution
+if (isset($_COOKIE['username_preference'])) {
+    unset($_COOKIE['username_preference']);
+}
+echo "Username preference cookie deleted (or attempt made).&lt;br&gt;";
+?&gt;</code></pre>
+
+        <h3>Security Notes for Cookies:</h3>
+        <ul>
+            <li><strong>Client-Side Storage:</strong> Cookies are stored on the user's machine and can be viewed, modified, or deleted by the user.</li>
+            <li><strong>Don't Store Sensitive Data:</strong> Avoid storing highly sensitive information like passwords or credit card details directly in cookies. Store identifiers that can be used to look up data on the server if needed.</li>
+            <li><strong><code>HttpOnly</code> Flag:</strong> Use <code>httponly = true</code> to prevent JavaScript from accessing the cookie, which helps protect against XSS cookie theft.</li>
+            <li><strong><code>Secure</code> Flag:</strong> Use <code>secure = true</code> to ensure cookies are only transmitted over HTTPS.</li>
+            <li><strong>Size Limit:</strong> Browsers impose limits on the size and number of cookies per domain (typically around 4KB per cookie).</li>
+        </ul>
+
+        <h2>8. Working with Sessions</h2>
+        <p>Sessions provide a way to store information about a user across multiple page requests. Unlike cookies, session data is primarily stored on the <strong>server-side</strong>. A unique session ID is typically stored in a cookie on the client's browser to identify the session.</p>
+        <p><strong>How Sessions Work:</strong></p>
+        <ol>
+            <li>User visits a page that starts a session.</li>
+            <li>PHP generates a unique Session ID (a long random string).</li>
+            <li>PHP sends this Session ID back to the browser, usually stored in a cookie (e.g., named <code>PHPSESSID</code>).</li>
+            <li>On subsequent page requests from the user, the browser sends the Session ID cookie back to the server.</li>
+            <li>PHP uses this ID to retrieve the corresponding session data stored on the server.</li>
+        </ol>
+        <p><strong>Starting/Resuming a Session: <code>session_start()</code></strong></p>
+        <p><code>bool session_start ( [ array $options = [] ] )</code></p>
+        <ul>
+            <li>This function checks if a session ID is present (e.g., from a cookie).
+                <ul>
+                    <li>If an ID exists and is valid, it loads the existing session data into the <code>$_SESSION</code> superglobal.</li>
+                    <li>If no ID exists or it's invalid, it creates a new session, generates a new session ID, and prepares <code>$_SESSION</code> as an empty array.</li>
+                </ul>
+            </li>
+            <li><code>session_start()</code> <strong>must be called at the very beginning of your script</strong>, before any output is sent to the browser (similar to <code>setcookie()</code>), because it may need to send session cookies.</li>
+        </ul>
+        <p><strong>Storing Session Data: <code>$_SESSION</code> Superglobal</strong></p>
+        <p>Once a session is started, you can store and retrieve data using the <code>$_SESSION</code> associative array.</p>
+        <pre><code>&lt;?php
+session_start(); // Start or resume the session
+
+// Storing data in the session
+$_SESSION['username'] = 'JohnDoe';
+$_SESSION['user_role'] = 'administrator';
+$_SESSION['login_time'] = time();
+
+echo "Session data set.&lt;br&gt;";
+?&gt;</code></pre>
+        <p><strong>Accessing Session Data:</strong></p>
+        <pre><code>&lt;?php
+session_start(); // Essential to access session data
+
+if (isset($_SESSION['username'])) {
+    $username = htmlspecialchars($_SESSION['username']);
+    $role = htmlspecialchars($_SESSION['user_role'] ?? 'guest');
+    echo "Welcome, " . $username . "! Your role is: " . $role . ".&lt;br&gt;";
+
+    if (isset($_SESSION['login_time'])) {
+        echo "You logged in at: " . date("Y-m-d H:i:s", $_SESSION['login_time']) . "&lt;br&gt;";
+    }
+} else {
+    echo "You are not logged in (no username in session).&lt;br&gt;";
+    // You might redirect to a login page here
+    // header('Location: login.php');
+    // exit;
+}
+?&gt;</code></pre>
+        <p><strong>Destroying a Session:</strong></p>
+        <p>To completely end a session and remove all its data:</p>
+        <ol>
+            <li><strong><code>session_unset()</code></strong>: Frees all session variables currently registered in <code>$_SESSION</code>. This clears the <code>$_SESSION</code> array.</li>
+            <li><strong><code>session_destroy()</code></strong>: Destroys all data registered to a session on the server. It removes the session file or database entry.</li>
+            <li><strong>Optional: Delete the session cookie:</strong> While <code>session_destroy()</code> handles server-side data, the session cookie might still exist in the user's browser. To fully log out, it's good practice to also delete this cookie.</li>
+        </ol>
+        <pre><code>&lt;?php
+session_start(); // Session must be started to destroy it
+
+// 1. Unset all session variables
+$_SESSION = array(); // Or session_unset();
+
+// 2. Destroy the session cookie (optional but good practice for logout)
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
+}
+
+// 3. Finally, destroy the session
+session_destroy();
+
+echo "Session destroyed. You have been logged out.&lt;br&gt;";
+?&gt;</code></pre>
+        <p><strong>Session Configuration:</strong><br>
+        PHP's session behavior can be configured in <code>php.ini</code> or using <code>ini_set()</code> or <code>session_set_cookie_params()</code>. Some common settings:</p>
+        <ul>
+            <li><code>session.name</code>: Name of the session cookie (default: <code>PHPSESSID</code>).</li>
+            <li><code>session.cookie_lifetime</code>: Lifetime of the session cookie in seconds (0 means until browser closes).</li>
+            <li><code>session.gc_maxlifetime</code>: How long inactive session data is kept on the server (garbage collection).</li>
+            <li><code>session.cookie_secure</code>: Send session cookie only over HTTPS. <strong>Recommended for production.</strong></li>
+            <li><code>session.cookie_httponly</code>: Make session cookie inaccessible to JavaScript. <strong>Highly recommended.</strong></li>
+            <li><code>session.use_strict_mode</code>: Prevents PHP from using a session ID supplied by the user if it hasn't been initialized by the server. Good for security.</li>
+        </ul>
+        <p><strong>Use Cases for Sessions:</strong></p>
+        <ul>
+            <li><strong>User Login Status:</strong> Storing whether a user is logged in and their user ID.</li>
+            <li><strong>Shopping Carts:</strong> Keeping track of items a user has added to their cart before checkout.</li>
+            <li><strong>User Preferences:</strong> Storing temporary user settings for their current visit.</li>
+            <li><strong>Flash Messages:</strong> Displaying messages across page redirects (e.g., "Item saved successfully!").</li>
+        </ul>
+        <p>Sessions are a powerful tool for creating interactive and personalized web experiences. Always remember to call <code>session_start()</code> before you need to access or modify <code>$_SESSION</code> data.</p>
+    </div>
+</body>
+</html>
+[end of html_output/en/05_forms_and_user_input.html]
